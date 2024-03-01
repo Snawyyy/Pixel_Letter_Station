@@ -22,6 +22,12 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WS_VISIBLE | WS_CHILD | WS_BORDER | BS_OWNERDRAW,
 			750, 20, 100, 20,
 			hWnd, QuitButtonId, NULL, NULL);
+		//Quit Button
+		button = CreateWindowA("BUTTON",
+			"Default",
+			WS_VISIBLE | WS_CHILD | WS_BORDER | BS_OWNERDRAW,
+			750, height - 80, 100, 20,
+			hWnd, DefaultButtonId, NULL, NULL);
 		//Editable TextBox
 		letter = CreateWindowA("EDIT",
 			"HELLO WORLD",
@@ -31,32 +37,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		break;
 	}
+	case WM_DRAWITEM:
+	{
+		QuitButton(lParam);
+		DefaultButton(lParam, L"Default");
+		break;
+	}
 	case WM_PAINT: {
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hWnd, &ps);
-		// Custom drawing code goes here
-		HFONT hFont = CreateFont(
-			20,               // Height of the font
-			0,                     // Average character width (0 lets the system choose the best value)
-			0,                     // Angle of escapement
-			0,                     // Base-line orientation angle
-			FW_EXTRABOLD,               // Font weight (FW_BOLD for bold)
-			FALSE,                 // Italic attribute option
-			FALSE,                 // Underline attribute option
-			FALSE,                 // Strikeout attribute option
-			ANSI_CHARSET,          // Character set identifier
-			OUT_DEFAULT_PRECIS,    // Output precision
-			CLIP_DEFAULT_PRECIS,   // Clipping precision
-			DEFAULT_QUALITY,       // Output quality
-			DEFAULT_PITCH | FF_SWISS, // Pitch and family
-			L"Arial");              // Font name
-		HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
-
-		SetTextColor(hdc, RGB(0, 0, 0));// text color
-		SetBkMode(hdc, TRANSPARENT); // To make background transparent
-		TextOut(hdc, centerW - 70, 20, L"Pixel Letter Station", strlen("Pixel Letter Station"));
-		EndPaint(hWnd, &ps);
-		return 0; // Indicate we handled the message
+		Title(hWnd, centerW);
 	}
 	case WM_COMMAND: //Button logic
 	{
@@ -65,12 +53,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case 1: //Knows button number one was pressed
 			PostQuitMessage(0);
 			break;
+		case 2: //Knows button number one was pressed
+			MessageBeep(MB_ICONSTOP);
+			break;
 		}
-		break;
-	}
-	case WM_DRAWITEM:
-	{
-		QuitButton(lParam);
+
 		break;
 	}
 	case WM_CLOSE:

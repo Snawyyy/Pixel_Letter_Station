@@ -20,5 +20,6 @@ private:
 	HWND m_hwnd;
 };
 
-#define QuitButtonId (HMENU)1
 #define TitleId (HMENU)0
+#define QuitButtonId (HMENU)1
+#define DefaultButtonId (HMENU)2
