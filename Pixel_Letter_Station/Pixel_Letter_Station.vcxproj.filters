@@ -21,7 +21,7 @@
     <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VisualComp.cpp">
+    <ClCompile Include="CustomWindowUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -29,7 +29,7 @@
     <ClInclude Include="Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VisualComp.h">
+    <ClInclude Include="CustomWindowUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

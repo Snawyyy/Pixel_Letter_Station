@@ -20,7 +20,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		button = CreateWindowA("BUTTON",
 			"Quit",
 			WS_VISIBLE | WS_CHILD | WS_BORDER | BS_OWNERDRAW,
-			750, 20, 100, 20,
+			790, 5, 100, 20,
 			hWnd, QuitButtonId, NULL, NULL);
 		//Quit Button
 		button = CreateWindowA("BUTTON",
@@ -44,7 +44,16 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	case WM_PAINT: {
+
+		WindowBar(hWnd, width);
 		Title(hWnd, centerW);
+
+		LONG_PTR style = GetWindowLongPtr(hWnd, GWL_STYLE); 
+		style &= ~(WS_BORDER | WS_DLGFRAME | WS_CAPTION | WS_THICKFRAME); 
+		SetWindowLongPtr(hWnd, GWL_STYLE, style);
+
+		SetWindowPos(hWnd, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED); 
+
 	}
 	case WM_COMMAND: //Button logic
 	{
@@ -60,9 +69,26 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		break;
 	}
+	case WM_NCHITTEST: // Window Dragging logic
+	{
+		// Convert the mouse position to screen coordinates
+		POINT pt = { LOWORD(lParam), HIWORD(lParam) };
+		ScreenToClient(hWnd, &pt);
+
+		// Define the draggable area, e.g., top 50 pixels of the window
+		RECT draggableArea = { 0, 0, width, WinBarSize }; // You need to define windowWidth
+
+		// Check if the point is within the draggable area
+		if (PtInRect(&draggableArea, pt)) {
+			return HTCAPTION;
+		}
+		else {
+			return DefWindowProc(hWnd, uMsg, wParam, lParam);
+		}
+	}
 	case WM_CLOSE:
 	{
-		DestroyWindow(hWnd);
+		return DestroyWindow(hWnd);
 		break;
 	}
 	case WM_DESTROY:
@@ -89,7 +115,7 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 	wndClass.hbrBackground = CreateSolidBrush(RGB(255, 250, 215));
 	RegisterClass(&wndClass);
 
-	DWORD style = WS_BORDER;
+	DWORD style = WS_POPUP;
 
 
 	m_hwnd = CreateWindowEx(

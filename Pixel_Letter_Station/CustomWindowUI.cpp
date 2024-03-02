@@ -1,4 +1,4 @@
-#include "VisualComp.h"
+#include "CustomWindowUI.h"
 
 bool QuitButton(LPARAM lParam) // GUI Quit Button
 {
@@ -92,3 +92,22 @@ bool DefaultButton(LPARAM lParam, const wchar_t* Text) // GUI Default Button
 		return TRUE; // Indicate we handled the message
 	}
 }
+
+void WindowBar(HWND hWnd, int width)
+{
+	PAINTSTRUCT ps;
+	HDC hdc = BeginPaint(hWnd, &ps); // Start painting
+
+	// Set the color for the rectangle (optional)
+	HBRUSH brush = CreateSolidBrush(RGB(255, 100, 100)); // orangeish color
+	SelectObject(hdc, brush);
+
+	// Draw the rectangle
+	// Parameters: HDC, left, top, right, bottom
+	Rectangle(hdc, 0, 0, width, WinBarSize);
+
+	// Clean up
+	DeleteObject(brush);
+	EndPaint(hWnd, &ps); // End painting
+}
+

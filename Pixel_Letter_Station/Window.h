@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Windows.h>
-#include "VisualComp.h"
+#include "CustomWindowUI.h"
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 

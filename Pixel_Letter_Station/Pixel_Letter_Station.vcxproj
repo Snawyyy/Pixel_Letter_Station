@@ -140,11 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Pixel_Letter_Station.cpp" />
-    <ClCompile Include="VisualComp.cpp" />
+    <ClCompile Include="CustomWindowUI.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VisualComp.h" />
+    <ClInclude Include="CustomWindowUI.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
