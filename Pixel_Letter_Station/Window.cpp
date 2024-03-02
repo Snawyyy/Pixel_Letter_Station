@@ -49,16 +49,17 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	case WM_PAINT: {
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hWnd, &ps); // Start painting
 
-		WindowBar(hWnd, width);
-		Title(hWnd, centerW);
 
-		LONG_PTR style = GetWindowLongPtr(hWnd, GWL_STYLE); 
-		style &= ~(WS_BORDER | WS_DLGFRAME | WS_CAPTION | WS_THICKFRAME); 
-		SetWindowLongPtr(hWnd, GWL_STYLE, style);
+		// components
+		WindowFrame(hdc, hWnd, width, height);
+		WindowBar(hdc, hWnd, width);
+		Title(hdc, hWnd, centerW);
 
-		SetWindowPos(hWnd, NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED); 
 
+		EndPaint(hWnd, &ps); // End painting
 	}
 	case WM_COMMAND: //Button logic
 	{

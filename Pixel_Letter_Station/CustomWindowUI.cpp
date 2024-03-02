@@ -64,35 +64,6 @@ bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 	}
 }
 
-bool Title(HWND hWnd, int centerW) // The title of the application in the GUI
-{
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint(hWnd, &ps);
-	// Custom drawing code goes here
-	HFONT hFont = CreateFont(
-		20,               // Height of the font
-		0,                     // Average character width (0 lets the system choose the best value)
-		0,                     // Angle of escapement
-		0,                     // Base-line orientation angle
-		FW_EXTRABOLD,               // Font weight (FW_BOLD for bold)
-		FALSE,                 // Italic attribute option
-		FALSE,                 // Underline attribute option
-		FALSE,                 // Strikeout attribute option
-		ANSI_CHARSET,          // Character set identifier
-		OUT_DEFAULT_PRECIS,    // Output precision
-		CLIP_DEFAULT_PRECIS,   // Clipping precision
-		DEFAULT_QUALITY,       // Output quality
-		DEFAULT_PITCH | FF_SWISS, // Pitch and family
-		L"Arial");              // Font name
-	HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
-
-	SetTextColor(hdc, RGB(0, 0, 0));// text color
-	SetBkMode(hdc, TRANSPARENT); // To make background transparent
-	TextOut(hdc, centerW - 70, 20, L"Pixel Letter Station", strlen("Pixel Letter Station"));
-	EndPaint(hWnd, &ps);
-	return 0; // Indicate we handled the message
-}
-
 bool DefaultButton(LPARAM lParam, const wchar_t* Text) // GUI Default Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
@@ -125,11 +96,35 @@ bool DefaultButton(LPARAM lParam, const wchar_t* Text) // GUI Default Button
 	}
 }
 
-void WindowBar(HWND hWnd, int width)
+bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in the GUI
 {
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint(hWnd, &ps); // Start painting
+	// Custom drawing code goes here
+	HFONT hFont = CreateFont(
+		TilteSize,               // Height of the font
+		0,                     // Average character width (0 lets the system choose the best value)
+		0,                     // Angle of escapement
+		0,                     // Base-line orientation angle
+		FW_EXTRABOLD,               // Font weight (FW_BOLD for bold)
+		FALSE,                 // Italic attribute option
+		FALSE,                 // Underline attribute option
+		FALSE,                 // Strikeout attribute option
+		ANSI_CHARSET,          // Character set identifier
+		OUT_DEFAULT_PRECIS,    // Output precision
+		CLIP_DEFAULT_PRECIS,   // Clipping precision
+		DEFAULT_QUALITY,       // Output quality
+		DEFAULT_PITCH | FF_SWISS, // Pitch and family
+		L"Arial");              // Font name
+	HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
 
+	SetTextColor(hdc, RGB(0, 0, 0));// text color
+	SetBkMode(hdc, TRANSPARENT); // To make background transparent
+	TextOut(hdc, BarMargin, ((WinBarSize / 2) - (TilteSize / 2)), L"Pixel Letter Station", strlen("Pixel Letter Station"));
+	return 0; // Indicate we handled the message
+}
+
+
+void WindowBar(HDC hdc, HWND hWnd, int width)
+{
 	// Set the color for the rectangle (optional)
 	HBRUSH brush = CreateSolidBrush(RGB(255, 100, 100)); // orangeish color
 	HPEN nullPen = CreatePen(PS_NULL, 1, RGB(0, 0, 0)); // Null pen, color doesn't matter
@@ -140,12 +135,38 @@ void WindowBar(HWND hWnd, int width)
 	// Parameters: HDC, left, top, right, bottom
 	Rectangle(hdc, 0, 0, width, WinBarSize);
 
+	// Draw the Border Shadow
+	brush = CreateSolidBrush(RGB(155, 0, 0)); // orangeish color
+	SelectObject(hdc, brush);
+	Rectangle(hdc, 0, WinBarSize, width, WinBarSize - 5);
+	Rectangle(hdc, width - 5, 0, width + 1, WinBarSize);
+
+	// Draw the Border shine
 	brush = CreateSolidBrush(RGB(255, 200, 200)); // orangeish color
 	SelectObject(hdc, brush);
 	Rectangle(hdc, 0, 0, width, 5);
+	Rectangle(hdc, 0, 0, 5, WinBarSize);
+
+
 
 	// Clean up
 	DeleteObject(brush);
-	EndPaint(hWnd, &ps); // End painting
+	DeleteObject(nullPen);
 }
 
+void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
+{
+	// First, draw the larger rectangle with a solid color
+	HBRUSH brushMain = CreateSolidBrush(RGB(255, 100, 100)); // Orangeish color for the main rectangle
+	RECT rectMain = { 0, 0, width, height }; // Main rectangle coordinates
+	FillRect(hdc, &rectMain, brushMain);
+
+	// Then, "cut out" a shape by drawing it with the background color
+	HBRUSH brushCutout = CreateSolidBrush(RGB(255, 250, 215)); // Brush for the cutout, using the window background color
+	RECT rectCutout = { 5, 5, width - 5, height -5 }; // Smaller rectangle coordinates for the cutout
+	FillRect(hdc, &rectCutout, brushCutout);
+
+	// Clean up
+	DeleteObject(brushMain);
+	DeleteObject(brushCutout);
+}

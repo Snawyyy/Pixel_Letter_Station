@@ -7,9 +7,10 @@
 
 bool QuitButton(LPARAM lParam);
 bool MinimizeButton(LPARAM lParam);
-bool Title(HWND hWnd, int centerW);
 bool DefaultButton(LPARAM lParam, const wchar_t* Text);
-void WindowBar(HWND hWnd, int width);
+bool Title(HDC hdc, HWND hWnd, int centerW);
+void WindowBar(HDC hdc, HWND hWnd, int width);
+void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
 
  // HMENU id
 #define QuitHMENU 1
@@ -17,6 +18,7 @@ void WindowBar(HWND hWnd, int width);
 #define DefaultHMENU 3
 
  //Window Bar Settings
+#define TilteSize 20
 #define WinBarSize 30
 #define BarMargin  5
 #define BarButtonSize  20
