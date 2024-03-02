@@ -29,4 +29,5 @@ void WindowBar(HWND hWnd, int width);
 #define LTextBoxHeight 500 
 
 #define ButtonWidth 100 //Button
+#define ButtonHeight 20
 

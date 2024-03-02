@@ -42,7 +42,7 @@ bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 		// Set the background and text colors
 		SetTextColor(pDIS->hDC, RGB(0, 0, 0));
 		SetBkMode(pDIS->hDC, TRANSPARENT);
-		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(250, 215, 100)));
+		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(255, 250, 215)));
 
 		// Prepare the rectangle for the text, adjusting if the button is pressed
 		RECT textRect = pDIS->rcItem;
@@ -119,7 +119,7 @@ bool DefaultButton(LPARAM lParam, const wchar_t* Text) // GUI Default Button
 		DrawText(pDIS->hDC, Text, -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
 		// Draw a border around the button
-		FrameRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(255, 255, 255)));
+		FrameRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(0, 0, 0))); // Draw the border around the button
 
 		return TRUE; // Indicate we handled the message
 	}
@@ -132,11 +132,17 @@ void WindowBar(HWND hWnd, int width)
 
 	// Set the color for the rectangle (optional)
 	HBRUSH brush = CreateSolidBrush(RGB(255, 100, 100)); // orangeish color
+	HPEN nullPen = CreatePen(PS_NULL, 1, RGB(0, 0, 0)); // Null pen, color doesn't matter
 	SelectObject(hdc, brush);
+	SelectObject(hdc, nullPen);
 
 	// Draw the rectangle
 	// Parameters: HDC, left, top, right, bottom
 	Rectangle(hdc, 0, 0, width, WinBarSize);
+
+	brush = CreateSolidBrush(RGB(255, 200, 200)); // orangeish color
+	SelectObject(hdc, brush);
+	Rectangle(hdc, 0, 0, width, 5);
 
 	// Clean up
 	DeleteObject(brush);
