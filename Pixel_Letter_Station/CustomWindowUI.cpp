@@ -138,14 +138,14 @@ void WindowBar(HDC hdc, HWND hWnd, int width)
 	// Draw the Border Shadow
 	brush = CreateSolidBrush(RGB(155, 0, 0)); // orangeish color
 	SelectObject(hdc, brush);
-	Rectangle(hdc, 0, WinBarSize, width, WinBarSize - 5);
-	Rectangle(hdc, width - 5, 0, width + 1, WinBarSize);
+	Rectangle(hdc, 0, WinBarSize, width, WinBarSize - BorderEffectSize);
+	Rectangle(hdc, width - BorderEffectSize + 1, 0, width + 1, WinBarSize);
 
 	// Draw the Border shine
 	brush = CreateSolidBrush(RGB(255, 200, 200)); // orangeish color
 	SelectObject(hdc, brush);
-	Rectangle(hdc, 0, 0, width, 5);
-	Rectangle(hdc, 0, 0, 5, WinBarSize);
+	Rectangle(hdc, 0, 0, width, BorderEffectSize);
+	Rectangle(hdc, 0, 0, BorderEffectSize, WinBarSize);
 
 
 

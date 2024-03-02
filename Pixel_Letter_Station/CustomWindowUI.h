@@ -16,15 +16,16 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
 #define QuitHMENU 1
 #define MinimizeHMENU 2
 #define DefaultHMENU 3
+// learn about enum
 
  //Window Bar Settings
 #define TilteSize 20
 #define WinBarSize 30
 #define BarMargin  5
 #define BarButtonSize  20
+#define BorderEffectSize 4
 
  //Ui Settings
-
 #define margin  20
 
 #define LTextBoxWidth 800 //Letter writing box
