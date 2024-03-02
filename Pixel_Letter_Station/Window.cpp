@@ -7,8 +7,6 @@ int width = 900;
 int height = 600;
 int centerW = width / 2;
 int centerH = height / 2;
-int margin = 20;
-
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -19,20 +17,20 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		//Quit Button
 		button = CreateWindowA("BUTTON",
 			"Quit",
-			WS_VISIBLE | WS_CHILD | WS_BORDER | BS_OWNERDRAW,
-			790, 5, 100, 20,
+			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+			(width - BarButtonSize - BarMargin), 5, BarButtonSize, BarButtonSize,
 			hWnd, QuitButtonId, NULL, NULL);
-		//Quit Button
+		//Default Button
 		button = CreateWindowA("BUTTON",
 			"Default",
-			WS_VISIBLE | WS_CHILD | WS_BORDER | BS_OWNERDRAW,
-			750, height - 80, 100, 20,
+			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+			width - margin - ButtonWidth, (height - margin - (20 / 2)), ButtonWidth, 20,
 			hWnd, DefaultButtonId, NULL, NULL);
 		//Editable TextBox
 		letter = CreateWindowA("EDIT",
 			"HELLO WORLD",
 			WS_VISIBLE | WS_CHILD | WS_BORDER | ES_MULTILINE,
-			centerW - 400, 60, 800, 450,
+			(centerW - LTextBoxWidth / 2), 60, LTextBoxWidth, LTextBoxHeight,
 			hWnd, NULL, NULL, NULL);
 
 		break;
@@ -59,10 +57,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		switch (LOWORD(wParam))
 		{
-		case 1: //Knows button number one was pressed
+		case 1: //Knows what button number was pressed
 			PostQuitMessage(0);
 			break;
-		case 2: //Knows button number one was pressed
+		case 2: 
 			MessageBeep(MB_ICONSTOP);
 			break;
 		}

@@ -9,8 +9,8 @@ bool QuitButton(LPARAM lParam) // GUI Quit Button
 
 		// Set the background and text colors
 		SetTextColor(pDIS->hDC, RGB(0, 0, 0));
-		SetBkColor(pDIS->hDC, RGB(255, 150, 100));
-		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(255, 150, 100)));
+		SetBkMode(pDIS->hDC, TRANSPARENT);
+		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(255, 0, 0)));
 
 		// Prepare the rectangle for the text, adjusting if the button is pressed
 		RECT textRect = pDIS->rcItem;
@@ -23,10 +23,10 @@ bool QuitButton(LPARAM lParam) // GUI Quit Button
 		}
 
 		// Draw the button text using the adjusted rectangle
-		DrawText(pDIS->hDC, L"Quit", -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+		DrawText(pDIS->hDC, L"X", -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
-		// Draw a border around the button
-		FrameRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(100, 0, 0)));
+		FrameRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(100, 0, 0))); // Draw the border around the button
+
 
 		return TRUE; // Indicate we handled the message
 	}
