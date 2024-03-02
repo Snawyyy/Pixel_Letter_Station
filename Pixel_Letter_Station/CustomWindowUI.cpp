@@ -1,6 +1,6 @@
 #include "CustomWindowUI.h"
 
-bool QuitButton(LPARAM lParam) // GUI Quit Button
+bool QuitButton(LPARAM lParam) // Bar Quit Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
 	if (pDIS->CtlID == QuitHMENU) { // Matching the HMENU value you passed when creating the button
@@ -24,6 +24,38 @@ bool QuitButton(LPARAM lParam) // GUI Quit Button
 
 		// Draw the button text using the adjusted rectangle
 		DrawText(pDIS->hDC, L"X", -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+		FrameRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(100, 0, 0))); // Draw the border around the button
+
+
+		return TRUE; // Indicate we handled the message
+	}
+}
+
+bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
+{
+	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
+	if (pDIS->CtlID == MinimizeHMENU) { // Matching the HMENU value you passed when creating the button
+
+		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
+
+		// Set the background and text colors
+		SetTextColor(pDIS->hDC, RGB(0, 0, 0));
+		SetBkMode(pDIS->hDC, TRANSPARENT);
+		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(250, 215, 100)));
+
+		// Prepare the rectangle for the text, adjusting if the button is pressed
+		RECT textRect = pDIS->rcItem;
+		if (isPressed) {
+			// Offset the textRect and change color to simulate the text moving when pressed
+			OffsetRect(&textRect, 1, 1);
+			SetTextColor(pDIS->hDC, RGB(255, 255, 255));
+			SetBkColor(pDIS->hDC, RGB(100, 0, 0));
+			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(100, 0, 0)));
+		}
+
+		// Draw the button text using the adjusted rectangle
+		DrawText(pDIS->hDC, L"-", -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
 		FrameRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(100, 0, 0))); // Draw the border around the button
 

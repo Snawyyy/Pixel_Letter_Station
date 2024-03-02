@@ -20,6 +20,12 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 			(width - BarButtonSize - BarMargin), 5, BarButtonSize, BarButtonSize,
 			hWnd, QuitButtonId, NULL, NULL);
+		//Minimize Button
+		button = CreateWindowA("BUTTON",
+			"-",
+			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+			(width - (BarButtonSize * 2) - (BarMargin * 2)), 5, BarButtonSize, BarButtonSize,
+			hWnd, MinimizeButtonId, NULL, NULL);
 		//Default Button
 		button = CreateWindowA("BUTTON",
 			"Default",
@@ -38,6 +44,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DRAWITEM:
 	{
 		QuitButton(lParam);
+		MinimizeButton(lParam);
 		DefaultButton(lParam, L"Default");
 		break;
 	}
@@ -60,7 +67,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case 1: //Knows what button number was pressed
 			PostQuitMessage(0);
 			break;
-		case 2: 
+		case 2:
+			ShowWindow(hWnd, SW_MINIMIZE);
+			break;
+		case 3: 
 			MessageBeep(MB_ICONSTOP);
 			break;
 		}

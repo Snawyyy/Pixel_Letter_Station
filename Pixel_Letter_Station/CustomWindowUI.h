@@ -6,17 +6,19 @@
 #include <objbase.h>
 
 bool QuitButton(LPARAM lParam);
+bool MinimizeButton(LPARAM lParam);
 bool Title(HWND hWnd, int centerW);
 bool DefaultButton(LPARAM lParam, const wchar_t* Text);
 void WindowBar(HWND hWnd, int width);
 
  // HMENU id
 #define QuitHMENU 1
-#define DefaultHMENU 2
+#define MinimizeHMENU 2
+#define DefaultHMENU 3
 
  //Window Bar Settings
 #define WinBarSize 30
-#define BarMargin  10
+#define BarMargin  5
 #define BarButtonSize  20
 
  //Ui Settings
