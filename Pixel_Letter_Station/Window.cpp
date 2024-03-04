@@ -1,8 +1,5 @@
 #include "Window.h"
 
-HWND textField;
-HWND button;
-HWND letter;
 int width = 900;
 int height = 600;
 int centerW = width / 2;
@@ -16,50 +13,44 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case WM_CREATE: // where you create all the interface
 		{
 			// Quit Button
-			button = CreateWindowA("BUTTON",
+			HWND quitButton = CreateWindowA("BUTTON",
 				"Quit",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				(width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
 				hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
 			// Minimize Button
-			button = CreateWindowA("BUTTON",
+			HWND minimizeButton = CreateWindowA("BUTTON",
 				"-",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				(width - (BAR_BUTTON_SIZE * 2) - (BAR_MARGIN * 2)), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
 				hWnd, (HMENU)MINIMIZE_BUTTON_ID, NULL, NULL);
 			// Send Button
-			button = CreateWindowA("BUTTON",
+			HWND sendButton = CreateWindowA("BUTTON",
 				"Send",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
 				hWnd, (HMENU)DEFAULT_BUTTON_ID, NULL, NULL);
 			// Test
-			button = CreateWindowA("BUTTON",
+			HWND button = CreateWindowA("BUTTON",
 				"Test",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				(width - LTEXT_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+				(width - LETTER_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
 				hWnd, (HMENU)4, NULL, NULL);
 			// Letter Title
-			letter = CreateWindowA("RichEdit20W",
-				"Title",
+			HWND letterTitle = CreateWindowA("RichEdit20W",
+				"-Title-",
 				WS_VISIBLE | WS_CHILD | ES_CENTER,
-				((width - (LTEXT_BOX_WIDTH / 2) - MARGIN) - (LTEXT_BOX_WIDTH / 2)), MARGIN * 3, LTEXT_BOX_WIDTH, MARGIN,
+				((width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2)), MARGIN * 3, LETTER_BOX_WIDTH, MARGIN,
 				hWnd, NULL, NULL, NULL);
 			// Letter Contents
-			    letter = CreateWindowA("RichEdit20W",
-				"Write Here",
+			HWND letterContents = CreateWindowA("RichEdit20W",
+				"Write Here...",
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
-				(width - LTEXT_BOX_WIDTH - MARGIN), MARGIN * 4, LTEXT_BOX_WIDTH, LTEXT_BOX_HEIGHT,
+				(width - LETTER_BOX_WIDTH - MARGIN), MARGIN * 4, LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT,
 				hWnd, (HMENU)5, NULL, NULL);
 
-				PARAFORMAT2 pf;
-				memset(&pf, 0, sizeof(PARAFORMAT2));
-				pf.cbSize = sizeof(PARAFORMAT2);
-				pf.dwMask = PFM_LINESPACING;
-				pf.bLineSpacingRule = 5;
-				pf.dyLineSpacing = 30;
-
-				SendMessage(letter, EM_SETPARAFORMAT, 0, (LPARAM)&pf);
+			RichTextBoxPaint(letterContents);
+			RichTextBoxPaint(letterTitle);
 
 			break;
 		}
@@ -82,7 +73,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WindowBar(hdc, hWnd, width);
 			Title(hdc, hWnd, centerW);
 
-			LetterBackground(hdc, hWnd);
+			LetterBackground(hdc, hWnd,  width,  height);
 
 			EndPaint(hWnd, &ps); // End painting
 			break;

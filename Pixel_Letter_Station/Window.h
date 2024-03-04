@@ -2,8 +2,7 @@
 
 #include <Windows.h>
 #include "CustomWindowUI.h"
-#include <Richedit.h>
-#pragma comment(lib, "comctl32.lib")
+
 
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

@@ -217,21 +217,39 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 	DeleteObject(brushCutout);
 }
 
-void LetterBackground(HDC hdc, HWND hWnd)
+void LetterBackground(HDC hdc, HWND hWnd, int width, int height)
 {
-	HBITMAP hBitmap = (HBITMAP)LoadImage(NULL, L"C:\\Users\\Snawy\\source\\repos\\Snawyyy\\Pixel_Letter_Station\\Images\\Test.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-	if (hBitmap == NULL)
-	{
-		MessageBox(NULL, L"Load Failed", L"Fail", MB_OK);
-	}
-	HDC hdcMem = CreateCompatibleDC(hdc);
-	HGDIOBJ oldBitmap = SelectObject(hdcMem, hBitmap);
+	// First, draw the larger rectangle with a solid color
+	HBRUSH brushMain = CreateSolidBrush(RGB(50, 0, 0)); // Orangeish color for the main rectangle
+	RECT rectMain = { (width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, MARGIN * 2.5, width - (SMALL_MARGIN * 2), height - (MARGIN * 3)}; // Main rectangle coordinates
+	FillRect(hdc, &rectMain, brushMain);
 
-	BITMAP bitmap;
-	GetObject(hBitmap, sizeof(BITMAP), &bitmap);
-	BitBlt(hdc, (900 - LTEXT_BOX_WIDTH - MARGIN - SMALL_MARGIN), (MARGIN * 2 + SMALL_MARGIN), bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
+	//Then, the "Paper" by drawing it with the paper color
+	HBRUSH brushShading = CreateSolidBrush(RGB(200, 160, 50)); // Brush for the cutout, using the window background color
+	RECT rectShading = { (width - (LETTER_BOX_WIDTH / 2) - MARGIN + BORDER_EFFECT_SIZE) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, (MARGIN * 2.5) + BORDER_EFFECT_SIZE, width - (SMALL_MARGIN * 2) - BORDER_EFFECT_SIZE, height - (MARGIN * 3) - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
+	FillRect(hdc, &rectShading, brushShading);
 
-	SelectObject(hdcMem, oldBitmap);
-	DeleteDC(hdcMem);
-	DeleteObject(hBitmap);
+	//Then, the "Paper" by drawing it with the paper color
+	HBRUSH brushPaper = CreateSolidBrush(RGB(255, 223, 133)); // Brush for the cutout, using the window background color
+	RECT rectCutout = { (width - (LETTER_BOX_WIDTH / 2) - MARGIN + (BORDER_EFFECT_SIZE * 2)) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, (MARGIN * 2.5) + (BORDER_EFFECT_SIZE * 2), width - (SMALL_MARGIN * 2) - BORDER_EFFECT_SIZE, height - (MARGIN * 3) - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
+	FillRect(hdc, &rectCutout, brushPaper);
+
+	// Clean up
+	DeleteObject(brushMain);
+	//DeleteObject(brushCutout);
+}
+
+void RichTextBoxPaint(HWND box)
+{
+	PARAFORMAT2 pf;
+	memset(&pf, 0, sizeof(PARAFORMAT2));
+	pf.cbSize = sizeof(PARAFORMAT2);
+	pf.dwMask = PFM_LINESPACING;
+	pf.bLineSpacingRule = 5;
+	pf.dyLineSpacing = 30;
+
+	SendMessage(box, EM_SETBKGNDCOLOR, 0, (LPARAM)RGB(255, 223, 133));
+	SendMessage(box, EM_SETPARAFORMAT, 0, (LPARAM)&pf);
+	SendMessage(box, EM_SETLIMITTEXT, (WPARAM)1000, 0);
+
 }

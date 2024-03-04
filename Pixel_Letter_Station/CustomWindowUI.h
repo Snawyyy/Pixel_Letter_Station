@@ -4,6 +4,8 @@
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
 #include <objbase.h>
+#include <Richedit.h>
+#pragma comment(lib, "comctl32.lib")
 
 bool QuitButton(LPARAM lParam);
 bool MinimizeButton(LPARAM lParam);
@@ -12,7 +14,9 @@ bool Title(HDC hdc, HWND hWnd, int centerW);
 void WindowBar(HDC hdc, HWND hWnd, int width);
 void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
 
-void LetterBackground(HDC hdc, HWND hWnd);
+void LetterBackground(HDC hdc, HWND hWnd, int width, int height);
+
+void RichTextBoxPaint(HWND Box);
 
  // HMENU id
 #define TITLE_ID 0
@@ -33,9 +37,9 @@ void LetterBackground(HDC hdc, HWND hWnd);
 #define MARGIN  20
 #define SMALL_MARGIN  7.5
 
-#define LTEXT_BOX_WIDTH 700 //Letter writing box
-#define LTEXT_BOX_HEIGHT 450 
+#define LETTER_BOX_WIDTH 650 //Letter writing box
+#define LETTER_BOX_HEIGHT 450 
 
 #define BUTTON_WIDTH 100 //Button
-#define BUTTON_HEIGHT 20
+#define BUTTON_HEIGHT 30
 
