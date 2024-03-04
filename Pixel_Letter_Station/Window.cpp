@@ -40,13 +40,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			HWND letterTitle = CreateWindowA("RichEdit20W",
 				"-Title-",
 				WS_VISIBLE | WS_CHILD | ES_CENTER,
-				((width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2)), MARGIN * 3, LETTER_BOX_WIDTH, MARGIN,
+				((width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2)), MARGIN * 4, LETTER_BOX_WIDTH, MARGIN,
 				hWnd, NULL, NULL, NULL);
 			// Letter Contents
 			HWND letterContents = CreateWindowA("RichEdit20W",
 				"Write Here...",
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
-				(width - LETTER_BOX_WIDTH - MARGIN), MARGIN * 4, LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT,
+				(width - LETTER_BOX_WIDTH - MARGIN), MARGIN * 6, LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT,
 				hWnd, (HMENU)5, NULL, NULL);
 
 			RichTextBoxPaint(letterContents);

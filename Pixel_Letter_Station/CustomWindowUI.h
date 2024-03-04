@@ -38,7 +38,7 @@ void RichTextBoxPaint(HWND Box);
 #define SMALL_MARGIN  7.5
 
 #define LETTER_BOX_WIDTH 650 //Letter writing box
-#define LETTER_BOX_HEIGHT 450 
+#define LETTER_BOX_HEIGHT 400 
 
 #define BUTTON_WIDTH 100 //Button
 #define BUTTON_HEIGHT 30
