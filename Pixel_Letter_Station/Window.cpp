@@ -32,10 +32,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 			width - MARGIN - BUTTON_WIDTH, (height - MARGIN - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
 			hWnd, (HMENU)DEFAULT_BUTTON_ID, NULL, NULL);
+		//Test Button
 		button = CreateWindowA("BUTTON",
 			"Default",
 			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-			BUTTON_WIDTH + MARGIN, (height - MARGIN - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+			MARGIN, (height - MARGIN - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
 			hWnd, (HMENU)4, NULL, NULL);
 		//Editable TextBox
 		letter = CreateWindowA("EDIT",
@@ -51,7 +52,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		QuitButton(lParam);
 		MinimizeButton(lParam);
 		DefaultButton(lParam, L"Default", DEFAULT_BUTTON_ID);
-		DefaultButton(lParam, L"peepee", 4);
+		DefaultButton(lParam, L"Button 2", 4);
 		break;
 	}
 	case WM_PAINT: {
