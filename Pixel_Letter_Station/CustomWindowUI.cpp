@@ -3,7 +3,7 @@
 bool QuitButton(LPARAM lParam) // Bar Quit Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
-	if (pDIS->CtlID == QuitHMENU) { // Matching the HMENU value you passed when creating the button
+	if (pDIS->CtlID == QUIT_BUTTON_ID) { // Matching the HMENU value you passed when creating the button
 
 		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
 
@@ -16,15 +16,15 @@ bool QuitButton(LPARAM lParam) // Bar Quit Button
 		RECT effectRect;
 
 		// Shadow
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BorderEffectSize, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BORDER_EFFECT_SIZE, pDIS->rcItem.right, pDIS->rcItem.bottom);
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(100, 0, 0)));
-		SetRect(&effectRect, pDIS->rcItem.right - BorderEffectSize, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		SetRect(&effectRect, pDIS->rcItem.right - BORDER_EFFECT_SIZE, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(100, 0, 0))); 
 
 		// Shine
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BorderEffectSize); 
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BORDER_EFFECT_SIZE); 
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 100, 100))); 
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BorderEffectSize, pDIS->rcItem.bottom); 
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BORDER_EFFECT_SIZE, pDIS->rcItem.bottom); 
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 100, 100))); 
 
 		// Prepare the rectangle for the text, adjusting if the button is pressed
@@ -50,7 +50,7 @@ bool QuitButton(LPARAM lParam) // Bar Quit Button
 bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
-	if (pDIS->CtlID == MinimizeHMENU) { // Matching the HMENU value you passed when creating the button
+	if (pDIS->CtlID == MINIMIZE_BUTTON_ID) { // Matching the HMENU value you passed when creating the button
 
 		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
 
@@ -63,15 +63,15 @@ bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 		RECT effectRect;
 
 		// Shadow
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BorderEffectSize, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BORDER_EFFECT_SIZE, pDIS->rcItem.right, pDIS->rcItem.bottom);
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
-		SetRect(&effectRect, pDIS->rcItem.right - BorderEffectSize, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		SetRect(&effectRect, pDIS->rcItem.right - BORDER_EFFECT_SIZE, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
 
 		// Shine
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BorderEffectSize);
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BORDER_EFFECT_SIZE);
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BorderEffectSize, pDIS->rcItem.bottom);
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BORDER_EFFECT_SIZE, pDIS->rcItem.bottom);
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
 
 		// Prepare the rectangle for the text, adjusting if the button is pressed
@@ -97,7 +97,7 @@ bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 bool DefaultButton(LPARAM lParam, const wchar_t* Text) // GUI Default Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
-	if (pDIS->CtlID == DefaultHMENU) { // Matching the HMENU value you passed when creating the button
+	if (pDIS->CtlID == DEFAULT_BUTTON_ID) { // Matching the HMENU value you passed when creating the button
 
 		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
 
@@ -110,15 +110,15 @@ bool DefaultButton(LPARAM lParam, const wchar_t* Text) // GUI Default Button
 		RECT effectRect;
 
 		// Shadow
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BorderEffectSize, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BORDER_EFFECT_SIZE, pDIS->rcItem.right, pDIS->rcItem.bottom);
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
-		SetRect(&effectRect, pDIS->rcItem.right - BorderEffectSize, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		SetRect(&effectRect, pDIS->rcItem.right - BORDER_EFFECT_SIZE, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
 
 		// Shine
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BorderEffectSize);
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BORDER_EFFECT_SIZE);
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BorderEffectSize, pDIS->rcItem.bottom);
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BORDER_EFFECT_SIZE, pDIS->rcItem.bottom);
 		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
 
 		// Prepare the rectangle for the text, adjusting if the button is pressed
@@ -145,7 +145,7 @@ bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in t
 {
 	// Custom drawing code goes here
 	HFONT hFont = CreateFont(
-		TilteSize,               // Height of the font
+		TITLE_SIZE,               // Height of the font
 		0,                     // Average character width (0 lets the system choose the best value)
 		0,                     // Angle of escapement
 		0,                     // Base-line orientation angle
@@ -163,7 +163,7 @@ bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in t
 
 	SetTextColor(hdc, RGB(0, 0, 0));// text color
 	SetBkMode(hdc, TRANSPARENT); // To make background transparent
-	TextOut(hdc, BarMargin, ((WinBarSize / 2) - (TilteSize / 2)), L"Pixel Letter Station", strlen("Pixel Letter Station"));
+	TextOut(hdc, BAR_MARGIN, ((WIN_BAR_SIZE / 2) - (TITLE_SIZE / 2)), L"Pixel Letter Station", strlen("Pixel Letter Station"));
 	return 0; // Indicate we handled the message
 }
 
@@ -178,19 +178,19 @@ void WindowBar(HDC hdc, HWND hWnd, int width)
 
 	// Draw the rectangle
 	// Parameters: HDC, left, top, right, bottom
-	Rectangle(hdc, 0, 0, width, WinBarSize);
+	Rectangle(hdc, 0, 0, width, WIN_BAR_SIZE);
 
 	// Draw the Border Shadow
 	brush = CreateSolidBrush(RGB(155, 0, 0)); // orangeish color
 	SelectObject(hdc, brush);
-	Rectangle(hdc, 0, WinBarSize, width, WinBarSize - BorderEffectSize);
-	Rectangle(hdc, width - BorderEffectSize + 1, 0, width + 1, WinBarSize);
+	Rectangle(hdc, 0, WIN_BAR_SIZE, width, WIN_BAR_SIZE - BORDER_EFFECT_SIZE);
+	Rectangle(hdc, width - BORDER_EFFECT_SIZE + 1, 0, width + 1, WIN_BAR_SIZE);
 
 	// Draw the Border shine
 	brush = CreateSolidBrush(RGB(255, 200, 200)); // orangeish color
 	SelectObject(hdc, brush);
-	Rectangle(hdc, 0, 0, width, BorderEffectSize);
-	Rectangle(hdc, 0, 0, BorderEffectSize, WinBarSize);
+	Rectangle(hdc, 0, 0, width, BORDER_EFFECT_SIZE);
+	Rectangle(hdc, 0, 0, BORDER_EFFECT_SIZE, WIN_BAR_SIZE);
 
 
 

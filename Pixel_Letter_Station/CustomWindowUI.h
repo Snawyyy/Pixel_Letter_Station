@@ -13,24 +13,25 @@ void WindowBar(HDC hdc, HWND hWnd, int width);
 void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
 
  // HMENU id
-#define QuitHMENU 1
-#define MinimizeHMENU 2
-#define DefaultHMENU 3
+#define TITLE_ID 0
+#define QUIT_BUTTON_ID 1
+#define MINIMIZE_BUTTON_ID 2
+#define DEFAULT_BUTTON_ID 3
 // learn about enum
 
  //Window Bar Settings
-#define TilteSize 20
-#define WinBarSize 30
-#define BarMargin  5
-#define BarButtonSize  20
-#define BorderEffectSize 4
+#define TITLE_SIZE 20
+#define WIN_BAR_SIZE 30
+#define BAR_MARGIN  5
+#define BAR_BUTTON_SIZE  20
+#define BORDER_EFFECT_SIZE 4
 
  //Ui Settings
-#define margin  20
+#define MARGIN  20
 
-#define LTextBoxWidth 800 //Letter writing box
-#define LTextBoxHeight 500 
+#define LTEXT_BOX_WIDTH 800 //Letter writing box
+#define LTEXT_BOX_HEIGHT 500 
 
-#define ButtonWidth 100 //Button
-#define ButtonHeight 20
+#define BUTTON_WIDTH 100 //Button
+#define BUTTON_HEIGHT 20
 

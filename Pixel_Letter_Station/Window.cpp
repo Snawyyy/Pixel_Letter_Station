@@ -18,25 +18,25 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		button = CreateWindowA("BUTTON",
 			"Quit",
 			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-			(width - BarButtonSize - BarMargin), BarMargin, BarButtonSize, BarButtonSize,
-			hWnd, QuitButtonId, NULL, NULL);
+			(width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
+			hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
 		//Minimize Button
 		button = CreateWindowA("BUTTON",
 			"-",
 			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-			(width - (BarButtonSize * 2) - (BarMargin * 2)), BarMargin, BarButtonSize, BarButtonSize,
-			hWnd, MinimizeButtonId, NULL, NULL);
+			(width - (BAR_BUTTON_SIZE * 2) - (BAR_MARGIN * 2)), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
+			hWnd, (HMENU)MINIMIZE_BUTTON_ID, NULL, NULL);
 		//Default Button
 		button = CreateWindowA("BUTTON",
 			"Default",
 			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-			width - margin - ButtonWidth, (height - margin - (ButtonHeight / 2)), ButtonWidth, ButtonHeight,
-			hWnd, DefaultButtonId, NULL, NULL);
+			width - MARGIN - BUTTON_WIDTH, (height - MARGIN - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+			hWnd, (HMENU)DEFAULT_BUTTON_ID, NULL, NULL);
 		//Editable TextBox
 		letter = CreateWindowA("EDIT",
 			"HELLO WORLD",
 			WS_VISIBLE | WS_CHILD | WS_BORDER | ES_MULTILINE,
-			(centerW - LTextBoxWidth / 2), margin * 3, LTextBoxWidth, LTextBoxHeight,
+			(centerW - LTEXT_BOX_WIDTH / 2), MARGIN * 3, LTEXT_BOX_WIDTH, LTEXT_BOX_HEIGHT,
 			hWnd, NULL, NULL, NULL);
 
 		break;
@@ -85,7 +85,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		ScreenToClient(hWnd, &pt);
 
 		// Define the draggable area, e.g., top 50 pixels of the window
-		RECT draggableArea = { 0, 0, width, WinBarSize }; // You need to define windowWidth
+		RECT draggableArea = { 0, 0, width, WIN_BAR_SIZE }; // You need to define windowWidth
 
 		// Check if the point is within the draggable area
 		if (PtInRect(&draggableArea, pt)) {

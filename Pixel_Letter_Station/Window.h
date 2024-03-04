@@ -19,8 +19,3 @@ private:
 	HINSTANCE m_hinstance;
 	HWND m_hwnd;
 };
-
-#define TitleId (HMENU)0
-#define QuitButtonId (HMENU)1
-#define MinimizeButtonId (HMENU)2
-#define DefaultButtonId (HMENU)3
