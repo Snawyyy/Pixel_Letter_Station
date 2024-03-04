@@ -3,8 +3,8 @@
 bool QuitButton(LPARAM lParam) // Bar Quit Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
-	if (pDIS->CtlID == QUIT_BUTTON_ID) { // Matching the HMENU value you passed when creating the button
-
+	if (pDIS->CtlID == QUIT_BUTTON_ID) // Matching the HMENU value passed when creating the button
+	{
 		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
 
 		// Set the background and text colors
@@ -50,7 +50,8 @@ bool QuitButton(LPARAM lParam) // Bar Quit Button
 bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
-	if (pDIS->CtlID == MINIMIZE_BUTTON_ID) { // Matching the HMENU value you passed when creating the button
+	if (pDIS->CtlID == MINIMIZE_BUTTON_ID) // Matching the HMENU value passed when creating the button
+	{ 
 
 		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
 
@@ -97,7 +98,8 @@ bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId) // GUI Default Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
-	if (pDIS->CtlID == buttonId) { // Matching the HMENU value you passed when creating the button
+	if (pDIS->CtlID == buttonId)// Matching the HMENU value passed when creating the button
+	{
 
 		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
 
@@ -167,7 +169,6 @@ bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in t
 	return 0; // Indicate we handled the message
 }
 
-
 void WindowBar(HDC hdc, HWND hWnd, int width)
 {
 	// Set the color for the rectangle (optional)
@@ -215,3 +216,4 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 	DeleteObject(brushMain);
 	DeleteObject(brushCutout);
 }
+

@@ -12,38 +12,44 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
-	case WM_CREATE: //where you create all the interface
+	case WM_CREATE: // where you create all the interface
 	{
-		//Quit Button
+		// Quit Button
 		button = CreateWindowA("BUTTON",
 			"Quit",
 			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 			(width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
 			hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
-		//Minimize Button
+		// Minimize Button
 		button = CreateWindowA("BUTTON",
 			"-",
 			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 			(width - (BAR_BUTTON_SIZE * 2) - (BAR_MARGIN * 2)), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
 			hWnd, (HMENU)MINIMIZE_BUTTON_ID, NULL, NULL);
-		//Default Button
+		// Send Button
 		button = CreateWindowA("BUTTON",
-			"Default",
+			"Send",
 			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 			width - MARGIN - BUTTON_WIDTH, (height - MARGIN - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
 			hWnd, (HMENU)DEFAULT_BUTTON_ID, NULL, NULL);
-		//Test Button
+		// Test
 		button = CreateWindowA("BUTTON",
-			"Default",
+			"Test",
 			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 			(width - LTEXT_BOX_WIDTH - MARGIN), (height - MARGIN - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
 			hWnd, (HMENU)4, NULL, NULL);
-		//Editable TextBox
+		// Letter Title
 		letter = CreateWindowA("EDIT",
-			"HELLO WORLD",
-			WS_VISIBLE | WS_CHILD | WS_BORDER | ES_MULTILINE,
-			(width - LTEXT_BOX_WIDTH - MARGIN), MARGIN * 3, LTEXT_BOX_WIDTH, LTEXT_BOX_HEIGHT,
+			"Title",
+			WS_VISIBLE | WS_CHILD | ES_CENTER,
+			((width - (LTEXT_BOX_WIDTH / 2) - MARGIN) - (LTEXT_BOX_WIDTH / 2)), MARGIN * 3, LTEXT_BOX_WIDTH, 20,
 			hWnd, NULL, NULL, NULL);
+		// Letter Contents
+		letter = CreateWindowA("EDIT",
+			"Write Here",
+			WS_VISIBLE | WS_CHILD | ES_MULTILINE,
+			(width - LTEXT_BOX_WIDTH - MARGIN), MARGIN * 4, LTEXT_BOX_WIDTH, LTEXT_BOX_HEIGHT,
+			hWnd, (HMENU)5, NULL, NULL);
 
 		break;
 	}
@@ -51,7 +57,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		QuitButton(lParam);
 		MinimizeButton(lParam);
-		DefaultButton(lParam, L"Default", DEFAULT_BUTTON_ID);
+		DefaultButton(lParam, L"Send", DEFAULT_BUTTON_ID);
 		DefaultButton(lParam, L"Button 2", 4);
 		break;
 	}
@@ -78,12 +84,26 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case 2:
 			ShowWindow(hWnd, SW_MINIMIZE);
 			break;
-		case 3: 
+		case 3:
 			MessageBeep(MB_ICONSTOP);
 			break;
 		}
 
+		if (HIWORD(wParam) == EN_CHANGE)
+		{
+			ShowWindow(HWND(lParam), SW_HIDE);
+			ShowWindow(HWND(lParam), SW_SHOW);
+			SetFocus(HWND(lParam));
+		}
 		break;
+	}
+
+	case WM_CTLCOLORBTN:
+	case WM_CTLCOLOREDIT:
+	case WM_CTLCOLORSTATIC:
+	{
+		SetBkMode((HDC)wParam, TRANSPARENT);
+		return (LRESULT)GetStockObject(NULL_BRUSH);
 	}
 	case WM_NCHITTEST: // Window Dragging logic
 	{
@@ -95,10 +115,12 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		RECT draggableArea = { 0, 0, width, WIN_BAR_SIZE }; // You need to define windowWidth
 
 		// Check if the point is within the draggable area
-		if (PtInRect(&draggableArea, pt)) {
+		if (PtInRect(&draggableArea, pt)) 
+		{
 			return HTCAPTION;
 		}
-		else {
+		else 
+		{
 			return DefWindowProc(hWnd, uMsg, wParam, lParam);
 		}
 	}

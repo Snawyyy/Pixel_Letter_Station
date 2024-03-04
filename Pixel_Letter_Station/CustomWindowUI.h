@@ -17,6 +17,7 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
 #define QUIT_BUTTON_ID 1
 #define MINIMIZE_BUTTON_ID 2
 #define DEFAULT_BUTTON_ID 3
+#define INVISBLE_TEXTBOX_SUBCLASS_ID 101
 // learn about enum
 
  //Window Bar Settings
@@ -30,7 +31,7 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
 #define MARGIN  20
 
 #define LTEXT_BOX_WIDTH 700 //Letter writing box
-#define LTEXT_BOX_HEIGHT 500 
+#define LTEXT_BOX_HEIGHT 450 
 
 #define BUTTON_WIDTH 100 //Button
 #define BUTTON_HEIGHT 20
