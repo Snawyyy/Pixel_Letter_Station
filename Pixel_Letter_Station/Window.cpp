@@ -7,82 +7,140 @@ int width = 900;
 int height = 600;
 int centerW = width / 2;
 int centerH = height / 2;
-int margin = 20;
-
+HBITMAP hBitmap;
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
-	case WM_CREATE: //where you create all the interface
-	{
-		//Quit Button
-		button = CreateWindowA("BUTTON",
-			"Quit",
-			WS_VISIBLE | WS_CHILD | WS_BORDER | BS_OWNERDRAW,
-			750, 20, 100, 20,
-			hWnd, QuitButtonId, NULL, NULL);
-		//Editable TextBox
-		letter = CreateWindowA("EDIT",
-			"HELLO WORLD",
-			WS_VISIBLE | WS_CHILD | WS_BORDER | ES_MULTILINE,
-			centerW - 400, 60, 800, 450,
-			hWnd, NULL, NULL, NULL);
-
-		break;
-	}
-	case WM_PAINT: {
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hWnd, &ps);
-		// Custom drawing code goes here
-		HFONT hFont = CreateFont(
-			20,               // Height of the font
-			0,                     // Average character width (0 lets the system choose the best value)
-			0,                     // Angle of escapement
-			0,                     // Base-line orientation angle
-			FW_EXTRABOLD,               // Font weight (FW_BOLD for bold)
-			FALSE,                 // Italic attribute option
-			FALSE,                 // Underline attribute option
-			FALSE,                 // Strikeout attribute option
-			ANSI_CHARSET,          // Character set identifier
-			OUT_DEFAULT_PRECIS,    // Output precision
-			CLIP_DEFAULT_PRECIS,   // Clipping precision
-			DEFAULT_QUALITY,       // Output quality
-			DEFAULT_PITCH | FF_SWISS, // Pitch and family
-			L"Arial");              // Font name
-		HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
-
-		SetTextColor(hdc, RGB(0, 0, 0));// text color
-		SetBkMode(hdc, TRANSPARENT); // To make background transparent
-		TextOut(hdc, centerW - 70, 20, L"Pixel Letter Station", strlen("Pixel Letter Station"));
-		EndPaint(hWnd, &ps);
-		return 0; // Indicate we handled the message
-	}
-	case WM_COMMAND: //Button logic
-	{
-		switch (LOWORD(wParam))
+		case WM_CREATE: // where you create all the interface
 		{
-		case 1: //Knows button number one was pressed
-			PostQuitMessage(0);
+			// Quit Button
+			button = CreateWindowA("BUTTON",
+				"Quit",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				(width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
+				hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
+			// Minimize Button
+			button = CreateWindowA("BUTTON",
+				"-",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				(width - (BAR_BUTTON_SIZE * 2) - (BAR_MARGIN * 2)), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
+				hWnd, (HMENU)MINIMIZE_BUTTON_ID, NULL, NULL);
+			// Send Button
+			button = CreateWindowA("BUTTON",
+				"Send",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+				hWnd, (HMENU)DEFAULT_BUTTON_ID, NULL, NULL);
+			// Test
+			button = CreateWindowA("BUTTON",
+				"Test",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				(width - LTEXT_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+				hWnd, (HMENU)4, NULL, NULL);
+			// Letter Title
+			letter = CreateWindowA("RichEdit20W",
+				"Title",
+				WS_VISIBLE | WS_CHILD | ES_CENTER,
+				((width - (LTEXT_BOX_WIDTH / 2) - MARGIN) - (LTEXT_BOX_WIDTH / 2)), MARGIN * 3, LTEXT_BOX_WIDTH, MARGIN,
+				hWnd, NULL, NULL, NULL);
+			// Letter Contents
+			    letter = CreateWindowA("RichEdit20W",
+				"Write Here",
+				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
+				(width - LTEXT_BOX_WIDTH - MARGIN), MARGIN * 4, LTEXT_BOX_WIDTH, LTEXT_BOX_HEIGHT,
+				hWnd, (HMENU)5, NULL, NULL);
+
+				PARAFORMAT2 pf;
+				memset(&pf, 0, sizeof(PARAFORMAT2));
+				pf.cbSize = sizeof(PARAFORMAT2);
+				pf.dwMask = PFM_LINESPACING;
+				pf.bLineSpacingRule = 5;
+				pf.dyLineSpacing = 30;
+
+				SendMessage(letter, EM_SETPARAFORMAT, 0, (LPARAM)&pf);
+
 			break;
 		}
-		break;
-	}
-	case WM_DRAWITEM:
-	{
-		QuitButton(lParam);
-		break;
-	}
-	case WM_CLOSE:
-	{
-		DestroyWindow(hWnd);
-		break;
-	}
-	case WM_DESTROY:
-			PostQuitMessage(0);
-			return 0;
+		case WM_DRAWITEM:
+		{
+			QuitButton(lParam);
+			MinimizeButton(lParam);
+			DefaultButton(lParam, L"Send", DEFAULT_BUTTON_ID);
+			DefaultButton(lParam, L"Button 2", 4);
+			break;
+		}
+		case WM_PAINT: 
+		{
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(hWnd, &ps); // Start painting
+
+
+			// components
+			WindowFrame(hdc, hWnd, width, height);
+			WindowBar(hdc, hWnd, width);
+			Title(hdc, hWnd, centerW);
+
+			LetterBackground(hdc, hWnd);
+
+			EndPaint(hWnd, &ps); // End painting
+			break;
+		}
+		case WM_COMMAND: //Button logic
+		{
+			switch (LOWORD(wParam))
+			{
+			case 1: //Knows what button number was pressed
+				PostQuitMessage(0);
+				break;
+			case 2:
+				ShowWindow(hWnd, SW_MINIMIZE);
+				break;
+			case 3:
+				MessageBeep(MB_ICONSTOP);
+				break;
+			}
+			if (HIWORD(wParam) == EN_CHANGE)
+			{
+				ShowWindow(HWND(lParam), SW_HIDE);
+				ShowWindow(HWND(lParam), SW_SHOW);
+				SetFocus(HWND(lParam));
+			}
+			break;
+		}
+		case WM_NCHITTEST: // Window Dragging logic
+		{
+			// Convert the mouse position to screen coordinates
+			POINT pt = { LOWORD(lParam), HIWORD(lParam) };
+			ScreenToClient(hWnd, &pt);
+
+			// Define the draggable area, e.g., top 50 pixels of the window
+			RECT draggableArea = { 0, 0, width, WIN_BAR_SIZE }; // You need to define windowWidth
+
+			// Check if the point is within the draggable area
+			if (PtInRect(&draggableArea, pt)) 
+			{
+				return HTCAPTION;
+			}
+			else 
+			{
+				return DefWindowProc(hWnd, uMsg, wParam, lParam);
+			}
+		}
+		case WM_CLOSE:
+		{
+			return DestroyWindow(hWnd);
+			break;
+		}
+		case WM_DESTROY:
+		{
+				PostQuitMessage(0);
+				return 0;
+		}
 
 	}
+
 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
@@ -102,7 +160,7 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 	wndClass.hbrBackground = CreateSolidBrush(RGB(255, 250, 215));
 	RegisterClass(&wndClass);
 
-	DWORD style = WS_BORDER;
+	DWORD style = WS_POPUP;
 
 
 	m_hwnd = CreateWindowEx(
@@ -148,5 +206,4 @@ bool Window::ProcessMessages()
 	}
 	return true;
 }
-
 

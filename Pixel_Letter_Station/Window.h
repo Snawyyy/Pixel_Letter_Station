@@ -1,7 +1,10 @@
 #pragma once
 
 #include <Windows.h>
-#include "VisualComp.h"
+#include "CustomWindowUI.h"
+#include <Richedit.h>
+#pragma comment(lib, "comctl32.lib")
+
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -19,6 +22,3 @@ private:
 	HINSTANCE m_hinstance;
 	HWND m_hwnd;
 };
-
-#define QuitButtonId (HMENU)1
-#define TitleId (HMENU)0

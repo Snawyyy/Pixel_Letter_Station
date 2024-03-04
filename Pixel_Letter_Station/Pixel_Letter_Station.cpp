@@ -6,9 +6,12 @@
 using namespace std;
 
 
-int main()
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+//int main()
 {
     cout << "Creating window\n";
+
+    LoadLibrary(TEXT("Riched20.dll"));
 
     Window* pWindow = new Window();
 
