@@ -29,7 +29,7 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
  //Ui Settings
 #define MARGIN  20
 
-#define LTEXT_BOX_WIDTH 800 //Letter writing box
+#define LTEXT_BOX_WIDTH 700 //Letter writing box
 #define LTEXT_BOX_HEIGHT 500 
 
 #define BUTTON_WIDTH 100 //Button
