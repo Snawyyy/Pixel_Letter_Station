@@ -94,10 +94,10 @@ bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 	}
 }
 
-bool DefaultButton(LPARAM lParam, const wchar_t* Text) // GUI Default Button
+bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId) // GUI Default Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
-	if (pDIS->CtlID == DEFAULT_BUTTON_ID) { // Matching the HMENU value you passed when creating the button
+	if (pDIS->CtlID == buttonId) { // Matching the HMENU value you passed when creating the button
 
 		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
 

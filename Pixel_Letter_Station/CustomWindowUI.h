@@ -7,7 +7,7 @@
 
 bool QuitButton(LPARAM lParam);
 bool MinimizeButton(LPARAM lParam);
-bool DefaultButton(LPARAM lParam, const wchar_t* Text);
+bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId);
 bool Title(HDC hdc, HWND hWnd, int centerW);
 void WindowBar(HDC hdc, HWND hWnd, int width);
 void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
