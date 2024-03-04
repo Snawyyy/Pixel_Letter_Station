@@ -7,133 +7,141 @@ int width = 900;
 int height = 600;
 int centerW = width / 2;
 int centerH = height / 2;
+HBITMAP hBitmap;
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
-	case WM_CREATE: // where you create all the interface
-	{
-		// Quit Button
-		button = CreateWindowA("BUTTON",
-			"Quit",
-			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-			(width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
-			hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
-		// Minimize Button
-		button = CreateWindowA("BUTTON",
-			"-",
-			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-			(width - (BAR_BUTTON_SIZE * 2) - (BAR_MARGIN * 2)), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
-			hWnd, (HMENU)MINIMIZE_BUTTON_ID, NULL, NULL);
-		// Send Button
-		button = CreateWindowA("BUTTON",
-			"Send",
-			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-			width - MARGIN - BUTTON_WIDTH, (height - MARGIN - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
-			hWnd, (HMENU)DEFAULT_BUTTON_ID, NULL, NULL);
-		// Test
-		button = CreateWindowA("BUTTON",
-			"Test",
-			WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-			(width - LTEXT_BOX_WIDTH - MARGIN), (height - MARGIN - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
-			hWnd, (HMENU)4, NULL, NULL);
-		// Letter Title
-		letter = CreateWindowA("EDIT",
-			"Title",
-			WS_VISIBLE | WS_CHILD | ES_CENTER,
-			((width - (LTEXT_BOX_WIDTH / 2) - MARGIN) - (LTEXT_BOX_WIDTH / 2)), MARGIN * 3, LTEXT_BOX_WIDTH, 20,
-			hWnd, NULL, NULL, NULL);
-		// Letter Contents
-		letter = CreateWindowA("EDIT",
-			"Write Here",
-			WS_VISIBLE | WS_CHILD | ES_MULTILINE,
-			(width - LTEXT_BOX_WIDTH - MARGIN), MARGIN * 4, LTEXT_BOX_WIDTH, LTEXT_BOX_HEIGHT,
-			hWnd, (HMENU)5, NULL, NULL);
-
-		break;
-	}
-	case WM_DRAWITEM:
-	{
-		QuitButton(lParam);
-		MinimizeButton(lParam);
-		DefaultButton(lParam, L"Send", DEFAULT_BUTTON_ID);
-		DefaultButton(lParam, L"Button 2", 4);
-		break;
-	}
-	case WM_PAINT: {
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hWnd, &ps); // Start painting
-
-
-		// components
-		WindowFrame(hdc, hWnd, width, height);
-		WindowBar(hdc, hWnd, width);
-		Title(hdc, hWnd, centerW);
-
-
-		EndPaint(hWnd, &ps); // End painting
-	}
-	case WM_COMMAND: //Button logic
-	{
-		switch (LOWORD(wParam))
+		case WM_CREATE: // where you create all the interface
 		{
-		case 1: //Knows what button number was pressed
-			PostQuitMessage(0);
-			break;
-		case 2:
-			ShowWindow(hWnd, SW_MINIMIZE);
-			break;
-		case 3:
-			MessageBeep(MB_ICONSTOP);
+			// Quit Button
+			button = CreateWindowA("BUTTON",
+				"Quit",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				(width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
+				hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
+			// Minimize Button
+			button = CreateWindowA("BUTTON",
+				"-",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				(width - (BAR_BUTTON_SIZE * 2) - (BAR_MARGIN * 2)), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
+				hWnd, (HMENU)MINIMIZE_BUTTON_ID, NULL, NULL);
+			// Send Button
+			button = CreateWindowA("BUTTON",
+				"Send",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+				hWnd, (HMENU)DEFAULT_BUTTON_ID, NULL, NULL);
+			// Test
+			button = CreateWindowA("BUTTON",
+				"Test",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				(width - LTEXT_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+				hWnd, (HMENU)4, NULL, NULL);
+			// Letter Title
+			letter = CreateWindowA("EDIT",
+				"Title",
+				WS_VISIBLE | WS_CHILD | ES_CENTER,
+				((width - (LTEXT_BOX_WIDTH / 2) - MARGIN) - (LTEXT_BOX_WIDTH / 2)), MARGIN * 3, LTEXT_BOX_WIDTH, MARGIN,
+				hWnd, NULL, NULL, NULL);
+			// Letter Contents
+			letter = CreateWindowA("EDIT",
+				"Write Here",
+				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
+				(width - LTEXT_BOX_WIDTH - MARGIN), MARGIN * 4, LTEXT_BOX_WIDTH, LTEXT_BOX_HEIGHT,
+				hWnd, (HMENU)5, NULL, NULL);
+
+
 			break;
 		}
-
-		if (HIWORD(wParam) == EN_CHANGE)
+		case WM_DRAWITEM:
 		{
-			ShowWindow(HWND(lParam), SW_HIDE);
-			ShowWindow(HWND(lParam), SW_SHOW);
-			SetFocus(HWND(lParam));
+			QuitButton(lParam);
+			MinimizeButton(lParam);
+			DefaultButton(lParam, L"Send", DEFAULT_BUTTON_ID);
+			DefaultButton(lParam, L"Button 2", 4);
+			break;
 		}
-		break;
-	}
-
-	case WM_CTLCOLORBTN:
-	case WM_CTLCOLOREDIT:
-	case WM_CTLCOLORSTATIC:
-	{
-		SetBkMode((HDC)wParam, TRANSPARENT);
-		return (LRESULT)GetStockObject(NULL_BRUSH);
-	}
-	case WM_NCHITTEST: // Window Dragging logic
-	{
-		// Convert the mouse position to screen coordinates
-		POINT pt = { LOWORD(lParam), HIWORD(lParam) };
-		ScreenToClient(hWnd, &pt);
-
-		// Define the draggable area, e.g., top 50 pixels of the window
-		RECT draggableArea = { 0, 0, width, WIN_BAR_SIZE }; // You need to define windowWidth
-
-		// Check if the point is within the draggable area
-		if (PtInRect(&draggableArea, pt)) 
+		case WM_PAINT: 
 		{
-			return HTCAPTION;
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(hWnd, &ps); // Start painting
+
+
+			// components
+			WindowFrame(hdc, hWnd, width, height);
+			WindowBar(hdc, hWnd, width);
+			Title(hdc, hWnd, centerW);
+
+			LetterBackground(hdc, hWnd);
+
+			EndPaint(hWnd, &ps); // End painting
+			break;
 		}
-		else 
+		case WM_COMMAND: //Button logic
 		{
-			return DefWindowProc(hWnd, uMsg, wParam, lParam);
+			switch (LOWORD(wParam))
+			{
+			case 1: //Knows what button number was pressed
+				PostQuitMessage(0);
+				break;
+			case 2:
+				ShowWindow(hWnd, SW_MINIMIZE);
+				break;
+			case 3:
+				MessageBeep(MB_ICONSTOP);
+				break;
+			}
+
+			if (HIWORD(wParam) == EN_UPDATE)
+			{
+				ShowWindow(HWND(lParam), SW_HIDE);
+				ShowWindow(HWND(lParam), SW_SHOW);
+				SetFocus(HWND(lParam));
+			}
+			break;
 		}
-	}
-	case WM_CLOSE:
-	{
-		return DestroyWindow(hWnd);
-		break;
-	}
-	case WM_DESTROY:
-			PostQuitMessage(0);
-			return 0;
+
+		case WM_CTLCOLORBTN:
+		case WM_CTLCOLOREDIT:
+		case WM_CTLCOLORSTATIC:
+		{
+			SetBkMode((HDC)wParam, TRANSPARENT);
+			return (LRESULT)GetStockObject(NULL_BRUSH);
+		}
+		case WM_NCHITTEST: // Window Dragging logic
+		{
+			// Convert the mouse position to screen coordinates
+			POINT pt = { LOWORD(lParam), HIWORD(lParam) };
+			ScreenToClient(hWnd, &pt);
+
+			// Define the draggable area, e.g., top 50 pixels of the window
+			RECT draggableArea = { 0, 0, width, WIN_BAR_SIZE }; // You need to define windowWidth
+
+			// Check if the point is within the draggable area
+			if (PtInRect(&draggableArea, pt)) 
+			{
+				return HTCAPTION;
+			}
+			else 
+			{
+				return DefWindowProc(hWnd, uMsg, wParam, lParam);
+			}
+		}
+		case WM_CLOSE:
+		{
+			return DestroyWindow(hWnd);
+			break;
+		}
+		case WM_DESTROY:
+		{
+				PostQuitMessage(0);
+				return 0;
+		}
 
 	}
+
 
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }

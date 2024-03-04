@@ -217,3 +217,21 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 	DeleteObject(brushCutout);
 }
 
+void LetterBackground(HDC hdc, HWND hWnd)
+{
+	HBITMAP hBitmap = (HBITMAP)LoadImage(NULL, L"C:\\Users\\Snawy\\source\\repos\\Snawyyy\\Pixel_Letter_Station\\Images\\Test.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	if (hBitmap == NULL)
+	{
+		MessageBox(NULL, L"Load Failed", L"Fail", MB_OK);
+	}
+	HDC hdcMem = CreateCompatibleDC(hdc);
+	HGDIOBJ oldBitmap = SelectObject(hdcMem, hBitmap);
+
+	BITMAP bitmap;
+	GetObject(hBitmap, sizeof(BITMAP), &bitmap);
+	BitBlt(hdc, (900 - LTEXT_BOX_WIDTH - MARGIN - SMALL_MARGIN), (MARGIN * 2 + SMALL_MARGIN), bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
+
+	SelectObject(hdcMem, oldBitmap);
+	DeleteDC(hdcMem);
+	DeleteObject(hBitmap);
+}

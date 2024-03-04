@@ -12,6 +12,8 @@ bool Title(HDC hdc, HWND hWnd, int centerW);
 void WindowBar(HDC hdc, HWND hWnd, int width);
 void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
 
+void LetterBackground(HDC hdc, HWND hWnd);
+
  // HMENU id
 #define TITLE_ID 0
 #define QUIT_BUTTON_ID 1
@@ -29,6 +31,7 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
 
  //Ui Settings
 #define MARGIN  20
+#define SMALL_MARGIN  7.5
 
 #define LTEXT_BOX_WIDTH 700 //Letter writing box
 #define LTEXT_BOX_HEIGHT 450 
