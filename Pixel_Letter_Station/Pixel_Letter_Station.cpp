@@ -11,6 +11,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
     cout << "Creating window\n";
 
+    LoadLibrary(TEXT("Riched20.dll"));
+
     Window* pWindow = new Window();
 
     bool running = true;

@@ -40,18 +40,26 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				(width - LTEXT_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
 				hWnd, (HMENU)4, NULL, NULL);
 			// Letter Title
-			letter = CreateWindowA("EDIT",
+			letter = CreateWindowA("RichEdit20W",
 				"Title",
 				WS_VISIBLE | WS_CHILD | ES_CENTER,
 				((width - (LTEXT_BOX_WIDTH / 2) - MARGIN) - (LTEXT_BOX_WIDTH / 2)), MARGIN * 3, LTEXT_BOX_WIDTH, MARGIN,
 				hWnd, NULL, NULL, NULL);
 			// Letter Contents
-			letter = CreateWindowA("EDIT",
+			    letter = CreateWindowA("RichEdit20W",
 				"Write Here",
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
 				(width - LTEXT_BOX_WIDTH - MARGIN), MARGIN * 4, LTEXT_BOX_WIDTH, LTEXT_BOX_HEIGHT,
 				hWnd, (HMENU)5, NULL, NULL);
 
+				PARAFORMAT2 pf;
+				memset(&pf, 0, sizeof(PARAFORMAT2));
+				pf.cbSize = sizeof(PARAFORMAT2);
+				pf.dwMask = PFM_LINESPACING;
+				pf.bLineSpacingRule = 5;
+				pf.dyLineSpacing = 30;
+
+				SendMessage(letter, EM_SETPARAFORMAT, 0, (LPARAM)&pf);
 
 			break;
 		}
@@ -93,22 +101,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				MessageBeep(MB_ICONSTOP);
 				break;
 			}
-
-			if (HIWORD(wParam) == EN_UPDATE)
+			if (HIWORD(wParam) == EN_CHANGE)
 			{
 				ShowWindow(HWND(lParam), SW_HIDE);
 				ShowWindow(HWND(lParam), SW_SHOW);
 				SetFocus(HWND(lParam));
 			}
 			break;
-		}
-
-		case WM_CTLCOLORBTN:
-		case WM_CTLCOLOREDIT:
-		case WM_CTLCOLORSTATIC:
-		{
-			SetBkMode((HDC)wParam, TRANSPARENT);
-			return (LRESULT)GetStockObject(NULL_BRUSH);
 		}
 		case WM_NCHITTEST: // Window Dragging logic
 		{
@@ -207,5 +206,4 @@ bool Window::ProcessMessages()
 	}
 	return true;
 }
-
 
