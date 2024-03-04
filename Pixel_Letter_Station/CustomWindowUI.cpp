@@ -145,6 +145,18 @@ bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId) // GUI Defa
 
 bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in the GUI
 {
+	HBITMAP hBitmap = (HBITMAP)LoadImage(NULL, L"C:\\Users\\Snawy\\source\\repos\\Snawyyy\\Pixel_Letter_Station\\Images\\LOGO.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+	if (hBitmap == NULL)
+	{
+		MessageBox(NULL, L"Load Failed", L"Fail", MB_OK);
+	}
+	HDC hdcMem = CreateCompatibleDC(hdc);
+	HGDIOBJ oldBitmap = SelectObject(hdcMem, hBitmap);
+
+	BITMAP bitmap;
+	GetObject(hBitmap, sizeof(BITMAP), &bitmap);
+	StretchBlt(hdc, SMALL_MARGIN + BORDER_EFFECT_SIZE, (WIN_BAR_SIZE / 2) - ((bitmap.bmHeight / 2) / 2), (bitmap.bmWidth / 2), (bitmap.bmHeight / 2), hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
+
 	// Custom drawing code goes here
 	HFONT hFont = CreateFont(
 		TITLE_SIZE,               // Height of the font
@@ -165,8 +177,10 @@ bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in t
 
 	SetTextColor(hdc, RGB(0, 0, 0));// text color
 	SetBkMode(hdc, TRANSPARENT); // To make background transparent
-	TextOut(hdc, BAR_MARGIN, ((WIN_BAR_SIZE / 2) - (TITLE_SIZE / 2)), L"Pixel Letter Station", strlen("Pixel Letter Station"));
+	TextOut(hdc, MARGIN * 2, ((WIN_BAR_SIZE / 2) - (TITLE_SIZE / 2)), L"Pixel Letter Station", strlen("Pixel Letter Station"));
 	return 0; // Indicate we handled the message
+
+
 }
 
 void WindowBar(HDC hdc, HWND hWnd, int width)
@@ -250,6 +264,6 @@ void RichTextBoxPaint(HWND box)
 
 	SendMessage(box, EM_SETBKGNDCOLOR, 0, (LPARAM)RGB(255, 223, 133));
 	SendMessage(box, EM_SETPARAFORMAT, 0, (LPARAM)&pf);
-	SendMessage(box, EM_SETLIMITTEXT, (WPARAM)1000, 0);
+	SendMessage(box, EM_SETLIMITTEXT, (WPARAM)1400, 0);
 
 }
