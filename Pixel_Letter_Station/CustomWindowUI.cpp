@@ -12,6 +12,21 @@ bool QuitButton(LPARAM lParam) // Bar Quit Button
 		SetBkMode(pDIS->hDC, TRANSPARENT);
 		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(255, 0, 0)));
 
+		// Button shading
+		RECT effectRect;
+
+		// Shadow
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BorderEffectSize, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(100, 0, 0)));
+		SetRect(&effectRect, pDIS->rcItem.right - BorderEffectSize, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(100, 0, 0))); 
+
+		// Shine
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BorderEffectSize); 
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 100, 100))); 
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BorderEffectSize, pDIS->rcItem.bottom); 
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 100, 100))); 
+
 		// Prepare the rectangle for the text, adjusting if the button is pressed
 		RECT textRect = pDIS->rcItem;
 		if (isPressed) {
@@ -43,6 +58,21 @@ bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 		SetTextColor(pDIS->hDC, RGB(0, 0, 0));
 		SetBkMode(pDIS->hDC, TRANSPARENT);
 		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(255, 250, 215)));
+
+		// Button shading
+		RECT effectRect;
+
+		// Shadow
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BorderEffectSize, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
+		SetRect(&effectRect, pDIS->rcItem.right - BorderEffectSize, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
+
+		// Shine
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BorderEffectSize);
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 255, 200)));
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BorderEffectSize, pDIS->rcItem.bottom);
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 255, 200)));
 
 		// Prepare the rectangle for the text, adjusting if the button is pressed
 		RECT textRect = pDIS->rcItem;
