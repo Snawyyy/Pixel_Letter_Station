@@ -70,9 +70,9 @@ bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 
 		// Shine
 		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BorderEffectSize);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 255, 200)));
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
 		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BorderEffectSize, pDIS->rcItem.bottom);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 255, 200)));
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
 
 		// Prepare the rectangle for the text, adjusting if the button is pressed
 		RECT textRect = pDIS->rcItem;
@@ -103,8 +103,23 @@ bool DefaultButton(LPARAM lParam, const wchar_t* Text) // GUI Default Button
 
 		// Set the background and text colors
 		SetTextColor(pDIS->hDC, RGB(0, 0, 0));
-		SetBkColor(pDIS->hDC, RGB(255, 255, 255));
+		SetBkMode(pDIS->hDC, TRANSPARENT);
 		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(255, 255, 255)));
+
+		// Button shading
+		RECT effectRect;
+
+		// Shadow
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BorderEffectSize, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
+		SetRect(&effectRect, pDIS->rcItem.right - BorderEffectSize, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
+
+		// Shine
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BorderEffectSize);
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BorderEffectSize, pDIS->rcItem.bottom);
+		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
 
 		// Prepare the rectangle for the text, adjusting if the button is pressed
 		RECT textRect = pDIS->rcItem;
