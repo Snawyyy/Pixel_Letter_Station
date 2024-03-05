@@ -5,6 +5,7 @@
 #include <locale>
 #include <codecvt>
 #include <vector>
+#include <thread>
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 

@@ -144,16 +144,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					break;
 				}
 
-				std::cout << buffer.data() << std::endl; // Output the converted string
 
-				cout << "Sending data to client. Size: " << buffer.size() << " bytes." << endl;
-				int bytesSent = send(serverSock, buffer.data(), buffer.size(), 0);
-				if (bytesSent == SOCKET_ERROR) {
-					cout << "Failed to send data. Error code: " << WSAGetLastError() << endl;
-				}
-				else {
-					cout << "Successfully sent " << bytesSent << " bytes." << endl;
-				}				break;
+
+				break;
 			}
 			case 6:
 			{

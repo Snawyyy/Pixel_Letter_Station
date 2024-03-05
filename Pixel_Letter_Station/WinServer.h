@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Windows.h"
+#include <vector>
 
 
 using namespace std;
@@ -8,6 +9,8 @@ using namespace std;
 SOCKET InitializeServer();
 SOCKET ConnectToServer();
 string RecvData(SOCKET clientSocket);
+void SendData(SOCKET socket, vector<char>& buffer);
+
 
 //Server Settings
 #define ServerIpAddress "127.0.0.1"

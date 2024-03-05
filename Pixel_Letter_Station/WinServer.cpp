@@ -55,31 +55,6 @@ SOCKET InitializeServer()
     }
 }
 
-
-string RecvData(SOCKET clientSocket)
-{
-    constexpr size_t BUFSIZE = 2560;
-    char dataRecv[BUFSIZE] = {};
-
-    int bytesReceived = recv(clientSocket, dataRecv, sizeof(dataRecv), 0); //If recived Anything, then
-    if (bytesReceived > 0)
-    {
-        dataRecv[bytesReceived] = '\0';
-        cout << "The Data:" << dataRecv << '\n';
-        return dataRecv;
-    }
-    else if (bytesReceived == 0)
-    {
-        dataRecv[bytesReceived] = '\0';
-        string receivedData(dataRecv);
-        cout << "Disconnected" << '\n';
-    }
-    else
-    {
-        cout << "Failed" << '\n';
-    }
-
-}
 SOCKET ConnectToServer()
 {
     WSADATA wsaData;
@@ -120,5 +95,44 @@ SOCKET ConnectToServer()
     {
         cout << "Connected" << "\n";
         return clientSocket;
+    }
+}
+
+string RecvData(SOCKET clientSocket)
+{
+    constexpr size_t BUFSIZE = 2560;
+    char dataRecv[BUFSIZE] = {};
+
+    int bytesReceived = recv(clientSocket, dataRecv, sizeof(dataRecv), 0); //If recived Anything, then
+    if (bytesReceived > 0)
+    {
+        dataRecv[bytesReceived] = '\0';
+        cout << "The Data:" << dataRecv << '\n';
+        return dataRecv;
+    }
+    else if (bytesReceived == 0)
+    {
+        dataRecv[bytesReceived] = '\0';
+        string receivedData(dataRecv);
+        cout << "Disconnected" << '\n';
+    }
+    else
+    {
+        cout << "Failed" << '\n';
+    }
+
+}
+
+void SendData(SOCKET socket, vector<char>& buffer)
+{
+    cout << buffer.data() << std::endl; // Output the converted string
+
+    cout << "Sending data to client. Size: " << buffer.size() << " bytes." << endl;
+    int bytesSent = send(socket, buffer.data(), buffer.size(), 0);
+    if (bytesSent == SOCKET_ERROR) {
+        cout << "Failed to send data. Error code: " << WSAGetLastError() << endl;
+    }
+    else {
+        cout << "Successfully sent " << bytesSent << " bytes." << endl;
     }
 }
