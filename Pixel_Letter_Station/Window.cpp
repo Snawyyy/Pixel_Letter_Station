@@ -12,6 +12,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_CREATE: // where you create all the interface
 		{
+
+			// Window Bar Buttons
+			// 
 			// Quit Button
 			HWND quitButton = CreateWindowA("BUTTON",
 				"Quit",
@@ -24,6 +27,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				(width - (BAR_BUTTON_SIZE * 2) - (BAR_MARGIN * 2)), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
 				hWnd, (HMENU)MINIMIZE_BUTTON_ID, NULL, NULL);
+
+			// Window Ui buttons
+			// 
 			// Send Button
 			HWND sendButton = CreateWindowA("BUTTON",
 				"Send",
@@ -46,8 +52,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			HWND connectServerButton = CreateWindowA("BUTTON",
 				"Test",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				MARGIN * 2, MARGIN * 4, BUTTON_WIDTH, BUTTON_HEIGHT,
+				MARGIN * 2, MARGIN * 5, BUTTON_WIDTH, BUTTON_HEIGHT,
 				hWnd, (HMENU)S_CONNECT_BUTTON_ID, NULL, NULL);
+
+			// Letter UI
+			// 
 			// Letter Title
 			HWND letterTitle = CreateWindowA("RichEdit20W",
 				"-Title-",
@@ -60,7 +69,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
 				(width - LETTER_BOX_WIDTH - MARGIN), MARGIN * 6, LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT,
 				hWnd, NULL, NULL, NULL);
-
+			//Custimizable RichText edit box
 			RichTextBoxPaint(letterContents);
 			RichTextBoxPaint(letterTitle);
 
