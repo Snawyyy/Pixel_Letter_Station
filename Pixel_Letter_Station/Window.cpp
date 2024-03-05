@@ -53,13 +53,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			HWND initializeServerButton = CreateWindowA("BUTTON",
 				"Test",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				MARGIN * 2, MARGIN * 3, BUTTON_WIDTH, BUTTON_HEIGHT,
+				MARGIN * 2, MARGIN * 4, BUTTON_WIDTH, BUTTON_HEIGHT,
 				hWnd, (HMENU)S_INITIALIZE_BUTTON_ID, NULL, NULL);
 			// Connect to server
 			HWND connectServerButton = CreateWindowA("BUTTON",
 				"Test",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				MARGIN * 2, MARGIN * 5, BUTTON_WIDTH, BUTTON_HEIGHT,
+				MARGIN * 2, MARGIN * 6, BUTTON_WIDTH, BUTTON_HEIGHT,
 				hWnd, (HMENU)S_CONNECT_BUTTON_ID, NULL, NULL);
 
 			// Letter UI

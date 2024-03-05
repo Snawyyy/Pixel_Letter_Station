@@ -250,7 +250,6 @@ void LetterBackground(HDC hdc, HWND hWnd, int width, int height)
 
 	// Clean up
 	DeleteObject(brushMain);
-	//DeleteObject(brushCutout);
 }
 
 void RichTextBoxPaint(HWND box)
@@ -290,21 +289,21 @@ void ServerStatusBar(HDC hdc, int isConnected)
 
 	SetTextColor(hdc, RGB(0, 0, 0));// text color
 	SetBkMode(hdc, TRANSPARENT); // To make background transparent
-	TextOut(hdc, MARGIN * 2, MARGIN * 2, L"Status:", strlen("Status:"));
+	TextOut(hdc, MARGIN * 2, MARGIN * 3, L"Status:", strlen("Status:"));
 	if (isConnected == 0)
 	{
 		SetTextColor(hdc, RGB(255, 100, 100));// text color
-		TextOut(hdc, MARGIN * 4.5, MARGIN * 2, L"Offline", strlen("Offline"));
+		TextOut(hdc, MARGIN * 4.5, MARGIN * 3, L"Offline", strlen("Offline"));
 	}
 	if (isConnected == 1)
 	{
 		SetTextColor(hdc, RGB(100, 255, 100));// text color
-		TextOut(hdc, MARGIN * 4.5, MARGIN * 2, L"Connected", strlen("Connected"));
+		TextOut(hdc, MARGIN * 4.5, MARGIN * 3, L"Connected", strlen("Connected"));
 	}
 	if (isConnected == 2)
 	{
 		SetTextColor(hdc, RGB(100, 100, 255));// text color
-		TextOut(hdc, MARGIN * 4.5, MARGIN * 2, L"server", strlen("server"));
+		TextOut(hdc, MARGIN * 4.5, MARGIN * 3, L"server", strlen("server"));
 	}
 	return;
 
