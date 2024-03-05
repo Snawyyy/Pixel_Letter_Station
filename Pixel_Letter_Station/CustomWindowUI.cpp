@@ -234,17 +234,17 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 void LetterBackground(HDC hdc, HWND hWnd, int width, int height)
 {
 	// First, draw the larger rectangle with a solid color
-	HBRUSH brushMain = CreateSolidBrush(RGB(50, 0, 0)); // Orangeish color for the main rectangle
+	HBRUSH brushMain = CreateSolidBrush(RGB(50, 0, 0)); // Black color for the Border
 	RECT rectMain = { (width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, MARGIN * 2.5, width - (SMALL_MARGIN * 2), height - (MARGIN * 3)}; // Main rectangle coordinates
 	FillRect(hdc, &rectMain, brushMain);
 
 	//Then, the "Paper" by drawing it with the paper color
-	HBRUSH brushShading = CreateSolidBrush(RGB(200, 160, 50)); // Brush for the cutout, using the window background color
+	HBRUSH brushShading = CreateSolidBrush(RGB(200, 160, 50)); // Brush for the Shadow, using the shadow color
 	RECT rectShading = { (width - (LETTER_BOX_WIDTH / 2) - MARGIN + BORDER_EFFECT_SIZE) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, (MARGIN * 2.5) + BORDER_EFFECT_SIZE, width - (SMALL_MARGIN * 2) - BORDER_EFFECT_SIZE, height - (MARGIN * 3) - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
 	FillRect(hdc, &rectShading, brushShading);
 
 	//Then, the "Paper" by drawing it with the paper color
-	HBRUSH brushPaper = CreateSolidBrush(RGB(255, 223, 133)); // Brush for the cutout, using the window background color
+	HBRUSH brushPaper = CreateSolidBrush(RGB(255, 223, 133)); // Brush for the cutout, using the paper background color
 	RECT rectCutout = { (width - (LETTER_BOX_WIDTH / 2) - MARGIN + (BORDER_EFFECT_SIZE * 2)) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, (MARGIN * 2.5) + (BORDER_EFFECT_SIZE * 2), width - (SMALL_MARGIN * 2) - BORDER_EFFECT_SIZE, height - (MARGIN * 3) - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
 	FillRect(hdc, &rectCutout, brushPaper);
 
@@ -271,13 +271,29 @@ void RichTextBoxPaint(HWND box)
 
 void ServerStatusBar(HDC hdc, int isConnected)
 {
+	// First, draw the larger rectangle with a solid color
+	HBRUSH brushMain = CreateSolidBrush(RGB(50, 0, 0)); // Black color for the Border
+	RECT rectMain = { MARGIN * 1.5, MARGIN * 2.5, MARGIN * 9, (MARGIN * 4) + SMALL_MARGIN }; // Main rectangle coordinates
+	FillRect(hdc, &rectMain, brushMain);
+
+	//Then, the "Shine" by drawing it with the Shine color
+	HBRUSH brushShading = CreateSolidBrush(RGB(150, 100, 70)); // Brush for the cutout, using the Shine color
+	RECT rectShading = { MARGIN * 1.5 + BORDER_EFFECT_SIZE, MARGIN * 2.5 + BORDER_EFFECT_SIZE, MARGIN * 9 - BORDER_EFFECT_SIZE, (MARGIN * 4) + SMALL_MARGIN - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
+	FillRect(hdc, &rectShading, brushShading);
+
+	//Then, the "Paper" by drawing it with the paper color
+	HBRUSH brushPaper = CreateSolidBrush(RGB(100, 50, 50)); // Brush for the cutout, using the window background color
+	RECT rectCutout = { MARGIN * 1.5 + (BORDER_EFFECT_SIZE * 2), MARGIN * 2.5 + (BORDER_EFFECT_SIZE * 2), MARGIN * 9 - BORDER_EFFECT_SIZE, (MARGIN * 4) + SMALL_MARGIN - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
+	FillRect(hdc, &rectCutout, brushPaper);
+
+
 	// Custom drawing code goes here
 	HFONT hFont = CreateFont(
 		TITLE_SIZE,               // Height of the font
 		0,                     // Average character width (0 lets the system choose the best value)
 		0,                     // Angle of escapement
 		0,                     // Base-line orientation angle
-		FW_NORMAL,               // Font weight (FW_BOLD for bold)
+		FW_BOLD,               // Font weight (FW_BOLD for bold)
 		FALSE,                 // Italic attribute option
 		FALSE,                 // Underline attribute option
 		FALSE,                 // Strikeout attribute option
@@ -289,24 +305,30 @@ void ServerStatusBar(HDC hdc, int isConnected)
 		L"Arial");              // Font name
 	HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
 
-	SetTextColor(hdc, RGB(0, 0, 0));// text color
+	SetTextColor(hdc, RGB(255, 255, 255));// text color
 	SetBkMode(hdc, TRANSPARENT); // To make background transparent
 	TextOut(hdc, MARGIN * 2, MARGIN * 3, L"Status:", strlen("Status:"));
 	if (isConnected == 0)
 	{
 		SetTextColor(hdc, RGB(255, 100, 100));// text color
-		TextOut(hdc, MARGIN * 4.5, MARGIN * 3, L"Offline", strlen("Offline"));
+		TextOut(hdc, MARGIN * 5, MARGIN * 3, L"Offline", strlen("Offline"));
 	}
 	if (isConnected == 1)
 	{
 		SetTextColor(hdc, RGB(100, 255, 100));// text color
-		TextOut(hdc, MARGIN * 4.5, MARGIN * 3, L"Connected", strlen("Connected"));
+		TextOut(hdc, MARGIN * 5, MARGIN * 3, L"Connected", strlen("Connected"));
 	}
 	if (isConnected == 2)
 	{
 		SetTextColor(hdc, RGB(100, 100, 255));// text color
-		TextOut(hdc, MARGIN * 4.5, MARGIN * 3, L"server", strlen("server"));
+		TextOut(hdc, MARGIN * 5, MARGIN * 3, L"server", strlen("server"));
 	}
+
+	// Clean up
+	DeleteObject(brushMain);
+	DeleteObject(brushShading);
+	DeleteObject(brushPaper);
+
 	return;
 
 }
