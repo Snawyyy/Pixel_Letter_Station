@@ -144,8 +144,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					break;
 				}
 
-
-
+				thread sendThread(SendData, serverSock, ref(buffer));
+				sendThread.join();
 				break;
 			}
 			case 6:
