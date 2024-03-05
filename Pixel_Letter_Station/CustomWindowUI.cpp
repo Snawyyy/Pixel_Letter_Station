@@ -250,6 +250,8 @@ void LetterBackground(HDC hdc, HWND hWnd, int width, int height)
 
 	// Clean up
 	DeleteObject(brushMain);
+	DeleteObject(brushShading);
+	DeleteObject(brushPaper);
 }
 
 void RichTextBoxPaint(HWND box)
