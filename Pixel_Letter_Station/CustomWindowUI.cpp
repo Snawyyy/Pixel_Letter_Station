@@ -273,17 +273,17 @@ void ServerStatusBar(HDC hdc, int isConnected)
 {
 	// First, draw the larger rectangle with a solid color
 	HBRUSH brushMain = CreateSolidBrush(RGB(50, 0, 0)); // Black color for the Border
-	RECT rectMain = { MARGIN * 1.5, MARGIN * 2.5, MARGIN * 9, (MARGIN * 4) + SMALL_MARGIN }; // Main rectangle coordinates
+	RECT rectMain = { MARGIN * 1.5, MARGIN * 2.5, MARGIN * 10, (MARGIN * 4) + SMALL_MARGIN }; // Main rectangle coordinates
 	FillRect(hdc, &rectMain, brushMain);
 
 	//Then, the "Shine" by drawing it with the Shine color
 	HBRUSH brushShading = CreateSolidBrush(RGB(150, 100, 70)); // Brush for the cutout, using the Shine color
-	RECT rectShading = { MARGIN * 1.5 + BORDER_EFFECT_SIZE, MARGIN * 2.5 + BORDER_EFFECT_SIZE, MARGIN * 9 - BORDER_EFFECT_SIZE, (MARGIN * 4) + SMALL_MARGIN - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
+	RECT rectShading = { MARGIN * 1.5 + BORDER_EFFECT_SIZE, MARGIN * 2.5 + BORDER_EFFECT_SIZE, MARGIN * 10 - BORDER_EFFECT_SIZE, (MARGIN * 4) + SMALL_MARGIN - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
 	FillRect(hdc, &rectShading, brushShading);
 
 	//Then, the "Paper" by drawing it with the paper color
 	HBRUSH brushPaper = CreateSolidBrush(RGB(100, 50, 50)); // Brush for the cutout, using the window background color
-	RECT rectCutout = { MARGIN * 1.5 + (BORDER_EFFECT_SIZE * 2), MARGIN * 2.5 + (BORDER_EFFECT_SIZE * 2), MARGIN * 9 - BORDER_EFFECT_SIZE, (MARGIN * 4) + SMALL_MARGIN - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
+	RECT rectCutout = { MARGIN * 1.5 + (BORDER_EFFECT_SIZE * 2), MARGIN * 2.5 + (BORDER_EFFECT_SIZE * 2), MARGIN * 10 - BORDER_EFFECT_SIZE, (MARGIN * 4) + SMALL_MARGIN - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
 	FillRect(hdc, &rectCutout, brushPaper);
 
 
