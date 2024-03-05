@@ -9,6 +9,7 @@ HBITMAP hBitmap;
 
 SOCKET serverSock;
 SOCKET clientSock;
+bool isConnected = false;
 
 HWND letterContents;
 
@@ -126,6 +127,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case S_CONNECT_BUTTON_ID:
 			{
 				clientSock = ConnectToServer();
+				isConnected = true;
 				break;
 			}
 			case SEND_BUTTON_ID:
@@ -150,23 +152,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case 6:
 			{
-				string data = RecvData(clientSock);
-
-				size_t size = data.size() + 1; // Size for wide char array
-
-				std::vector<wchar_t> wbuffer(size);
-				size_t convertedChars = 0;
-
-				// Convert char to wchar_t safely
-				errno_t err = mbstowcs_s(&convertedChars, wbuffer.data(), size, data.c_str(), _TRUNCATE);
-
-				if (err != 0) {
-					std::cerr << "Error converting string." << std::endl;
-					return 1;
-				}
-
-				std::wcout << wbuffer.data() << std::endl; // Output the converted string
-				MessageBoxW(NULL, wbuffer.data(), L"OK", MB_OK);
+				thread recMessage(AsyncRecvData, clientSock);
+				recMessage.detach();
 				break;
 			}
 			}

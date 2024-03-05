@@ -136,3 +136,24 @@ void SendData(SOCKET socket, vector<char>& buffer)
         cout << "Successfully sent " << bytesSent << " bytes." << endl;
     }
 }
+
+void AsyncRecvData(SOCKET socket)
+{
+    string data = RecvData(socket);
+
+    size_t size = data.size() + 1; // Size for wide char array
+
+    std::vector<wchar_t> wbuffer(size);
+    size_t convertedChars = 0;
+
+    // Convert char to wchar_t safely
+    errno_t err = mbstowcs_s(&convertedChars, wbuffer.data(), size, data.c_str(), _TRUNCATE);
+
+    if (err != 0) {
+        std::cerr << "Error converting string." << std::endl;
+        return;
+    }
+
+    std::wcout << wbuffer.data() << std::endl; // Output the converted string
+    MessageBoxW(NULL, wbuffer.data(), L"OK", MB_OK);
+}

@@ -11,6 +11,8 @@ SOCKET ConnectToServer();
 string RecvData(SOCKET clientSocket);
 void SendData(SOCKET socket, vector<char>& buffer);
 
+void AsyncRecvData(SOCKET socket);
+
 
 //Server Settings
 #define ServerIpAddress "127.0.0.1"
