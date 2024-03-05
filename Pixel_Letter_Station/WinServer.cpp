@@ -90,7 +90,7 @@ SOCKET ConnectToServer()
 
     if (result != 0) //Checks if Initializing succeeded
     {
-        cout << "WSAStartup failed\n";
+        MessageBox(NULL, L"WSAStartup failed\n", L"Fail", MB_OK);
     }
     else
     {
