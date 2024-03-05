@@ -81,8 +81,8 @@ bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
 			// Offset the textRect and change color to simulate the text moving when pressed
 			OffsetRect(&textRect, 1, 1);
 			SetTextColor(pDIS->hDC, RGB(255, 255, 255));
-			SetBkColor(pDIS->hDC, RGB(100, 0, 0));
-			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(100, 0, 0)));
+			SetBkColor(pDIS->hDC, RGB(200, 200, 255));
+			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(200, 200, 255)));
 		}
 
 		// Draw the button text using the adjusted rectangle
