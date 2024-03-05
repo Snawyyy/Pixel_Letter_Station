@@ -320,7 +320,7 @@ void ServerStatusBar(HDC hdc, int isConnected)
 	}
 	if (isConnected == 2)
 	{
-		SetTextColor(hdc, RGB(100, 100, 255));// text color
+		SetTextColor(hdc, RGB(150, 150, 255));// text color
 		TextOut(hdc, MARGIN * 5, MARGIN * 3, L"server", strlen("server"));
 	}
 
