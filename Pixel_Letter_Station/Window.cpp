@@ -152,8 +152,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case 6:
 			{
-				thread recMessage(AsyncRecvData, clientSock);
-				recMessage.detach();
+				if (isConnected)
+				{
+					thread recMessage(AsyncRecvData, clientSock);
+					recMessage.detach();
+				}
 				break;
 			}
 			}
