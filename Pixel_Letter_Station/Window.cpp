@@ -36,6 +36,18 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				(width - LETTER_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH * 2, BUTTON_HEIGHT,
 				hWnd, (HMENU)4, NULL, NULL);
+			// Initialize server
+			HWND button = CreateWindowA("BUTTON",
+				"Test",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				(width - LETTER_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH * 2, BUTTON_HEIGHT,
+				hWnd, (HMENU)4, NULL, NULL);
+			// Connect to server
+			HWND button = CreateWindowA("BUTTON",
+				"Test",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				(width - LETTER_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH * 2, BUTTON_HEIGHT,
+				hWnd, (HMENU)4, NULL, NULL);
 			// Letter Title
 			HWND letterTitle = CreateWindowA("RichEdit20W",
 				"-Title-",
@@ -60,6 +72,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			MinimizeButton(lParam);
 			DefaultButton(lParam, L"Send", DEFAULT_BUTTON_ID);
 			DefaultButton(lParam, L"Button 2", 4);
+			DefaultButton(lParam, L"Connect to server", 5);
+			DefaultButton(lParam, L"Connect to server", 6);
+
 			break;
 		}
 		case WM_PAINT: 
