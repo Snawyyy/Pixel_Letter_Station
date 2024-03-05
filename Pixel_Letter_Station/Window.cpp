@@ -128,7 +128,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case S_CONNECT_BUTTON_ID:
 			{
-				clientSock = ConnectToServer();
+				if (clientSock == NULL)
+				{
+					clientSock = ConnectToServer();
+				}
 				if (clientSock != NULL)
 				{
 					isConnected = true;
