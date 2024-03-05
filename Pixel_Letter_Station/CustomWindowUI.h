@@ -24,6 +24,8 @@ void RichTextBoxPaint(HWND Box);
 #define QUIT_BUTTON_ID 1
 #define MINIMIZE_BUTTON_ID 2
 #define DEFAULT_BUTTON_ID 3
+#define S_INITIALIZE_BUTTON_ID 4
+#define S_CONNECT_BUTTON_ID 5
 #define INVISBLE_TEXTBOX_SUBCLASS_ID 101
 // learn about enum
 

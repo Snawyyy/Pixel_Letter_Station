@@ -15,8 +15,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     Window* pWindow = new Window();
 
-
-
     bool running = true;
     while (running)
     {
