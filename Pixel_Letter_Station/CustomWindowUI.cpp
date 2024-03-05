@@ -256,14 +256,14 @@ void LetterBackground(HDC hdc, HWND hWnd, int width, int height)
 void RichTextBoxPaint(HWND box)
 {
 	PARAFORMAT2 pf;
-	memset(&pf, 0, sizeof(PARAFORMAT2));
+	memset(&pf, 0, sizeof(PARAFORMAT2)); // formatting the richbox text
 	pf.cbSize = sizeof(PARAFORMAT2);
 	pf.dwMask = PFM_LINESPACING;
 	pf.bLineSpacingRule = 5;
 	pf.dyLineSpacing = 30;
 
-	SendMessage(box, EM_SETBKGNDCOLOR, 0, (LPARAM)RGB(255, 223, 133));
-	SendMessage(box, EM_SETPARAFORMAT, 0, (LPARAM)&pf);
-	SendMessage(box, EM_SETLIMITTEXT, (WPARAM)1400, 0);
+	SendMessage(box, EM_SETBKGNDCOLOR, 0, (LPARAM)RGB(255, 223, 133)); // BKG color
+	SendMessage(box, EM_SETPARAFORMAT, 0, (LPARAM)&pf); // Sends format
+	SendMessage(box, EM_SETLIMITTEXT, (WPARAM)1400, 0); // Sends Text char limit
 
 }
