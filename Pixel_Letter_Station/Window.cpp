@@ -9,7 +9,7 @@ HBITMAP hBitmap;
 
 SOCKET serverSock;
 SOCKET clientSock;
-bool isConnected = false;
+int isConnected = 0;
 
 HWND letterContents;
 
@@ -123,18 +123,33 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			case S_INITIALIZE_BUTTON_ID:
 			{
-				serverSock = InitializeServer();
+				if (serverSock == NULL)
+				{
+					serverSock = InitializeServer();
+				}
+				if (serverSock != NULL && isConnected != 1) // Checks if is running the server or connected to it.
+				{
+					isConnected = 2;
+				}
+				// Invalidate the status bar area
+				RECT rect;
+				GetClientRect(hWnd, &rect); // Assuming status bar is at the top of the window
+				rect.bottom = rect.top + (MARGIN * 4); // Adjust height as needed
+				InvalidateRect(hWnd, &rect, TRUE);
+
+				// Redraw immediately
+				UpdateWindow(hWnd);
 				break;
 			}
 			case S_CONNECT_BUTTON_ID:
 			{
-				if (clientSock == NULL)
+				if (clientSock == NULL) 
 				{
 					clientSock = ConnectToServer();
 				}
-				if (clientSock != NULL)
+				if (clientSock != NULL && isConnected != 2) // Checks if is running the server or connected to it.
 				{
-					isConnected = true;
+					isConnected = 1;
 				}
 				// Invalidate the status bar area
 				RECT rect;

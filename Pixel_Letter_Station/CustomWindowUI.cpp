@@ -268,7 +268,7 @@ void RichTextBoxPaint(HWND box)
 
 }
 
-void ServerStatusBar(HDC hdc, bool isConnected)
+void ServerStatusBar(HDC hdc, int isConnected)
 {
 	// Custom drawing code goes here
 	HFONT hFont = CreateFont(
@@ -276,7 +276,7 @@ void ServerStatusBar(HDC hdc, bool isConnected)
 		0,                     // Average character width (0 lets the system choose the best value)
 		0,                     // Angle of escapement
 		0,                     // Base-line orientation angle
-		FW_BOLD,               // Font weight (FW_BOLD for bold)
+		FW_NORMAL,               // Font weight (FW_BOLD for bold)
 		FALSE,                 // Italic attribute option
 		FALSE,                 // Underline attribute option
 		FALSE,                 // Strikeout attribute option
@@ -291,15 +291,20 @@ void ServerStatusBar(HDC hdc, bool isConnected)
 	SetTextColor(hdc, RGB(0, 0, 0));// text color
 	SetBkMode(hdc, TRANSPARENT); // To make background transparent
 	TextOut(hdc, MARGIN * 2, MARGIN * 2, L"Status:", strlen("Status:"));
-	if (isConnected)
-	{
-		SetTextColor(hdc, RGB(100, 255, 100));// text color
-		TextOut(hdc, MARGIN * 5, MARGIN * 2, L"Connected", strlen("Connected"));
-	}
-	else
+	if (isConnected == 0)
 	{
 		SetTextColor(hdc, RGB(255, 100, 100));// text color
-		TextOut(hdc, MARGIN * 5, MARGIN * 2, L"Offline", strlen("Offline"));
+		TextOut(hdc, MARGIN * 4.5, MARGIN * 2, L"Offline", strlen("Offline"));
+	}
+	if (isConnected == 1)
+	{
+		SetTextColor(hdc, RGB(100, 255, 100));// text color
+		TextOut(hdc, MARGIN * 4.5, MARGIN * 2, L"Connected", strlen("Connected"));
+	}
+	if (isConnected == 2)
+	{
+		SetTextColor(hdc, RGB(100, 100, 255));// text color
+		TextOut(hdc, MARGIN * 4.5, MARGIN * 2, L"server", strlen("server"));
 	}
 	return;
 
