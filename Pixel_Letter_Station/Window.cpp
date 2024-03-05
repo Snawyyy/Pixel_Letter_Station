@@ -4,7 +4,13 @@ int width = 900;
 int height = 600;
 int centerW = width / 2;
 int centerH = height / 2;
+wchar_t wLetterText[LETTER_BOX_CAP] = {};
 HBITMAP hBitmap;
+
+SOCKET serverSock;
+SOCKET clientSock;
+
+HWND letterContents;
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -35,7 +41,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				"Send",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
-				hWnd, (HMENU)DEFAULT_BUTTON_ID, NULL, NULL);
+				hWnd, (HMENU)SEND_BUTTON_ID, NULL, NULL);
 			// Test
 			HWND button = CreateWindowA("BUTTON",
 				"Test",
@@ -64,7 +70,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				((width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2)), MARGIN * 4, LETTER_BOX_WIDTH, MARGIN,
 				hWnd, NULL, NULL, NULL);
 			// Letter Contents
-			HWND letterContents = CreateWindowA("RichEdit20W",
+			letterContents = CreateWindowA("RichEdit20W",
 				"Write Here...",
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
 				(width - LETTER_BOX_WIDTH - MARGIN), MARGIN * 6, LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT,
@@ -79,7 +85,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			QuitButton(lParam);
 			MinimizeButton(lParam);
-			DefaultButton(lParam, L"Send", DEFAULT_BUTTON_ID);
+			DefaultButton(lParam, L"Send", SEND_BUTTON_ID);
 			DefaultButton(lParam, L"Button 2", 6);
 			DefaultButton(lParam, L"Initialize server", S_INITIALIZE_BUTTON_ID);
 			DefaultButton(lParam, L"Connect to server", S_CONNECT_BUTTON_ID);
@@ -112,27 +118,65 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 2:
 				ShowWindow(hWnd, SW_MINIMIZE);
 				break;
-			case 3:
-				MessageBeep(MB_ICONSTOP);
-				break;
 			case S_INITIALIZE_BUTTON_ID:
 			{
-				SOCKET serverSock = InitializeServer();
+				serverSock = InitializeServer();
 				break;
 			}
 			case S_CONNECT_BUTTON_ID:
 			{
-				SOCKET clientSock = ConnectToServer();
+				clientSock = ConnectToServer();
+				break;
+			}
+			case SEND_BUTTON_ID:
+			{
+				GetWindowText(letterContents, &wLetterText[0], LETTER_BOX_CAP);
+
+				// Convert wchar_t* string to char* string
+				size_t size = wcslen(wLetterText) * MB_CUR_MAX + 1; // Determine buffer size
+				size_t convertedChars = 0;
+
+				vector<char> buffer(size);
+				errno_t err = wcstombs_s(&convertedChars, buffer.data(), size, wLetterText, _TRUNCATE);
+
+				if (err != 0) {
+					std::cerr << "Error converting string." << std::endl;
+					break;
+				}
+
+				std::cout << buffer.data() << std::endl; // Output the converted string
+
+				cout << "Sending data to client. Size: " << buffer.size() << " bytes." << endl;
+				int bytesSent = send(serverSock, buffer.data(), buffer.size(), 0);
+				if (bytesSent == SOCKET_ERROR) {
+					cout << "Failed to send data. Error code: " << WSAGetLastError() << endl;
+				}
+				else {
+					cout << "Successfully sent " << bytesSent << " bytes." << endl;
+				}				break;
+			}
+			case 6:
+			{
+				string data = RecvData(clientSock);
+
+				size_t size = data.size() + 1; // Size for wide char array
+
+				std::vector<wchar_t> wbuffer(size);
+				size_t convertedChars = 0;
+
+				// Convert char to wchar_t safely
+				errno_t err = mbstowcs_s(&convertedChars, wbuffer.data(), size, data.c_str(), _TRUNCATE);
+
+				if (err != 0) {
+					std::cerr << "Error converting string." << std::endl;
+					return 1;
+				}
+
+				std::wcout << wbuffer.data() << std::endl; // Output the converted string
+				MessageBoxW(NULL, wbuffer.data(), L"OK", MB_OK);
 				break;
 			}
 			}
-			if (HIWORD(wParam) == EN_CHANGE)
-			{
-				ShowWindow(HWND(lParam), SW_HIDE);
-				ShowWindow(HWND(lParam), SW_SHOW);
-				SetFocus(HWND(lParam));
-			}
-			break;
 		}
 		case WM_NCHITTEST: // Window Dragging logic
 		{

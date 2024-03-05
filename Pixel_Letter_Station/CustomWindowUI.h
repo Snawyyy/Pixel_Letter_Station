@@ -23,7 +23,7 @@ void RichTextBoxPaint(HWND Box);
 #define TITLE_ID 0
 #define QUIT_BUTTON_ID 1
 #define MINIMIZE_BUTTON_ID 2
-#define DEFAULT_BUTTON_ID 3
+#define SEND_BUTTON_ID 3
 #define S_INITIALIZE_BUTTON_ID 4
 #define S_CONNECT_BUTTON_ID 5
 #define INVISBLE_TEXTBOX_SUBCLASS_ID 101
@@ -42,6 +42,7 @@ void RichTextBoxPaint(HWND Box);
 
 #define LETTER_BOX_WIDTH 650 //Letter writing box
 #define LETTER_BOX_HEIGHT 400 
+#define LETTER_BOX_CAP 1400 // Max letters in the letter box
 
 #define BUTTON_WIDTH 100 //Button
 #define BUTTON_HEIGHT 30
