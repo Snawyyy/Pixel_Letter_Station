@@ -267,3 +267,40 @@ void RichTextBoxPaint(HWND box)
 	SendMessage(box, EM_SETLIMITTEXT, (WPARAM)1400, 0); // Sends Text char limit
 
 }
+
+void ServerStatusBar(HDC hdc, bool isConnected)
+{
+	// Custom drawing code goes here
+	HFONT hFont = CreateFont(
+		TITLE_SIZE,               // Height of the font
+		0,                     // Average character width (0 lets the system choose the best value)
+		0,                     // Angle of escapement
+		0,                     // Base-line orientation angle
+		FW_BOLD,               // Font weight (FW_BOLD for bold)
+		FALSE,                 // Italic attribute option
+		FALSE,                 // Underline attribute option
+		FALSE,                 // Strikeout attribute option
+		ANSI_CHARSET,          // Character set identifier
+		OUT_DEFAULT_PRECIS,    // Output precision
+		CLIP_DEFAULT_PRECIS,   // Clipping precision
+		DEFAULT_QUALITY,       // Output quality
+		DEFAULT_PITCH | FF_SWISS, // Pitch and family
+		L"Arial");              // Font name
+	HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
+
+	SetTextColor(hdc, RGB(0, 0, 0));// text color
+	SetBkMode(hdc, TRANSPARENT); // To make background transparent
+	TextOut(hdc, MARGIN * 2, MARGIN * 2, L"Status:", strlen("Status:"));
+	if (isConnected)
+	{
+		SetTextColor(hdc, RGB(100, 255, 100));// text color
+		TextOut(hdc, MARGIN * 5, MARGIN * 2, L"Connected", strlen("Connected"));
+	}
+	else
+	{
+		SetTextColor(hdc, RGB(255, 100, 100));// text color
+		TextOut(hdc, MARGIN * 5, MARGIN * 2, L"Offline", strlen("Offline"));
+	}
+	return;
+
+}

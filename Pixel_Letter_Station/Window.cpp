@@ -106,6 +106,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			LetterBackground(hdc, hWnd,  width,  height);
 
+			ServerStatusBar(hdc, isConnected);
+
 			EndPaint(hWnd, &ps); // End painting
 			break;
 		}
@@ -127,7 +129,18 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case S_CONNECT_BUTTON_ID:
 			{
 				clientSock = ConnectToServer();
-				isConnected = true;
+				if (clientSock != NULL)
+				{
+					isConnected = true;
+				}
+				// Invalidate the status bar area
+				RECT rect;
+				GetClientRect(hWnd, &rect); // Assuming status bar is at the top of the window
+				rect.bottom = rect.top + (MARGIN * 4); // Adjust height as needed
+				InvalidateRect(hWnd, &rect, TRUE);
+
+				// Redraw immediately
+				UpdateWindow(hWnd);
 				break;
 			}
 			case SEND_BUTTON_ID:
@@ -152,7 +165,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case 6:
 			{
-				if (isConnected)
+				if (isConnected) // only if connected try and recive data to not crash
 				{
 					thread recMessage(AsyncRecvData, clientSock);
 					recMessage.detach();

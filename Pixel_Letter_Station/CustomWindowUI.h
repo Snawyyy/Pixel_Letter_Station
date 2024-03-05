@@ -19,6 +19,8 @@ void LetterBackground(HDC hdc, HWND hWnd, int width, int height);
 
 void RichTextBoxPaint(HWND Box);
 
+void ServerStatusBar(HDC hdc, bool isConnected);
+
  // HMENU id
 #define TITLE_ID 0
 #define QUIT_BUTTON_ID 1
