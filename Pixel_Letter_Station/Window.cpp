@@ -47,7 +47,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				"Write Here...",
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
 				(width - LETTER_BOX_WIDTH - MARGIN), MARGIN * 6, LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT,
-				hWnd, (HMENU)5, NULL, NULL);
+				hWnd, NULL, NULL, NULL);
 
 			RichTextBoxPaint(letterContents);
 			RichTextBoxPaint(letterTitle);

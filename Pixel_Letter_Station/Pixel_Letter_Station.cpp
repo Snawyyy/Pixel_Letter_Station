@@ -15,7 +15,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     Window* pWindow = new Window();
 
-    SOCKET serverSocket = InitializeServer();
+
 
     bool running = true;
     while (running)

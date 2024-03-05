@@ -6,6 +6,7 @@
 #include <objbase.h>
 #include <Richedit.h>
 #pragma comment(lib, "comctl32.lib")
+#include "WinServer.h"
 
 bool QuitButton(LPARAM lParam);
 bool MinimizeButton(LPARAM lParam);

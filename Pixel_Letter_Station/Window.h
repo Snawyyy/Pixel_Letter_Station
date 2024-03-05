@@ -2,7 +2,6 @@
 
 #include <Windows.h>
 #include "CustomWindowUI.h"
-#include "WinServer.h"
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
