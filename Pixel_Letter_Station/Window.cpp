@@ -170,7 +170,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				if (isConnected) // only if connected try and recive data to not crash
 				{
-					thread recMessage(AsyncRecvData, clientSock);
+					thread recMessage(AsyncRecvData, clientSock , letterContents);
 					recMessage.detach();
 				}
 				break;

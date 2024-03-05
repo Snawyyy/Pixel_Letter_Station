@@ -137,7 +137,7 @@ void SendData(SOCKET socket, vector<char>& buffer)
     }
 }
 
-void AsyncRecvData(SOCKET socket)
+void AsyncRecvData(SOCKET socket, HWND letterContents)
 {
     string data = RecvData(socket);
 
@@ -155,5 +155,6 @@ void AsyncRecvData(SOCKET socket)
     }
 
     std::wcout << wbuffer.data() << std::endl; // Output the converted string
-    MessageBoxW(NULL, wbuffer.data(), L"OK", MB_OK);
+    SetWindowText(letterContents, wbuffer.data());
+
 }

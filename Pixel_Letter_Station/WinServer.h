@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Windows.h"
+#include "CustomWindowUI.h"
 #include <vector>
 
 
@@ -11,7 +12,7 @@ SOCKET ConnectToServer();
 string RecvData(SOCKET clientSocket);
 void SendData(SOCKET socket, vector<char>& buffer);
 
-void AsyncRecvData(SOCKET socket);
+void AsyncRecvData(SOCKET socket, HWND letterContents);
 
 
 //Server Settings
