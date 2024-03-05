@@ -24,12 +24,18 @@
     <ClCompile Include="CustomWindowUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WinServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CustomWindowUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WinServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
