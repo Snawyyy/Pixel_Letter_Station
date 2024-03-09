@@ -1,4 +1,5 @@
 #include "Letter.h"
+#include "CustomWindowUI.h"
 
 HBITMAP GetLetter(HWND hWnd)
 {
@@ -47,6 +48,11 @@ HWND CreateChildWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int widt
 
 LRESULT CALLBACK ChildWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+    RECT rcClient;
+    GetClientRect(hWnd, &rcClient);
+    int width = rcClient.right - rcClient.left;
+    int height = rcClient.bottom - rcClient.top;
+
     switch (uMsg)
     {
     case WM_PAINT:
@@ -70,6 +76,25 @@ LRESULT CALLBACK ChildWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         DeleteDC(hdcMem);
         EndPaint(hWnd, &ps);
         break;
+    }
+    case WM_NCHITTEST: // Window Dragging logic
+    {
+        // Convert the mouse position to screen coordinates
+        POINT pt = { LOWORD(lParam), HIWORD(lParam) };
+        ScreenToClient(hWnd, &pt);
+
+        // Define the draggable area, e.g., top 50 pixels of the window
+        RECT draggableArea = { 0, 0, width, WIN_BAR_SIZE }; // You need to define windowWidth
+
+        // Check if the point is within the draggable area
+        if (PtInRect(&draggableArea, pt))
+        {
+            return HTCAPTION;
+        }
+        else
+        {
+            return DefWindowProc(hWnd, uMsg, wParam, lParam);
+        }
     }
     }
     return DefWindowProc(hWnd, uMsg, wParam, lParam);

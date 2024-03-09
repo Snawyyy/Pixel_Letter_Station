@@ -197,11 +197,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case 6:
 			{
-				if (isConnected) // only if connected try and receive data to not crash
-				{
-					thread recMessage(AsyncRecvData, clientSock , letterContents);
-					recMessage.detach();
-				}
+				HINSTANCE hInstance = GetModuleHandle(NULL);
+				CreateChildWindow(hWnd, hInstance, 100, 100, 100, 100);
 				break;
 			}
 			}
