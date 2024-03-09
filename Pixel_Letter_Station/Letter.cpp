@@ -1,5 +1,5 @@
 #include "Letter.h"
-#include "CustomWindowUI.h"
+
 
 HBITMAP GetLetter(HWND hWnd)
 {
@@ -66,6 +66,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
             hWnd, (HMENU)SEND_BUTTON_ID, NULL, NULL);
+
         // Window Bar Buttons
         // 
         // Quit Button
@@ -73,14 +74,20 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             "Quit",
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             (width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
-            hWnd, (HMENU)8, NULL, NULL);
+            hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
 
     }
     case WM_COMMAND: // Button logic
     {
+
         switch (LOWORD(wParam))
         {
-        case 8: // Knows what button number was pressed
+        case SEND_BUTTON_ID:
+        {
+
+            break;
+        }
+        case QUIT_BUTTON_ID: // Knows what button number was pressed
         {
             DestroyWindow(hWnd);
             break;
@@ -116,7 +123,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     }
     case WM_DRAWITEM:
     { 
-        QuitButton(lParam, 8);
+        QuitButton(lParam, QUIT_BUTTON_ID);
         DefaultButton(lParam, L"Send", SEND_BUTTON_ID);
         break;
     }

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Windows.h>
+#include "CustomWindowUI.h"
+#include <thread>
 
 using namespace std;
 
