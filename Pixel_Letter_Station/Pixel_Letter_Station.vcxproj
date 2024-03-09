@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Letter.cpp" />
     <ClCompile Include="Pixel_Letter_Station.cpp" />
     <ClCompile Include="CustomWindowUI.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -148,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomWindowUI.h" />
+    <ClInclude Include="Letter.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WinServer.h" />
   </ItemGroup>

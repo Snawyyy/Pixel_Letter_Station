@@ -260,6 +260,13 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 
 	DWORD style = WS_POPUP;
 
+	WNDCLASS wc = {};
+	wc.lpfnWndProc = ChildWindowProc;
+	wc.hInstance = m_hinstance;
+	wc.lpszClassName = L"ChildWindowClass";
+
+	RegisterClass(&wc);
+
 
 	m_hwnd = CreateWindowEx(
 		0,
