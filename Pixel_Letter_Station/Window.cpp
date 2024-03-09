@@ -129,10 +129,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			switch (LOWORD(wParam))
 			{
-			case 1: // Knows what button number was pressed
+			case QUIT_BUTTON_ID: // Knows what button number was pressed
 				PostQuitMessage(0);
 				break;
-			case 2:
+			case MINIMIZE_BUTTON_ID:
 				ShowWindow(hWnd, SW_MINIMIZE);
 				break;
 			case S_INITIALIZE_BUTTON_ID:
