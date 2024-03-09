@@ -243,7 +243,7 @@ void LetterBackground(HDC hdc, HWND hWnd, int width, int height)
 {
 	// First, draw the larger rectangle with a solid color
 	HBRUSH brushMain = CreateSolidBrush(RGB(50, 0, 0)); // Black color for the Border
-	RECT rectMain = { (width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, MARGIN * 2.5, width - (SMALL_MARGIN * 2), height - (MARGIN * 3)}; // Main rectangle coordinates
+	RECT rectMain = { width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN, MARGIN * 2.5, width - (SMALL_MARGIN * 2), height - (MARGIN * 3)}; // Main rectangle coordinates
 	FillRect(hdc, &rectMain, brushMain);
 
 	//Then, the "Paper" by drawing it with the paper color

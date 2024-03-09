@@ -14,7 +14,7 @@ HBITMAP GetLetter(HWND hWnd)
     HBITMAP hbmScreen = CreateCompatibleBitmap(hdcWindow, width, height);
     HGDIOBJ oldBitmap = SelectObject(hdcMemDC, hbmScreen);
 
-    BitBlt(hdcMemDC, BAR_MARGIN, WIN_BAR_SIZE - 1, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 5.5), hdcWindow, (width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, MARGIN * 2.5, SRCCOPY);
+    BitBlt(hdcMemDC, 0, 0, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 2.5), hdcWindow, width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN, WIN_BAR_SIZE + MARGIN, SRCCOPY);
 
     // Cleanup: Only delete the memory DC and release the window DC.
     SelectObject(hdcMemDC, oldBitmap); // Restore the old bitmap
@@ -81,11 +81,6 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         }
         break;
     }
-    case WM_DRAWITEM:
-    {
-        QuitButton(lParam, 8);
-        break;
-    }
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
@@ -101,7 +96,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         GetObject(hbmScreen, sizeof(bitmap), &bitmap);
 
         // Draw the bitmap
-        BitBlt(hdc, 0, 0, width, height, hdcMem, 0, 0, SRCCOPY);
+        BitBlt(hdc, BAR_MARGIN + SMALL_MARGIN, WIN_BAR_SIZE - 1 + SMALL_MARGIN, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 2.5), hdcMem, 0, 0, SRCCOPY);
         WindowFrame(hdc, hWnd, width, height);
         WindowBar(hdc, hWnd, width);
 
@@ -111,6 +106,19 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
         EndPaint(hWnd, &ps);
         break;
+    }
+    case WM_DRAWITEM:
+    { 
+        QuitButton(lParam, 8);
+        break;
+    }
+    case WM_ERASEBKGND:
+    {
+        HDC hdc = (HDC)wParam;
+        RECT rect;
+        GetClientRect(hWnd, &rect);
+        FillRect(hdc, &rect, CreateSolidBrush(RGB(255, 250, 215))); // Fill with red
+        return TRUE; // Return non-zero value when processed
     }
     case WM_NCHITTEST: // Window Dragging logic
     {
