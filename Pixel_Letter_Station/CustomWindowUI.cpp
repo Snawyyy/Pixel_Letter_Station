@@ -221,19 +221,22 @@ void WindowBar(HDC hdc, HWND hWnd, int width)
 
 void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 {
-	// First, draw the larger rectangle with a solid color
-	HBRUSH brushMain = CreateSolidBrush(RGB(255, 100, 100)); // Orangeish color for the main rectangle
-	RECT rectMain = { 0, 0, width, height }; // Main rectangle coordinates
-	FillRect(hdc, &rectMain, brushMain);
+	// Create a pen of desired thickness and color
+	HPEN hPen = CreatePen(PS_SOLID, BAR_MARGIN, RGB(255, 0, 0)); // Black pen
 
-	// Then, "cut out" a shape by drawing it with the background color
-	HBRUSH brushCutout = CreateSolidBrush(RGB(255, 250, 215)); // Brush for the cutout, using the window background color
-	RECT rectCutout = { 5, 5, width - 5, height -5 }; // Smaller rectangle coordinates for the cutout
-	FillRect(hdc, &rectCutout, brushCutout);
+	// Select the pen and a null brush into the DC
+	HPEN hOldPen = (HPEN)SelectObject(hdc, hPen);
+	HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, GetStockObject(NULL_BRUSH));
+
+	// Draw the rectangle
+	Rectangle(hdc, 0, 0, width, height);
+
+	// Restore the original pen and brush
+	SelectObject(hdc, hOldPen);
+	SelectObject(hdc, hOldBrush);
 
 	// Clean up
-	DeleteObject(brushMain);
-	DeleteObject(brushCutout);
+	DeleteObject(hPen);
 }
 
 void LetterBackground(HDC hdc, HWND hWnd, int width, int height)
