@@ -53,13 +53,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			HWND initializeServerButton = CreateWindowA("BUTTON",
 				"Test",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				MARGIN * 2, MARGIN * 5, BUTTON_WIDTH, BUTTON_HEIGHT,
+				MARGIN * 2, MARGIN * 5, BUTTON_WIDTH * 1.5, BUTTON_HEIGHT,
 				hWnd, (HMENU)S_INITIALIZE_BUTTON_ID, NULL, NULL);
 			// Connect to server
 			HWND connectServerButton = CreateWindowA("BUTTON",
 				"Test",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				MARGIN * 2, MARGIN * 7, BUTTON_WIDTH, BUTTON_HEIGHT,
+				MARGIN * 2, MARGIN * 7, BUTTON_WIDTH * 1.5, BUTTON_HEIGHT,
 				hWnd, (HMENU)S_CONNECT_BUTTON_ID, NULL, NULL);
 
 			// Letter UI
@@ -187,7 +187,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				errno_t err = wcstombs_s(&convertedChars, buffer.data(), size, wLetterText, _TRUNCATE);
 
 				if (err != 0) {
-					std::cerr << "Error converting string." << std::endl;
+					cerr << "Error converting string." << std::endl;
 					break;
 				}
 
