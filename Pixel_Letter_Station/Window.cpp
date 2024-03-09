@@ -76,7 +76,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
 				(width - LETTER_BOX_WIDTH - MARGIN), MARGIN * 6, LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT,
 				hWnd, NULL, NULL, NULL);
-			// Custimizable RichText edit box
+			// Customizable RichText edit box
 			RichTextBoxPaint(letterContents);
 			RichTextBoxPaint(letterTitle);
 
@@ -88,7 +88,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			if (wParam == TIMER_UPDATE_ID)
 			{
-				if (isConnected) // only if connected try and recive data to not crash
+				if (isConnected) // only if connected try and receive data to not crash
 				{
 					thread recMessage(AsyncRecvData, clientSock, letterContents);
 					recMessage.detach();
@@ -197,7 +197,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case 6:
 			{
-				if (isConnected) // only if connected try and recive data to not crash
+				if (isConnected) // only if connected try and receive data to not crash
 				{
 					thread recMessage(AsyncRecvData, clientSock , letterContents);
 					recMessage.detach();
