@@ -209,7 +209,7 @@ void WindowBar(HDC hdc, HWND hWnd, int width)
 	// Draw the Border shine
 	brush = CreateSolidBrush(RGB(255, 200, 200)); // orangeish color
 	SelectObject(hdc, brush);
-	Rectangle(hdc, 0, 0, width, BORDER_EFFECT_SIZE);
+	Rectangle(hdc, 0, 0, width + 1, BORDER_EFFECT_SIZE);
 	Rectangle(hdc, 0, 0, BORDER_EFFECT_SIZE, WIN_BAR_SIZE);
 
 
