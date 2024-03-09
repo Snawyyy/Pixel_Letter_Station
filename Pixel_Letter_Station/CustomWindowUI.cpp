@@ -222,7 +222,7 @@ void WindowBar(HDC hdc, HWND hWnd, int width)
 void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 {
 	// Create a pen of desired thickness and color
-	HPEN hPen = CreatePen(PS_SOLID, BAR_MARGIN, RGB(255, 0, 0)); // Black pen
+	HPEN hPen = CreatePen(PS_SOLID, BAR_MARGIN * 2, RGB(255, 100, 100)); // Black pen
 
 	// Select the pen and a null brush into the DC
 	HPEN hOldPen = (HPEN)SelectObject(hdc, hPen);

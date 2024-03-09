@@ -198,7 +198,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 6:
 			{
 				HINSTANCE hInstance = GetModuleHandle(NULL);
-				CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN + 2), height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN);
+				CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1, height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN);
 				break;
 			}
 			}

@@ -14,7 +14,7 @@ HBITMAP GetLetter(HWND hWnd)
     HBITMAP hbmScreen = CreateCompatibleBitmap(hdcWindow, width, height);
     HGDIOBJ oldBitmap = SelectObject(hdcMemDC, hbmScreen);
 
-    BitBlt(hdcMemDC, BAR_MARGIN, WIN_BAR_SIZE, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 5.5), hdcWindow, (width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, MARGIN * 2.5, SRCCOPY);
+    BitBlt(hdcMemDC, BAR_MARGIN, WIN_BAR_SIZE - 1, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 5.5), hdcWindow, (width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, MARGIN * 2.5, SRCCOPY);
 
     // Cleanup: Only delete the memory DC and release the window DC.
     SelectObject(hdcMemDC, oldBitmap); // Restore the old bitmap
@@ -101,8 +101,8 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         GetObject(hbmScreen, sizeof(bitmap), &bitmap);
 
         // Draw the bitmap
-        WindowFrame(hdc, hWnd, width, height);
         BitBlt(hdc, 0, 0, width, height, hdcMem, 0, 0, SRCCOPY);
+        WindowFrame(hdc, hWnd, width, height);
         WindowBar(hdc, hWnd, width);
 
         // Cleanup
