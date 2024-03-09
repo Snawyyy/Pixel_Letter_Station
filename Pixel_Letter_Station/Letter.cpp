@@ -58,7 +58,14 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     {
     case WM_CREATE: // where you create all the interface
     {
-
+        // Window Ui buttons
+        // 
+        // Send Button
+        HWND sendButton = CreateWindowA("BUTTON",
+            "Send",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+            hWnd, (HMENU)SEND_BUTTON_ID, NULL, NULL);
         // Window Bar Buttons
         // 
         // Quit Button
@@ -96,7 +103,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         GetObject(hbmScreen, sizeof(bitmap), &bitmap);
 
         // Draw the bitmap
-        BitBlt(hdc, BAR_MARGIN + SMALL_MARGIN, WIN_BAR_SIZE - 1 + SMALL_MARGIN, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 2.5), hdcMem, 0, 0, SRCCOPY);
+        BitBlt(hdc, BAR_MARGIN + SMALL_MARGIN, WIN_BAR_SIZE - 1 + SMALL_MARGIN, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 5 + SMALL_MARGIN), hdcMem, 0, 0, SRCCOPY);
         WindowFrame(hdc, hWnd, width, height);
         WindowBar(hdc, hWnd, width);
 
@@ -110,6 +117,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     case WM_DRAWITEM:
     { 
         QuitButton(lParam, 8);
+        DefaultButton(lParam, L"Send", SEND_BUTTON_ID);
         break;
     }
     case WM_ERASEBKGND:
