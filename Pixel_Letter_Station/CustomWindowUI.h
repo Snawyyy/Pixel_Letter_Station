@@ -8,7 +8,7 @@
 #pragma comment(lib, "comctl32.lib")
 #include "WinServer.h"
 
-bool QuitButton(LPARAM lParam);
+bool QuitButton(LPARAM lParam, int buttonId);
 bool MinimizeButton(LPARAM lParam);
 bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId);
 bool Title(HDC hdc, HWND hWnd, int centerW);

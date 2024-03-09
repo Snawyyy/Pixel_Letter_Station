@@ -98,7 +98,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		case WM_DRAWITEM:
 		{
-			QuitButton(lParam);
+			QuitButton(lParam, QUIT_BUTTON_ID);
 			MinimizeButton(lParam);
 			DefaultButton(lParam, L"Send", SEND_BUTTON_ID);
 			DefaultButton(lParam, L"Button 2", 6);
@@ -198,7 +198,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 6:
 			{
 				HINSTANCE hInstance = GetModuleHandle(NULL);
-				CreateLetterWindow(hWnd, hInstance, 100, 100, 100, 100);
+				CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN + 2), height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN);
 				break;
 			}
 			}

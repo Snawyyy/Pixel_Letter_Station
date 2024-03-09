@@ -1,9 +1,10 @@
 #include "CustomWindowUI.h"
 
-bool QuitButton(LPARAM lParam) // Bar Quit Button
+bool QuitButton(LPARAM lParam, int buttonId) // Bar Quit Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
-	if (pDIS->CtlID == QUIT_BUTTON_ID) // Matching the HMENU value passed when creating the button
+
+	if (pDIS->CtlID == buttonId) // Matching the HMENU value passed when creating the button
 	{
 		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
 
@@ -44,6 +45,10 @@ bool QuitButton(LPARAM lParam) // Bar Quit Button
 
 
 		return TRUE; // Indicate we handled the message
+	}
+	else
+	{
+		return FALSE;
 	}
 }
 

@@ -14,7 +14,7 @@ HBITMAP GetLetter(HWND hWnd)
     HBITMAP hbmScreen = CreateCompatibleBitmap(hdcWindow, width, height);
     HGDIOBJ oldBitmap = SelectObject(hdcMemDC, hbmScreen);
 
-    BitBlt(hdcMemDC, 0, 0, width, height, hdcWindow, 0, 0, SRCCOPY);
+    BitBlt(hdcMemDC, BAR_MARGIN, WIN_BAR_SIZE, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 5.5), hdcWindow, (width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, MARGIN * 2.5, SRCCOPY);
 
     // Cleanup: Only delete the memory DC and release the window DC.
     SelectObject(hdcMemDC, oldBitmap); // Restore the old bitmap
@@ -52,18 +52,48 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     GetClientRect(hWnd, &rcClient);
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
+    static HBITMAP hbmScreen = NULL;
 
     switch (uMsg)
     {
+    case WM_CREATE: // where you create all the interface
+    {
+
+        // Window Bar Buttons
+        // 
+        // Quit Button
+        HWND quitButton = CreateWindowA("BUTTON",
+            "Quit",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            (width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
+            hWnd, (HMENU)8, NULL, NULL);
+
+    }
+    case WM_COMMAND: // Button logic
+    {
+        switch (LOWORD(wParam))
+        {
+        case 8: // Knows what button number was pressed
+        {
+            DestroyWindow(hWnd);
+            break;
+        }
+        }
+        break;
+    }
+    case WM_DRAWITEM:
+    {
+        QuitButton(lParam, 8);
+        break;
+    }
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
         HDC hdcMem = CreateCompatibleDC(hdc);
 
-        WindowBar(hdc, hWnd, width);
 
-        HBITMAP hbmScreen = GetLetter(GetParent(hWnd));
+        hbmScreen = GetLetter(GetParent(hWnd));
         HGDIOBJ oldBitmap = SelectObject(hdcMem, hbmScreen); // Use the bitmap handle
 
         // Get bitmap dimensions
@@ -71,11 +101,14 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         GetObject(hbmScreen, sizeof(bitmap), &bitmap);
 
         // Draw the bitmap
-        BitBlt(hdc, 0, 0, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
+        WindowFrame(hdc, hWnd, width, height);
+        BitBlt(hdc, 0, 0, width, height, hdcMem, 0, 0, SRCCOPY);
+        WindowBar(hdc, hWnd, width);
 
         // Cleanup
         SelectObject(hdcMem, oldBitmap);
         DeleteDC(hdcMem);
+
         EndPaint(hWnd, &ps);
         break;
     }
@@ -98,16 +131,17 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             return DefWindowProc(hWnd, uMsg, wParam, lParam);
         }
     }
-    case WM_CLOSE:
-    {
-        return DestroyWindow(hWnd);
-        break;
+    case WM_CLOSE: {
+        DestroyWindow(hWnd);
+        return 0;  
     }
-    case WM_DESTROY:
-    {
-        KillTimer(hWnd, 1);
-        PostQuitMessage(0);
-        return 0;
+    case WM_DESTROY: {
+        // Cleanup: the bitmap we didnt delete gets deleted
+        if (hbmScreen != NULL) {
+            DeleteObject(hbmScreen); 
+            hbmScreen = NULL;
+        }
+        return 0; 
     }
     }
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
