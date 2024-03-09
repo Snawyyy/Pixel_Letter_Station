@@ -29,6 +29,7 @@ void ServerStatusBar(HDC hdc, int isConnected);
 #define S_INITIALIZE_BUTTON_ID 4
 #define S_CONNECT_BUTTON_ID 5
 #define INVISBLE_TEXTBOX_SUBCLASS_ID 101
+#define TIMER_UPDATE_ID 1
 // learn about enum
 
  //Window Bar Settings

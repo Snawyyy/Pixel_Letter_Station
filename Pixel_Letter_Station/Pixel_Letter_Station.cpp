@@ -20,6 +20,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     {
         if (!pWindow->ProcessMessages())
         {
+
             cout << "Closing window\n";
             running = false;
         }

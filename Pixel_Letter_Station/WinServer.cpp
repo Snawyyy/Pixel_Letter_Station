@@ -115,10 +115,12 @@ string RecvData(SOCKET clientSocket)
         dataRecv[bytesReceived] = '\0';
         string receivedData(dataRecv);
         cout << "Disconnected" << '\n';
+        return "";
     }
     else
     {
         cout << "Failed" << '\n';
+        return "";
     }
 
 }
@@ -139,7 +141,11 @@ void SendData(SOCKET socket, vector<char>& buffer)
 
 void AsyncRecvData(SOCKET socket, HWND letterContents)
 {
-    string data = RecvData(socket);
+    string data = RecvData(socket); // 
+    if (data == "")
+    {
+        return;
+    }
 
     size_t size = data.size() + 1; // Size for wide char array
 
@@ -156,5 +162,5 @@ void AsyncRecvData(SOCKET socket, HWND letterContents)
 
     std::wcout << wbuffer.data() << std::endl; // Output the converted string
     SetWindowText(letterContents, wbuffer.data());
-
+    return;
 }

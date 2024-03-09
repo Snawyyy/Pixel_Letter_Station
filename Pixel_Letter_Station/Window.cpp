@@ -76,10 +76,24 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
 				(width - LETTER_BOX_WIDTH - MARGIN), MARGIN * 6, LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT,
 				hWnd, NULL, NULL, NULL);
-			//Custimizable RichText edit box
+			// Custimizable RichText edit box
 			RichTextBoxPaint(letterContents);
 			RichTextBoxPaint(letterTitle);
 
+			SetTimer(hWnd, TIMER_UPDATE_ID, 1000, NULL);
+
+			break;
+		}
+		case WM_TIMER:
+		{
+			if (wParam == TIMER_UPDATE_ID)
+			{
+				if (isConnected) // only if connected try and recive data to not crash
+				{
+					thread recMessage(AsyncRecvData, clientSock, letterContents);
+					recMessage.detach();
+				}
+			}
 			break;
 		}
 		case WM_DRAWITEM:
@@ -111,11 +125,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			EndPaint(hWnd, &ps); // End painting
 			break;
 		}
-		case WM_COMMAND: //Button logic
+		case WM_COMMAND: // Button logic
 		{
 			switch (LOWORD(wParam))
 			{
-			case 1: //Knows what button number was pressed
+			case 1: // Knows what button number was pressed
 				PostQuitMessage(0);
 				break;
 			case 2:
@@ -218,8 +232,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		case WM_DESTROY:
 		{
-				PostQuitMessage(0);
-				return 0;
+			KillTimer(hWnd, 1);
+			PostQuitMessage(0);
+			return 0;
 		}
 
 	}
