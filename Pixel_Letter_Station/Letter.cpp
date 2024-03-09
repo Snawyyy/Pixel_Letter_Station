@@ -25,17 +25,17 @@ HBITMAP GetLetter(HWND hWnd)
     return hbmScreen;
 }
 
-HWND CreateChildWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height)
+HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height)
 {
     // Define the class name. Make sure this class is registered in WinMain.
     const wchar_t CLASS_NAME[] = L"ChildWindowClass";
 
     // Create the window.
-    HWND hwndChild = CreateWindowEx(
+    HWND hwndLetter = CreateWindowEx(
         0,                 // Optional window styles.
         CLASS_NAME,        // Window class
         L"Child Window",   // Window text
-        WS_CHILD | WS_VISIBLE, // Window style
+        WS_VISIBLE | WS_POPUP, // Window style
         x, y, width, height,   // Size and position
         hParent,           // Parent window    
         NULL,              // Menu
@@ -43,10 +43,10 @@ HWND CreateChildWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int widt
         NULL               // Additional application data
     );
 
-    return hwndChild;
+    return hwndLetter;
 }
 
-LRESULT CALLBACK ChildWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     RECT rcClient;
     GetClientRect(hWnd, &rcClient);
@@ -60,6 +60,8 @@ LRESULT CALLBACK ChildWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
         HDC hdcMem = CreateCompatibleDC(hdc);
+
+        WindowBar(hdc, hWnd, width);
 
         HBITMAP hbmScreen = GetLetter(GetParent(hWnd));
         HGDIOBJ oldBitmap = SelectObject(hdcMem, hbmScreen); // Use the bitmap handle
@@ -95,6 +97,17 @@ LRESULT CALLBACK ChildWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         {
             return DefWindowProc(hWnd, uMsg, wParam, lParam);
         }
+    }
+    case WM_CLOSE:
+    {
+        return DestroyWindow(hWnd);
+        break;
+    }
+    case WM_DESTROY:
+    {
+        KillTimer(hWnd, 1);
+        PostQuitMessage(0);
+        return 0;
     }
     }
     return DefWindowProc(hWnd, uMsg, wParam, lParam);

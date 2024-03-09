@@ -198,7 +198,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 6:
 			{
 				HINSTANCE hInstance = GetModuleHandle(NULL);
-				CreateChildWindow(hWnd, hInstance, 100, 100, 100, 100);
+				CreateLetterWindow(hWnd, hInstance, 100, 100, 100, 100);
 				break;
 			}
 			}
@@ -258,7 +258,7 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 	DWORD style = WS_POPUP;
 
 	WNDCLASS wc = {};
-	wc.lpfnWndProc = ChildWindowProc;
+	wc.lpfnWndProc = LetterWindowProc;
 	wc.hInstance = m_hinstance;
 	wc.lpszClassName = L"ChildWindowClass";
 

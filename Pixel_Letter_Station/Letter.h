@@ -6,6 +6,6 @@ using namespace std;
 
 HBITMAP GetLetter(HWND hWnd);
 
-HWND CreateChildWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height);
+HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height);
 
-LRESULT ChildWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
