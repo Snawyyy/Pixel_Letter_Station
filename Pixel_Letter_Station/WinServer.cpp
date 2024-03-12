@@ -98,31 +98,37 @@ SOCKET ConnectToServer()
     }
 }
 
-string RecvData(SOCKET clientSocket)
+vector<BYTE> RecvData(SOCKET socket)
 {
-    constexpr size_t BUFSIZE = 2560;
-    char dataRecv[BUFSIZE] = {};
 
-    int bytesReceived = recv(clientSocket, dataRecv, sizeof(dataRecv), 0); //If recived Anything, then
-    if (bytesReceived > 0)
+    // Receives the size
+    int size;
+    int bytesReceived = recv(socket, (char*)size, sizeof(int), 0);
+    vector<BYTE> recvData(size); // buffer
+
+    if (bytesReceived != sizeof(int))
     {
-        dataRecv[bytesReceived] = '\0';
-        cout << "The Data:" << dataRecv << '\n';
-        return dataRecv;
-    }
-    else if (bytesReceived == 0)
-    {
-        dataRecv[bytesReceived] = '\0';
-        string receivedData(dataRecv);
-        cout << "Disconnected" << '\n';
-        return "";
-    }
-    else
-    {
-        cout << "Failed" << '\n';
-        return "";
+            cout << "Failed to receive data" << '\n';
+            return recvData;
     }
 
+    // Receives the bitmap data
+    bytesReceived = 0;
+    int remaining = size;
+    char* buffer = (char*)recvData.data();
+
+    while (remaining > 0)
+    {
+        int received = recv(socket, buffer + bytesReceived, remaining, 0);
+        if (received == SOCKET_ERROR)
+        {
+            cout << "Failed to receive bitmap data. Error: " << WSAGetLastError() << endl;
+            return recvData;
+        }
+        bytesReceived += received;
+        remaining -= received;
+    }
+    return recvData;
 }
 
 void SendData(SOCKET socket, vector<BYTE> Data)
@@ -143,26 +149,5 @@ void SendData(SOCKET socket, vector<BYTE> Data)
 
 void AsyncRecvData(SOCKET socket, HWND letterContents)
 {
-    string data = RecvData(socket); // 
-    if (data == "")
-    {
-        return;
-    }
-
-    size_t size = data.size() + 1; // Size for wide char array
-
-    vector<wchar_t> wbuffer(size);
-    size_t convertedChars = 0;
-
-    // Convert char to wchar_t safely
-    errno_t err = mbstowcs_s(&convertedChars, wbuffer.data(), size, data.c_str(), _TRUNCATE);
-
-    if (err != 0) {
-        cerr << "Error converting string." << endl;
-        return;
-    }
-
-    wcout << wbuffer.data() << endl; // Output the converted string
-    SetWindowText(letterContents, wbuffer.data());
     return;
 }

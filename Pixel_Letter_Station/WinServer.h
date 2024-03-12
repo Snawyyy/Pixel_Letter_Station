@@ -9,8 +9,8 @@ using namespace std;
 
 SOCKET InitializeServer();
 SOCKET ConnectToServer();
-string RecvData(SOCKET clientSocket);
-void SendData(SOCKET socket, vector<char>& buffer);
+vector<BYTE> RecvData(SOCKET socket);
+void SendData(SOCKET socket, vector<BYTE> Data);
 
 void AsyncRecvData(SOCKET socket, HWND letterContents);
 
