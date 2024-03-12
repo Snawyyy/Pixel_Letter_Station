@@ -62,14 +62,15 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
         switch (LOWORD(wParam))
         {
-        case SEND_ID:
-        {
 
-            break;
-        }
         case QUIT_BUTTON_ID: // Knows what button number was pressed
         {
             DestroyWindow(hWnd);
+            break;
+        }
+        case SEND_ID:
+        {
+
             break;
         }
         }
