@@ -1,7 +1,7 @@
 #include "LetterWindow.h"
 
 
-HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height)
+HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height, HBITMAP bitmapHandle)
 {
     // Define the class name. Make sure this class is registered in WinMain.
     const wchar_t CLASS_NAME[] = L"ChildWindowClass";
@@ -16,7 +16,7 @@ HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int wid
         hParent,           // Parent window    
         NULL,              // Menu
         hInstance,         // Instance handle
-        NULL               // Additional application data
+        (LPVOID)bitmapHandle   // Additional application data
     );
 
     return hwndLetter;
@@ -52,6 +52,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             (width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
             hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
 
+        hbmScreen = reinterpret_cast<HBITMAP>(lParam);
     }
     case WM_COMMAND: // Button logic
     {
