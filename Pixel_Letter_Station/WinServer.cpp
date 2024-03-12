@@ -103,39 +103,59 @@ vector<BYTE> RecvData(SOCKET socket)
 
     // Receives the size
     int size = 0;
-    int bytesReceived = recv(socket, (char*)size, sizeof(int), 0);
+    int bytesReceived = 0;
+    while (bytesReceived < sizeof(int))
+    {
+        int received = recv(socket, reinterpret_cast<char*>(&size) + bytesReceived, sizeof(int) - bytesReceived, 0);
+        if (received == SOCKET_ERROR)
+        {
+            cout << "Failed to receive size. Error: " << WSAGetLastError() << endl;
+            return vector<BYTE>();
+        }
+        else if (received == 0)
+        {
+            cout << "Connection closed by the peer." << endl;
+            return vector<BYTE>();
+        }
+        bytesReceived += received;
+    }
     vector<BYTE> recvData(size); // buffer
 
     if (bytesReceived != sizeof(int))
     {
             cout << "Failed to receive data" << '\n';
-            return recvData;
+            return vector<BYTE>();
     }
 
     // Receives the bitmap data
     bytesReceived = 0;
     int remaining = size;
-    char* buffer = (char*)recvData.data();
-
     while (remaining > 0)
     {
-        int received = recv(socket, buffer + bytesReceived, remaining, 0);
+        int received = recv(socket, reinterpret_cast<char*>(recvData.data()) + bytesReceived, remaining, 0);
         if (received == SOCKET_ERROR)
         {
             cout << "Failed to receive bitmap data. Error: " << WSAGetLastError() << endl;
             return recvData;
         }
+        else if (received == 0)
+        {
+            cout << "Connection closed by the peer." << endl;
+            return recvData;
+        }
         bytesReceived += received;
         remaining -= received;
     }
+
+    cout << "Bitmap data received successfully." << endl;
     return recvData;
 }
 
 void SendData(SOCKET socket, vector<BYTE> Data)
 {
     // sends size first
-    int size = (int)Data.size();
-    send(socket, (const char*)size, sizeof(int), 0);
+    int size = Data.size();
+    send(socket, reinterpret_cast<const char*>(&size), sizeof(int), 0);
 
     // sends data
     int bytesSent = send(socket, (const char*)Data.data(),size, 0);
