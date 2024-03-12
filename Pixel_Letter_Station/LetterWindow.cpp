@@ -1,30 +1,6 @@
 #include "LetterWindow.h"
 
 
-HBITMAP GetLetter(HWND hWnd)
-{
-    HDC hdcWindow = GetDC(hWnd);
-    HDC hdcMemDC = CreateCompatibleDC(hdcWindow);
-
-    RECT rcClient;
-    GetClientRect(hWnd, &rcClient);
-    int width = rcClient.right - rcClient.left;
-    int height = rcClient.bottom - rcClient.top;
-
-    HBITMAP hbmScreen = CreateCompatibleBitmap(hdcWindow, width, height);
-    HGDIOBJ oldBitmap = SelectObject(hdcMemDC, hbmScreen);
-
-    BitBlt(hdcMemDC, 0, 0, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 2.5), hdcWindow, width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN, WIN_BAR_SIZE + MARGIN, SRCCOPY);
-
-    // Cleanup: Only delete the memory DC and release the window DC.
-    SelectObject(hdcMemDC, oldBitmap); // Restore the old bitmap
-    DeleteDC(hdcMemDC);
-    ReleaseDC(hWnd, hdcWindow);
-
-    // Return the created bitmap
-    return hbmScreen;
-}
-
 HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height)
 {
     // Define the class name. Make sure this class is registered in WinMain.
@@ -102,7 +78,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         HDC hdcMem = CreateCompatibleDC(hdc);
 
 
-        hbmScreen = GetLetter(GetParent(hWnd));
+        hbmScreen = GetLetter(GetParent(hWnd)); // change to happen in parent window then pass the bitmap
         HGDIOBJ oldBitmap = SelectObject(hdcMem, hbmScreen); // Use the bitmap handle
 
         // Get bitmap dimensions

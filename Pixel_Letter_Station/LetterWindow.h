@@ -2,11 +2,11 @@
 
 #include <Windows.h>
 #include "CustomWindowUI.h"
+#include "LetterManager.h"
 #include <thread>
 
 using namespace std;
 
-HBITMAP GetLetter(HWND hWnd);
 
 HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height);
 
