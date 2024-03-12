@@ -41,7 +41,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             "Send",
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
-            hWnd, (HMENU)SEND_BUTTON_ID, NULL, NULL);
+            hWnd, (HMENU)INK_LETTER_BUTTON_ID, NULL, NULL);
 
         // Window Bar Buttons
         // 
@@ -58,7 +58,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
         switch (LOWORD(wParam))
         {
-        case SEND_BUTTON_ID:
+        case INK_LETTER_BUTTON_ID:
         {
 
             break;
@@ -100,7 +100,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     case WM_DRAWITEM:
     { 
         QuitButton(lParam, QUIT_BUTTON_ID);
-        DefaultButton(lParam, L"Send", SEND_BUTTON_ID);
+        DefaultButton(lParam, L"Send", INK_LETTER_BUTTON_ID);
         break;
     }
     case WM_ERASEBKGND:

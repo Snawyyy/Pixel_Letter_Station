@@ -25,7 +25,7 @@ void ServerStatusBar(HDC hdc, int isConnected);
 #define TITLE_ID 0
 #define QUIT_BUTTON_ID 1
 #define MINIMIZE_BUTTON_ID 2
-#define SEND_BUTTON_ID 3
+#define INK_LETTER_BUTTON_ID 3
 #define S_INITIALIZE_BUTTON_ID 4
 #define S_CONNECT_BUTTON_ID 5
 #define INVISBLE_TEXTBOX_SUBCLASS_ID 101

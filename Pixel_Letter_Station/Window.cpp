@@ -42,7 +42,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				"Send",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
-				hWnd, (HMENU)SEND_BUTTON_ID, NULL, NULL);
+				hWnd, (HMENU)INK_LETTER_BUTTON_ID, NULL, NULL);
 			// Test
 			HWND button = CreateWindowA("BUTTON",
 				"Test",
@@ -100,7 +100,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			QuitButton(lParam, QUIT_BUTTON_ID);
 			MinimizeButton(lParam);
-			DefaultButton(lParam, L"Send", SEND_BUTTON_ID);
+			DefaultButton(lParam, L"Ink Letter", INK_LETTER_BUTTON_ID);
 			DefaultButton(lParam, L"Button 2", 6);
 			DefaultButton(lParam, L"Initialize server", S_INITIALIZE_BUTTON_ID);
 			DefaultButton(lParam, L"Connect to server", S_CONNECT_BUTTON_ID);
@@ -175,7 +175,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				UpdateWindow(hWnd);
 				break;
 			}
-			case SEND_BUTTON_ID:
+			case INK_LETTER_BUTTON_ID:
 			{
 				HINSTANCE hInstance = GetModuleHandle(NULL);
 				CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT);
