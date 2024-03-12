@@ -12,8 +12,6 @@ SOCKET ConnectToServer();
 vector<BYTE> RecvData(SOCKET socket);
 void SendData(SOCKET socket, vector<BYTE> Data);
 
-void AsyncRecvData(SOCKET socket, HWND letterContents);
-
 
 //Server Settings
 #define ServerIpAddress "127.0.0.1"

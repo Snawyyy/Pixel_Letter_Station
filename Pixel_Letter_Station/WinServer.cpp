@@ -1,4 +1,5 @@
 #include "WinServer.h"
+#include "LetterManager.h"
 
 SOCKET InitializeServer()
 {
@@ -145,9 +146,4 @@ void SendData(SOCKET socket, vector<BYTE> Data)
     else {
         cout << "Successfully sent " << bytesSent << " bytes." << endl;
     }
-}
-
-void AsyncRecvData(SOCKET socket, HWND letterContents)
-{
-    return;
 }
