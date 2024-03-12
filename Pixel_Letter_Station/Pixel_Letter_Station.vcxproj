@@ -120,6 +120,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,16 +137,23 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="LetterManager.cpp" />
+    <ClCompile Include="LetterWindow.cpp" />
     <ClCompile Include="Pixel_Letter_Station.cpp" />
     <ClCompile Include="CustomWindowUI.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WinServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomWindowUI.h" />
+    <ClInclude Include="LetterManager.h" />
+    <ClInclude Include="LetterWindow.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="WinServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

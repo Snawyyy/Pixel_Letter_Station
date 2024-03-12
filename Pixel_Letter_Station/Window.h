@@ -2,11 +2,16 @@
 
 #include <Windows.h>
 #include "CustomWindowUI.h"
-#include <Richedit.h>
-#pragma comment(lib, "comctl32.lib")
-
+#include "LetterWindow.h"
+#include <locale>
+#include <codecvt>
+#include <vector>
+#include <thread>
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+extern SOCKET serverSock;
+extern SOCKET clientSock;
 
 class Window
 {

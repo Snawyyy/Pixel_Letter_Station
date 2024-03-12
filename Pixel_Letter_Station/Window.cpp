@@ -1,13 +1,17 @@
 #include "Window.h"
 
-HWND textField;
-HWND button;
-HWND letter;
 int width = 900;
 int height = 600;
 int centerW = width / 2;
 int centerH = height / 2;
+wchar_t wLetterText[LETTER_BOX_CAP] = {};
 HBITMAP hBitmap;
+
+SOCKET serverSock;
+SOCKET clientSock;
+int isConnected = 0;
+
+HWND letterContents;
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -15,60 +19,91 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_CREATE: // where you create all the interface
 		{
+
+			// Window Bar Buttons
+			// 
 			// Quit Button
-			button = CreateWindowA("BUTTON",
+			HWND quitButton = CreateWindowA("BUTTON",
 				"Quit",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				(width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
 				hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
 			// Minimize Button
-			button = CreateWindowA("BUTTON",
+			HWND minimizeButton = CreateWindowA("BUTTON",
 				"-",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				(width - (BAR_BUTTON_SIZE * 2) - (BAR_MARGIN * 2)), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
 				hWnd, (HMENU)MINIMIZE_BUTTON_ID, NULL, NULL);
+
+			// Window Ui buttons
+			// 
 			// Send Button
-			button = CreateWindowA("BUTTON",
+			HWND sendButton = CreateWindowA("BUTTON",
 				"Send",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
-				hWnd, (HMENU)DEFAULT_BUTTON_ID, NULL, NULL);
+				hWnd, (HMENU)INK_LETTER_BUTTON_ID, NULL, NULL);
 			// Test
-			button = CreateWindowA("BUTTON",
+			HWND button = CreateWindowA("BUTTON",
 				"Test",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				(width - LTEXT_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
-				hWnd, (HMENU)4, NULL, NULL);
+				(width - LETTER_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH * 2, BUTTON_HEIGHT,
+				hWnd, (HMENU)6, NULL, NULL);
+			// Initialize server
+			HWND initializeServerButton = CreateWindowA("BUTTON",
+				"Test",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				MARGIN * 2, MARGIN * 5, BUTTON_WIDTH * 1.5, BUTTON_HEIGHT,
+				hWnd, (HMENU)S_INITIALIZE_BUTTON_ID, NULL, NULL);
+			// Connect to server
+			HWND connectServerButton = CreateWindowA("BUTTON",
+				"Test",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				MARGIN * 2, MARGIN * 7, BUTTON_WIDTH * 1.5, BUTTON_HEIGHT,
+				hWnd, (HMENU)S_CONNECT_BUTTON_ID, NULL, NULL);
+
+			// Letter UI
+			// 
 			// Letter Title
-			letter = CreateWindowA("RichEdit20W",
-				"Title",
+			HWND letterTitle = CreateWindowA("RichEdit20W",
+				"-Title-",
 				WS_VISIBLE | WS_CHILD | ES_CENTER,
-				((width - (LTEXT_BOX_WIDTH / 2) - MARGIN) - (LTEXT_BOX_WIDTH / 2)), MARGIN * 3, LTEXT_BOX_WIDTH, MARGIN,
+				((width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2)), MARGIN * 4, LETTER_BOX_WIDTH, MARGIN,
 				hWnd, NULL, NULL, NULL);
 			// Letter Contents
-			    letter = CreateWindowA("RichEdit20W",
-				"Write Here",
+			letterContents = CreateWindowA("RichEdit20W",
+				"Write Here...",
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
-				(width - LTEXT_BOX_WIDTH - MARGIN), MARGIN * 4, LTEXT_BOX_WIDTH, LTEXT_BOX_HEIGHT,
-				hWnd, (HMENU)5, NULL, NULL);
+				(width - LETTER_BOX_WIDTH - MARGIN), MARGIN * 6, LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT,
+				hWnd, NULL, NULL, NULL);
+			// Customizable RichText edit box
+			RichTextBoxPaint(letterContents);
+			RichTextBoxPaint(letterTitle);
 
-				PARAFORMAT2 pf;
-				memset(&pf, 0, sizeof(PARAFORMAT2));
-				pf.cbSize = sizeof(PARAFORMAT2);
-				pf.dwMask = PFM_LINESPACING;
-				pf.bLineSpacingRule = 5;
-				pf.dyLineSpacing = 30;
+			SetTimer(hWnd, TIMER_UPDATE_ID, 1000, NULL);
 
-				SendMessage(letter, EM_SETPARAFORMAT, 0, (LPARAM)&pf);
+			break;
+		}
+		case WM_TIMER:
+		{
+			if (wParam == TIMER_UPDATE_ID)
+			{
+				if (isConnected == 1) // only if connected try and receive data to not crash
+				{
 
+				}
+			}
 			break;
 		}
 		case WM_DRAWITEM:
 		{
-			QuitButton(lParam);
+			QuitButton(lParam, QUIT_BUTTON_ID);
 			MinimizeButton(lParam);
-			DefaultButton(lParam, L"Send", DEFAULT_BUTTON_ID);
-			DefaultButton(lParam, L"Button 2", 4);
+			DefaultButton(lParam, L"Ink Letter", INK_LETTER_BUTTON_ID);
+			DefaultButton(lParam, L"Button 2", 6);
+			DefaultButton(lParam, L"Initialize server", S_INITIALIZE_BUTTON_ID);
+			DefaultButton(lParam, L"Connect to server", S_CONNECT_BUTTON_ID);
+
 			break;
 		}
 		case WM_PAINT: 
@@ -82,32 +117,87 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WindowBar(hdc, hWnd, width);
 			Title(hdc, hWnd, centerW);
 
-			LetterBackground(hdc, hWnd);
+			LetterBackground(hdc, hWnd,  width,  height);
+
+			ServerStatusBar(hdc, isConnected);
 
 			EndPaint(hWnd, &ps); // End painting
 			break;
 		}
-		case WM_COMMAND: //Button logic
+		case WM_COMMAND: // Button logic
 		{
 			switch (LOWORD(wParam))
 			{
-			case 1: //Knows what button number was pressed
+			case QUIT_BUTTON_ID: // Knows what button number was pressed
 				PostQuitMessage(0);
 				break;
-			case 2:
+			case MINIMIZE_BUTTON_ID:
 				ShowWindow(hWnd, SW_MINIMIZE);
 				break;
-			case 3:
-				MessageBeep(MB_ICONSTOP);
+			case S_INITIALIZE_BUTTON_ID:
+			{
+				if (serverSock == NULL)
+				{
+					serverSock = InitializeServer();
+				}
+				if (serverSock != NULL && isConnected != 1) // Checks if is running the server or connected to it.
+				{
+					isConnected = 2;
+				}
+				// Invalidate the status bar area
+				RECT rect;
+				GetClientRect(hWnd, &rect); // Assuming status bar is at the top of the window
+				rect.bottom = rect.top + (MARGIN * 4); // Adjust height as needed
+				InvalidateRect(hWnd, &rect, TRUE);
+
+				// Redraw immediately
+				UpdateWindow(hWnd);
 				break;
 			}
-			if (HIWORD(wParam) == EN_CHANGE)
+			case S_CONNECT_BUTTON_ID:
 			{
-				ShowWindow(HWND(lParam), SW_HIDE);
-				ShowWindow(HWND(lParam), SW_SHOW);
-				SetFocus(HWND(lParam));
+				if (clientSock == NULL) 
+				{
+					clientSock = ConnectToServer();
+				}
+				if (clientSock != NULL && isConnected != 2) // Checks if is running the server or connected to it.
+				{
+					isConnected = 1;
+				}
+				// Invalidate the status bar area
+				RECT rect;
+				GetClientRect(hWnd, &rect); // Assuming status bar is at the top of the window
+				rect.bottom = rect.top + (MARGIN * 4); // Adjust height as needed
+				InvalidateRect(hWnd, &rect, TRUE);
+
+				// Redraw immediately
+				UpdateWindow(hWnd);
+				break;
 			}
-			break;
+			case INK_LETTER_BUTTON_ID:
+			{
+				HBITMAP hBitmap = GetLetter(hWnd); // Retrieve the bitmap handle from GetLetter
+
+				if (hBitmap != NULL) // Check if the bitmap handle is valid
+				{
+					HINSTANCE hInstance = GetModuleHandle(NULL);
+					CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, hBitmap);
+
+				}
+				else
+				{
+					MessageBox(NULL, L"Failed to retrieve bitmap from GetLetter\n", L"Fail", MB_OK);
+				}
+
+				break;
+			}
+			case 6:
+			{
+				thread recMessage(ReceiveLetterFromServer, clientSock, hWnd);
+				recMessage.detach();
+				break;
+			}
+			}
 		}
 		case WM_NCHITTEST: // Window Dragging logic
 		{
@@ -135,8 +225,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		case WM_DESTROY:
 		{
-				PostQuitMessage(0);
-				return 0;
+			KillTimer(hWnd, 1);
+			PostQuitMessage(0);
+			return 0;
 		}
 
 	}
@@ -161,6 +252,14 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 	RegisterClass(&wndClass);
 
 	DWORD style = WS_POPUP;
+
+	WNDCLASS wc = {};
+	wc.lpfnWndProc = LetterWindowProc;
+	wc.hInstance = m_hinstance;
+	wc.lpszClassName = L"ChildWindowClass";
+
+
+	RegisterClass(&wc);
 
 
 	m_hwnd = CreateWindowEx(
