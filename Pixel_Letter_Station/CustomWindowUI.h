@@ -23,12 +23,18 @@ void ServerStatusBar(HDC hdc, int isConnected);
 
  // HMENU id
 #define TITLE_ID 0
+
 #define QUIT_BUTTON_ID 1
 #define MINIMIZE_BUTTON_ID 2
+
 #define INK_LETTER_BUTTON_ID 3
+#define SEND_ID 32
+
 #define S_INITIALIZE_BUTTON_ID 4
 #define S_CONNECT_BUTTON_ID 5
+
 #define INVISBLE_TEXTBOX_SUBCLASS_ID 101
+
 #define TIMER_UPDATE_ID 1
 // learn about enum
 
