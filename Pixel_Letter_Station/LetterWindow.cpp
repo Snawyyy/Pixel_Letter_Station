@@ -138,7 +138,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         return 0;  
     }
     case WM_DESTROY: {
-        // Cleanup: the bitmap we didnt delete gets deleted
+        // Cleanup: the bitmap we didn't delete gets deleted
         if (hbmScreen != NULL) {
             DeleteObject(hbmScreen); 
             hbmScreen = NULL;
