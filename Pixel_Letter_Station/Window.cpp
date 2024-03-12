@@ -187,7 +187,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				errno_t err = wcstombs_s(&convertedChars, buffer.data(), size, wLetterText, _TRUNCATE);
 
 				if (err != 0) {
-					cerr << "Error converting string." << std::endl;
+					cerr << "Error converting string." << endl;
 					break;
 				}
 

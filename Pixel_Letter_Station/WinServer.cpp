@@ -127,7 +127,7 @@ string RecvData(SOCKET clientSocket)
 
 void SendData(SOCKET socket, vector<char>& buffer)
 {
-    cout << buffer.data() << std::endl; // Output the converted string
+    cout << buffer.data() << endl; // Output the converted string
 
     cout << "Sending data to client. Size: " << buffer.size() << " bytes." << endl;
     int bytesSent = send(socket, buffer.data(), buffer.size(), 0);
@@ -149,18 +149,18 @@ void AsyncRecvData(SOCKET socket, HWND letterContents)
 
     size_t size = data.size() + 1; // Size for wide char array
 
-    std::vector<wchar_t> wbuffer(size);
+    vector<wchar_t> wbuffer(size);
     size_t convertedChars = 0;
 
     // Convert char to wchar_t safely
     errno_t err = mbstowcs_s(&convertedChars, wbuffer.data(), size, data.c_str(), _TRUNCATE);
 
     if (err != 0) {
-        std::cerr << "Error converting string." << std::endl;
+        cerr << "Error converting string." << endl;
         return;
     }
 
-    std::wcout << wbuffer.data() << std::endl; // Output the converted string
+    wcout << wbuffer.data() << endl; // Output the converted string
     SetWindowText(letterContents, wbuffer.data());
     return;
 }
