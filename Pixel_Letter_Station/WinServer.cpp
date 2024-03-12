@@ -102,7 +102,7 @@ vector<BYTE> RecvData(SOCKET socket)
 {
 
     // Receives the size
-    int size;
+    int size = 0;
     int bytesReceived = recv(socket, (char*)size, sizeof(int), 0);
     vector<BYTE> recvData(size); // buffer
 
