@@ -10,6 +10,9 @@
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+extern SOCKET serverSock;
+extern SOCKET clientSock;
+
 class Window
 {
 public:

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Windows.h>
+#include "Window.h"
 #include "CustomWindowUI.h"
 #include "LetterManager.h"
 #include <thread>
