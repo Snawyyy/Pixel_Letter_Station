@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 #include "CustomWindowUI.h"
-#include "Letter.h"
+#include "LetterWindow.h"
 #include <locale>
 #include <codecvt>
 #include <vector>

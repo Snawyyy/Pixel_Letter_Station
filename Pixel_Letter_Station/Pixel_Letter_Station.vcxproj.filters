@@ -27,7 +27,7 @@
     <ClCompile Include="WinServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Letter.cpp">
+    <ClCompile Include="LetterWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClInclude Include="WinServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Letter.h">
+    <ClInclude Include="LetterWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

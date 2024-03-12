@@ -1,4 +1,4 @@
-#include "Letter.h"
+#include "LetterWindow.h"
 
 
 HBITMAP GetLetter(HWND hWnd)
