@@ -1,5 +1,4 @@
 #include "WinServer.h"
-#include "LetterManager.h"
 
 SOCKET InitializeServer()
 {

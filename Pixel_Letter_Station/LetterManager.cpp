@@ -72,3 +72,10 @@ HBITMAP DeserializeBitmap(const vector<BYTE>& bitmapData)
 
     return hBitmap;
 }
+
+HBITMAP ReceiveLetterFromServer(SOCKET socket)
+{
+    vector<BYTE> recvLetter = RecvData(socket);
+    HBITMAP letterBitmap = DeserializeBitmap(recvLetter);
+    return letterBitmap;
+}
