@@ -177,22 +177,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case SEND_BUTTON_ID:
 			{
-				GetWindowText(letterContents, &wLetterText[0], LETTER_BOX_CAP);
 
-				// Convert wchar_t* string to char* string
-				size_t size = wcslen(wLetterText) * MB_CUR_MAX + 1; // Determine buffer size
-				size_t convertedChars = 0;
-
-				vector<char> buffer(size);
-				errno_t err = wcstombs_s(&convertedChars, buffer.data(), size, wLetterText, _TRUNCATE);
-
-				if (err != 0) {
-					cerr << "Error converting string." << endl;
-					break;
-				}
-
-				thread sendThread(SendData, serverSock, ref(buffer));
-				sendThread.join();
 				break;
 			}
 			case 6:
