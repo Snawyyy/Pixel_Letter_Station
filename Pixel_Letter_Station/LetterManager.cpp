@@ -75,13 +75,21 @@ HBITMAP DeserializeBitmap(const vector<BYTE>& bitmapData)
 
 void ReceiveLetterFromServer(SOCKET socket, HWND hWnd)
 {
+    HINSTANCE hInstance = GetModuleHandle(NULL);
+
     vector<BYTE> recvLetter = RecvData(socket);
     HBITMAP letterBitmap = DeserializeBitmap(recvLetter);
 
     if (letterBitmap != NULL) // Check if the bitmap handle is valid
     {
-        HINSTANCE hInstance = GetModuleHandle(NULL);
-        CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), 600 - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, letterBitmap);
+
+        HWND hwndLetter = CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), 600 - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, letterBitmap);
+
+        if (hwndLetter == NULL) // Check if the window creation failed
+        {
+            cout << "oopsi" << endl;
+            DeleteObject(letterBitmap); // Free the bitmap resource
+        }
     }
     return;
 }
