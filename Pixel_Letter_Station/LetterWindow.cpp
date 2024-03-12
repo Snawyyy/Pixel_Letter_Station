@@ -6,6 +6,16 @@ HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int wid
     // Define the class name. Make sure this class is registered in WinMain.
     const wchar_t CLASS_NAME[] = L"ChildWindowClass";
 
+    // Get the dimensions of the parent window
+    RECT parentRect;
+    GetWindowRect(hParent, &parentRect);
+
+    // Calculate the desired position and size for the child window
+    // For example, to place it 50 pixels to the right and 50 pixels down from the parent's top-left corner
+    x = parentRect.left + 75;
+    y = parentRect.top + 20;
+
+
     // Create the window.
     HWND hwndLetter = CreateWindowEx(
         0,                 // Optional window styles.
