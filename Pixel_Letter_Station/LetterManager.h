@@ -6,5 +6,5 @@ HBITMAP GetLetter(HWND hWnd);
 vector<BYTE> SerializeBitmap(HBITMAP hBitmap);
 HBITMAP DeserializeBitmap(const vector<BYTE>& bitmapData);
 
-HBITMAP ReceiveLetterFromServer(SOCKET socket);
+void ReceiveLetterFromServer(SOCKET socket, HWND hWnd);
 

@@ -90,8 +90,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				if (isConnected) // only if connected try and receive data to not crash
 				{
-					//thread recMessage(AsyncRecvData, clientSock, letterContents);
-					//recMessage.detach();
+					thread recMessage(ReceiveLetterFromServer, clientSock, hWnd);
+					recMessage.detach();
 				}
 			}
 			break;
@@ -177,11 +177,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case INK_LETTER_BUTTON_ID:
 			{
-				HINSTANCE hInstance = GetModuleHandle(NULL);
 				HBITMAP hBitmap = GetLetter(hWnd); // Retrieve the bitmap handle from GetLetter
 
 				if (hBitmap != NULL) // Check if the bitmap handle is valid
 				{
+					HINSTANCE hInstance = GetModuleHandle(NULL);
 					CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, hBitmap);
 				}
 				else
