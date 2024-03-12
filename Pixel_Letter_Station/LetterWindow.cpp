@@ -105,7 +105,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     case WM_DRAWITEM:
     { 
         QuitButton(lParam, QUIT_BUTTON_ID);
-        DefaultButton(lParam, L"Send", INK_LETTER_BUTTON_ID);
+        DefaultButton(lParam, L"Send", SEND_ID);
         break;
     }
     case WM_ERASEBKGND:
