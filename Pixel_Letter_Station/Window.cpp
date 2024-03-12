@@ -177,9 +177,18 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case INK_LETTER_BUTTON_ID:
 			{
-				hBitmap = GetLetter(hWnd);
 				HINSTANCE hInstance = GetModuleHandle(NULL);
-				CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, hBitmap);
+				HBITMAP hBitmap = GetLetter(hWnd); // Retrieve the bitmap handle from GetLetter
+
+				if (hBitmap != NULL) // Check if the bitmap handle is valid
+				{
+					CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, hBitmap);
+				}
+				else
+				{
+					MessageBox(NULL, L"Failed to retrieve bitmap from GetLetter\n", L"Fail", MB_OK);
+				}
+
 				break;
 			}
 			case 6:

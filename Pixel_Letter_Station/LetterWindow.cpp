@@ -26,8 +26,10 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 {
     RECT rcClient;
     GetClientRect(hWnd, &rcClient);
+
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
+
     static HBITMAP hbmScreen = NULL;
 
     switch (uMsg)
@@ -52,7 +54,8 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             (width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
             hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
 
-        hbmScreen = reinterpret_cast<HBITMAP>(lParam);
+        CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
+        hbmScreen = reinterpret_cast<HBITMAP>(pCreate->lpCreateParams); // Retrieve and store the bitmap handle
     }
     case WM_COMMAND: // Button logic
     {
@@ -79,7 +82,6 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         HDC hdcMem = CreateCompatibleDC(hdc);
 
 
-        hbmScreen = GetLetter(GetParent(hWnd)); // change to happen in parent window then pass the bitmap
         HGDIOBJ oldBitmap = SelectObject(hdcMem, hbmScreen); // Use the bitmap handle
 
         // Get bitmap dimensions
