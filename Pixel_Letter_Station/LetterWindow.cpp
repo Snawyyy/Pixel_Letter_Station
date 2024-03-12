@@ -43,7 +43,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             "Send",
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
-            hWnd, (HMENU)INK_LETTER_BUTTON_ID, NULL, NULL);
+            hWnd, (HMENU)SEND_ID, NULL, NULL);
 
         // Window Bar Buttons
         // 
@@ -52,7 +52,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             "Quit",
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             (width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
-            hWnd, (HMENU)SEND_ID, NULL, NULL);
+            hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
 
         CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
         hbmScreen = reinterpret_cast<HBITMAP>(pCreate->lpCreateParams); // Retrieve and store the bitmap handle
