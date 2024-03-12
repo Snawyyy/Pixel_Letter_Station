@@ -125,12 +125,14 @@ string RecvData(SOCKET clientSocket)
 
 }
 
-void SendData(SOCKET socket, vector<char>& buffer)
+void SendData(SOCKET socket, vector<BYTE> Data)
 {
-    cout << buffer.data() << endl; // Output the converted string
+    // sends size first
+    int size = (int)Data.size();
+    send(socket, (const char*)size, sizeof(int), 0);
 
-    cout << "Sending data to client. Size: " << buffer.size() << " bytes." << endl;
-    int bytesSent = send(socket, buffer.data(), buffer.size(), 0);
+    // sends data
+    int bytesSent = send(socket, (const char*)Data.data(),size, 0);
     if (bytesSent == SOCKET_ERROR) {
         cout << "Failed to send data. Error code: " << WSAGetLastError() << endl;
     }
