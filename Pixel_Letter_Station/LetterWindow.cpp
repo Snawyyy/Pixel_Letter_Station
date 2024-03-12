@@ -70,7 +70,8 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         }
         case SEND_ID:
         {
-
+            vector<BYTE> BitMap = SerializeBitmap(hbmScreen);
+            SendData(clientSock, BitMap);
             break;
         }
         }
