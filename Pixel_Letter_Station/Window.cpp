@@ -49,6 +49,12 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				(width - LETTER_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH * 2, BUTTON_HEIGHT,
 				hWnd, (HMENU)6, NULL, NULL);
+			// Test
+			HWND Sticker = CreateWindowA("BUTTON",
+				"Test",
+				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+				(MARGIN * 2), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+				hWnd, (HMENU)7, NULL, NULL);
 			// Initialize server
 			HWND initializeServerButton = CreateWindowA("BUTTON",
 				"Test",
@@ -101,6 +107,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			MinimizeButton(lParam);
 			DefaultButton(lParam, L"Ink Letter", INK_LETTER_BUTTON_ID);
 			DefaultButton(lParam, L"Button 2", 6);
+			DefaultButton(lParam, L"Sticker", 7);
 			DefaultButton(lParam, L"Initialize server", S_INITIALIZE_BUTTON_ID);
 			DefaultButton(lParam, L"Connect to server", S_CONNECT_BUTTON_ID);
 
@@ -195,6 +202,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				thread recMessage(ReceiveLetterFromServer, clientSock, hWnd);
 				recMessage.detach();
+				break;
+			}
+			case 7:
+			{
+				
 				break;
 			}
 			}
