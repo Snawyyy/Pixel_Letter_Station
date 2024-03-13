@@ -20,7 +20,7 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int width, i
         0,                 // Optional window styles.
         CLASS_NAME,        // Window class
         L"Child Window",   // Window text
-        WS_VISIBLE | WS_POPUP, // Window style
+        WS_VISIBLE | WS_CHILD, // Window style
         x, y, width, height,   // Size and position
         hParent,           // Parent window    
         NULL,              // Menu
@@ -65,6 +65,17 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         HDC hdc = BeginPaint(hWnd, &ps);
         HDC hdcMem = CreateCompatibleDC(hdc);
 
+        HBITMAP hBitmap = (HBITMAP)LoadImage(NULL, L"C:\\Users\\Snawy\\source\\repos\\Snawyyy\\Pixel_Letter_Station\\Images\\LOGO.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+        if (hBitmap == NULL)
+        {
+            MessageBox(NULL, L"Load Failed", L"Fail", MB_OK);
+        }
+        hdcMem = CreateCompatibleDC(hdc);
+        HGDIOBJ oldBitmap = SelectObject(hdcMem, hBitmap);
+
+        BITMAP bitmap;
+        GetObject(hBitmap, sizeof(BITMAP), &bitmap);
+        StretchBlt(hdc, SMALL_MARGIN + BORDER_EFFECT_SIZE, (WIN_BAR_SIZE / 2) - ((bitmap.bmHeight / 2) / 2), (bitmap.bmWidth / 2), (bitmap.bmHeight / 2), hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
 
         EndPaint(hWnd, &ps);
         break;
@@ -76,7 +87,7 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
     }
     case WM_ERASEBKGND:
     {
-
+        return 1;
     }
     case WM_NCHITTEST: // Window Dragging logic
     {
