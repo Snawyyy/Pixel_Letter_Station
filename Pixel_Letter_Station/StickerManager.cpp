@@ -1,6 +1,6 @@
 #include "StickerManager.h"
 
-HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height, HBITMAP bitmapHandle)
+HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height)
 {
     // Define the class name. Make sure this class is registered in WinMain.
     const wchar_t CLASS_NAME[] = L"ChildWindowClass";
@@ -25,7 +25,7 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int width, i
         hParent,           // Parent window    
         NULL,              // Menu
         hInstance,         // Instance handle
-        (LPVOID)bitmapHandle   // Additional application data
+        NULL   // Additional application data
     );
 
     // The message loop
