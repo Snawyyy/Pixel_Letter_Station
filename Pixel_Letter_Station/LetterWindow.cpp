@@ -164,6 +164,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             DeleteObject(hbmScreen); 
             hbmScreen = NULL;
         }
+        PostQuitMessage(0);
         return 0; 
     }
     }
