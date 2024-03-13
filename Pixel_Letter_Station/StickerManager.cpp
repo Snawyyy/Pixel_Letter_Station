@@ -1,40 +1,49 @@
 #include "StickerManager.h"
 
-HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height)
+HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height)
 {
     // Define the class name. Make sure this class is registered in WinMain.
     const wchar_t CLASS_NAME[] = L"StickerWindowClass";
 
-    // Get the dimensions of the parent window
-    RECT parentRect;
-    GetWindowRect(hParent, &parentRect);
+    // Load the bitmap to get its dimensions
+    HBITMAP hbmSticker = (HBITMAP)LoadImage(NULL, L"C:\\Users\\Snawy\\source\\repos\\Snawyyy\\Pixel_Letter_Station\\Images\\LOGO.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+    if (hbmSticker == NULL)
+    {
+        MessageBox(NULL, L"Load Failed", L"Fail", MB_OK);
+        return NULL;
+    }
+
+    BITMAP bitmap;
+    GetObject(hbmSticker, sizeof(BITMAP), &bitmap);
 
     // Calculate the desired position and size for the child window
-    // For example, to place it 50 pixels to the right and 50 pixels down from the parent's top-left corner
+    RECT parentRect;
+    GetWindowRect(hParent, &parentRect);
     x = parentRect.left + 75;
     y = parentRect.top + 20;
 
+    // Calculate the new width based on the aspect ratio and the desired height
+    int width = (bitmap.bmWidth * height) / bitmap.bmHeight;
+
+    // Delete the bitmap since it's no longer needed
+    DeleteObject(hbmSticker);
 
     // Create the window.
     HWND hwndSticker = CreateWindowEx(
-        0,                 // Optional window styles.
-        CLASS_NAME,        // Window class
-        L"Sticker",   // Window text
-        WS_VISIBLE | WS_CHILD, // Window style
-        x, y, width, height,   // Size and position
-        hParent,           // Parent window    
-        NULL,              // Menu
-        hInstance,         // Instance handle
-        NULL   // Additional application data
+        0,
+        CLASS_NAME,
+        L"Sticker",
+        WS_VISIBLE | WS_CHILD | CS_OWNDC | CS_HREDRAW | CS_VREDRAW,
+        x, y, width, height,
+        hParent,
+        NULL,
+        hInstance,
+        NULL
     );
 
-    // The message loop
-    MSG msg;
-    while (GetMessage(&msg, NULL, 0, 0))
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
+    // Set the layered window attributes
+    SetWindowLong(hwndSticker, GWL_EXSTYLE, GetWindowLong(hwndSticker, GWL_EXSTYLE) | WS_EX_LAYERED);
+    SetLayeredWindowAttributes(hwndSticker, RGB(255, 255, 255), 255, LWA_COLORKEY);
 
     return hwndSticker;
 }
@@ -69,13 +78,36 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         if (hbmSticker == NULL)
         {
             MessageBox(NULL, L"Load Failed", L"Fail", MB_OK);
+            EndPaint(hWnd, &ps);
+            return 0;
         }
-        hdcMem = CreateCompatibleDC(hdc);
+
         HGDIOBJ oldBitmap = SelectObject(hdcMem, hbmSticker);
 
         BITMAP bitmap;
         GetObject(hbmSticker, sizeof(BITMAP), &bitmap);
-        StretchBlt(hdc, SMALL_MARGIN + BORDER_EFFECT_SIZE, (WIN_BAR_SIZE / 2) - ((bitmap.bmHeight / 2) / 2), (bitmap.bmWidth / 2), (bitmap.bmHeight / 2), hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
+
+        // Create a bitmap with a transparent background
+        HBITMAP hbmTransparent = CreateBitmap(width, height, 1, 32, NULL);
+        HDC hdcTransparent = CreateCompatibleDC(hdc);
+        HGDIOBJ oldTransparentBitmap = SelectObject(hdcTransparent, hbmTransparent);
+
+        // Fill the transparent bitmap with a fully transparent color
+        FillRect(hdcTransparent, &rcClient, (HBRUSH)GetStockObject(NULL_BRUSH));
+
+        // Draw the sticker bitmap onto the transparent bitmap
+        StretchBlt(hdcTransparent, 0, 0, width, height, hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
+
+        // Draw the transparent bitmap onto the window DC
+        BitBlt(hdc, 0, 0, width, height, hdcTransparent, 0, 0, SRCCOPY);
+
+        // Clean up
+        SelectObject(hdcTransparent, oldTransparentBitmap);
+        DeleteObject(hbmTransparent);
+        DeleteDC(hdcTransparent);
+
+        SelectObject(hdcMem, oldBitmap);
+        DeleteDC(hdcMem);
 
         EndPaint(hWnd, &ps);
         break;
@@ -85,9 +117,11 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 
         break;
     }
-    case WM_ERASEBKGND:
+    case WM_RBUTTONDOWN:
     {
+        DestroyWindow(hWnd);
         return 0;
+        break;
     }
     case WM_NCHITTEST: // Window Dragging logic
     {
@@ -95,7 +129,7 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         POINT pt = { LOWORD(lParam), HIWORD(lParam) };
         ScreenToClient(hWnd, &pt);
 
-        // Define the draggable area, e.g., top 50 pixels of the window
+        // Define the draggable area
         RECT draggableArea = { 0, 0, width, height}; // You need to define windowWidth
 
         // Check if the point is within the draggable area

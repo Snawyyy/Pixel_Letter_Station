@@ -207,7 +207,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 7:
 			{
 				HINSTANCE hInstance = GetModuleHandle(NULL);
-				CreateSticker(hWnd, hInstance, 0, 0, 100, 100);
+				CreateSticker(hWnd, hInstance, 0, 0, 25);
 				break;
 			}
 			}
