@@ -62,6 +62,12 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
             hWnd, (HMENU)SEND_ID, NULL, NULL);
+        // Test
+        HWND Sticker = CreateWindowA("BUTTON",
+            "Test",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            (MARGIN * 2), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+            hWnd, (HMENU)7, NULL, NULL);
 
         // Window Bar Buttons
         // 
@@ -84,6 +90,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         case QUIT_BUTTON_ID: // Knows what button number was pressed
         {
             DestroyWindow(hWnd);
+
             break;
         }
         case SEND_ID:
@@ -95,6 +102,12 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             vector<BYTE> BitMap = SerializeBitmap(hBitmap);
             SendData(serverSock, BitMap);
             DestroyWindow(hWnd);
+            break;
+        }
+        case 7:
+        {
+            HINSTANCE hInstance = GetModuleHandle(NULL);
+            CreateSticker(hWnd, hInstance, 0, 0, 25);
             break;
         }
         }
@@ -129,6 +142,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     { 
         QuitButton(lParam, QUIT_BUTTON_ID);
         DefaultButton(lParam, L"Send", SEND_ID);
+        DefaultButton(lParam, L"Sticker", 7);
         break;
     }
     case WM_ERASEBKGND:
