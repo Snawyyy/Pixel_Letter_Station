@@ -187,7 +187,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case INK_LETTER_BUTTON_ID:
 			{
-				HBITMAP hBitmap = GetLetter(hWnd); // Retrieve the bitmap handle from GetLetter
+				int posX = width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN;
+				int PosY = WIN_BAR_SIZE + MARGIN;
+				HBITMAP hBitmap = GetLetter(hWnd, posX, PosY); // Retrieve the bitmap handle from GetLetter
 
 				if (hBitmap != NULL) // Check if the bitmap handle is valid
 				{
