@@ -1,5 +1,7 @@
 #include "StickerManager.h"
 
+HWND g_hwndSticker = NULL;
+
 HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height)
 {
     // Define the class name. Make sure this class is registered in WinMain.
@@ -35,7 +37,7 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height)
         0,
         CLASS_NAME,
         L"Sticker",
-        WS_VISIBLE | WS_CHILD | CS_OWNDC | CS_HREDRAW | CS_VREDRAW,
+        WS_VISIBLE | WS_CHILD | CS_OWNDC | CS_HREDRAW | CS_VREDRAW | WS_CLIPSIBLINGS,
         x, y, width, height,
         hParent,
         NULL,
@@ -43,9 +45,9 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height)
         NULL
     );
 
-    // Set the layered window attributes
-    SetWindowLong(hwndSticker, GWL_EXSTYLE, GetWindowLong(hwndSticker, GWL_EXSTYLE) | WS_EX_LAYERED);
-    SetLayeredWindowAttributes(hwndSticker, RGB(255, 255, 255), 255, LWA_COLORKEY);
+    SetWindowPos(hwndSticker, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+
+    g_hwndSticker = hwndSticker;
 
     return hwndSticker;
 }
