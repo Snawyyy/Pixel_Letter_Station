@@ -3,7 +3,7 @@
 HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height)
 {
     // Define the class name. Make sure this class is registered in WinMain.
-    const wchar_t CLASS_NAME[] = L"ChildWindowClass";
+    const wchar_t CLASS_NAME[] = L"StickerWindowClass";
 
     // Get the dimensions of the parent window
     RECT parentRect;
@@ -19,7 +19,7 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int width, i
     HWND hwndSticker = CreateWindowEx(
         0,                 // Optional window styles.
         CLASS_NAME,        // Window class
-        L"Child Window",   // Window text
+        L"Sticker",   // Window text
         WS_VISIBLE | WS_CHILD, // Window style
         x, y, width, height,   // Size and position
         hParent,           // Parent window    
