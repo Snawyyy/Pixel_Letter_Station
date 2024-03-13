@@ -4,5 +4,5 @@
 
 using namespace std;
 
-HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height, HBITMAP bitmapHandle);
+HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height);
 LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
