@@ -88,7 +88,11 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         }
         case SEND_ID:
         {
-            vector<BYTE> BitMap = SerializeBitmap(hbmScreen);
+            int posX = BAR_MARGIN + SMALL_MARGIN;
+            int PosY = WIN_BAR_SIZE + SMALL_MARGIN;
+            HBITMAP hBitmap = GetLetter(hWnd, posX, PosY); // Retrieve the bitmap handle from GetLetter
+
+            vector<BYTE> BitMap = SerializeBitmap(hBitmap);
             SendData(serverSock, BitMap);
             DestroyWindow(hWnd);
             break;
@@ -110,7 +114,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         GetObject(hbmScreen, sizeof(bitmap), &bitmap);
 
         // Draw the bitmap
-        BitBlt(hdc, BAR_MARGIN + SMALL_MARGIN, WIN_BAR_SIZE - 1 + SMALL_MARGIN, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 5 + SMALL_MARGIN), hdcMem, 0, 0, SRCCOPY);
+        BitBlt(hdc, BAR_MARGIN + SMALL_MARGIN, WIN_BAR_SIZE + SMALL_MARGIN, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 5 + SMALL_MARGIN), hdcMem, 0, 0, SRCCOPY);
         WindowFrame(hdc, hWnd, width, height);
         WindowBar(hdc, hWnd, width);
 
