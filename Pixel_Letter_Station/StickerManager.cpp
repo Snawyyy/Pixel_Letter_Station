@@ -39,7 +39,7 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int width, i
     return hwndSticker;
 }
 
-LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
     RECT rcClient;
     GetClientRect(hWnd, &rcClient);
