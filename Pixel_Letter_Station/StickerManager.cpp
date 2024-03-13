@@ -16,14 +16,16 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height)
     BITMAP bitmap;
     GetObject(hbmSticker, sizeof(BITMAP), &bitmap);
 
-    // Calculate the desired position and size for the child window
-    RECT parentRect;
-    GetWindowRect(hParent, &parentRect);
-    x = parentRect.left + 75;
-    y = parentRect.top + 20;
-
+  
     // Calculate the new width based on the aspect ratio and the desired height
     int width = (bitmap.bmWidth * height) / bitmap.bmHeight;
+
+    // Calculate the desired position and size for the child window
+    POINT cursorPos;
+    GetCursorPos(&cursorPos);
+
+    x = cursorPos.x - (width / 2);
+    y = cursorPos.y - (height / 2);
 
     // Delete the bitmap since it's no longer needed
     DeleteObject(hbmSticker);
