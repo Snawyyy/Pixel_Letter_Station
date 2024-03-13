@@ -115,9 +115,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		case WM_PAINT: 
 		{
-			UpdateWindow(g_hwndSticker);
-			InvalidateRect(g_hwndSticker, NULL, TRUE);
-
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hWnd, &ps); // Start painting
 
