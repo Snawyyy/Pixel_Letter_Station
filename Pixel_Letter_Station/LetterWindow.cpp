@@ -21,7 +21,7 @@ HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int wid
         0,                 // Optional window styles.
         CLASS_NAME,        // Window class
         L"Child Window",   // Window text
-        WS_VISIBLE | WS_POPUP, // Window style
+        WS_VISIBLE | WS_POPUP | WS_CLIPCHILDREN, // Window style
         x, y, width, height,   // Size and position
         hParent,           // Parent window    
         NULL,              // Menu
