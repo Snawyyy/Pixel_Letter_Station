@@ -271,8 +271,15 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 	wc.hInstance = m_hinstance;
 	wc.lpszClassName = L"ChildWindowClass";
 
-
 	RegisterClass(&wc);
+
+
+	WNDCLASS Sc = {};
+	Sc.lpfnWndProc = StickerWindowProc;
+	Sc.hInstance = m_hinstance;
+	Sc.lpszClassName = L"StickerWindowClass";
+
+	RegisterClass(&Sc);
 
 
 	m_hwnd = CreateWindowEx(
