@@ -117,6 +117,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			UpdateWindow(g_hwndSticker);
 			InvalidateRect(g_hwndSticker, NULL, TRUE);
+			RedrawWindow(g_hwndSticker, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+			SetWindowPos(g_hwndSticker, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
 
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hWnd, &ps); // Start painting
@@ -268,7 +270,7 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 	wndClass.hbrBackground = CreateSolidBrush(RGB(255, 250, 215));
 	RegisterClass(&wndClass);
 
-	DWORD style = WS_POPUP;
+	DWORD style = WS_POPUP | WS_CLIPCHILDREN;
 
 	WNDCLASS wc = {};
 	wc.lpfnWndProc = LetterWindowProc;
