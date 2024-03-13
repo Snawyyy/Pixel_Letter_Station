@@ -115,6 +115,8 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     }
     case WM_PAINT:
     {
+        UpdateWindow(g_hwndSticker);
+        InvalidateRect(g_hwndSticker, NULL, TRUE);
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
         HDC hdcMem = CreateCompatibleDC(hdc);
