@@ -147,7 +147,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         HDC hdc = (HDC)wParam;
         RECT rect;
         GetClientRect(hWnd, &rect);
-        FillRect(hdc, &rect, CreateSolidBrush(RGB(255, 250, 215))); // Fill with red
+        FillRect(hdc, &rect, CreateSolidBrush(BACKGROUND_COLOR)); // Fill with red
         return TRUE; // Return non-zero value when processed
     }
     case WM_NCHITTEST: // Window Dragging logic
