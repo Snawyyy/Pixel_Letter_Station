@@ -11,6 +11,8 @@ SOCKET serverSock;
 SOCKET clientSock;
 int isConnected = 0;
 
+bool letterOpened = false;
+
 HWND letterContents;
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -177,20 +179,29 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case INK_LETTER_BUTTON_ID:
 			{
-				int posX = width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN;
-				int PosY = WIN_BAR_SIZE + MARGIN;
-				HBITMAP hBitmap = GetLetter(hWnd, posX, PosY); // Retrieve the bitmap handle from GetLetter
-
-				if (hBitmap != NULL) // Check if the bitmap handle is valid
+				if (letterOpened == false)
 				{
-					HINSTANCE hInstance = GetModuleHandle(NULL);
-					CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, hBitmap);
+					int posX = width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN;
+					int PosY = WIN_BAR_SIZE + MARGIN;
+					HBITMAP hBitmap = GetLetter(hWnd, posX, PosY); // Retrieve the bitmap handle from GetLetter
+
+					if (hBitmap != NULL) // Check if the bitmap handle is valid
+					{
+						HINSTANCE hInstance = GetModuleHandle(NULL);
+						CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, hBitmap);
+						letterOpened = true;
+					}
+					else
+					{
+						MessageBox(NULL, L"Failed to retrieve bitmap from GetLetter\n", L"Fail", MB_OK);
+					}
 
 				}
 				else
 				{
-					MessageBox(NULL, L"Failed to retrieve bitmap from GetLetter\n", L"Fail", MB_OK);
+					// Make boop sound later
 				}
+
 
 				break;
 			}
@@ -201,6 +212,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			}
 			}
+		}
+		case WM_LETTER_WINDOW:
+		{
+			if ((int)wParam == 101)
+			{
+				letterOpened = false;
+			}
+			break;
 		}
 		case WM_NCHITTEST: // Window Dragging logic
 		{
