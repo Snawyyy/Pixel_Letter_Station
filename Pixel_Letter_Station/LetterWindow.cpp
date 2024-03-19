@@ -29,14 +29,6 @@ HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int wid
         (LPVOID)bitmapHandle   // Additional application data
     );
 
-    // The message loop
-    MSG msg;
-    while (GetMessage(&msg, NULL, 0, 0))
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-
     return hwndLetter;
 }
 
