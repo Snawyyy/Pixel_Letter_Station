@@ -171,7 +171,7 @@ bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in t
 		0,                     // Average character width (0 lets the system choose the best value)
 		0,                     // Angle of escapement
 		0,                     // Base-line orientation angle
-		FW_EXTRABOLD,               // Font weight (FW_BOLD for bold)
+		FW_BOLD,               // Font weight (FW_BOLD for bold)
 		FALSE,                 // Italic attribute option
 		FALSE,                 // Underline attribute option
 		FALSE,                 // Strikeout attribute option
