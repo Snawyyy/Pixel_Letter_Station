@@ -39,7 +39,7 @@ void ServerStatusBar(HDC hdc, int isConnected);
 // learn about enum
 
  // Window Bar Settings
-#define TITLE_SIZE 20
+#define TITLE_SIZE 17.5
 #define WIN_BAR_SIZE 30
 #define BAR_MARGIN  5
 #define BAR_BUTTON_SIZE  20
