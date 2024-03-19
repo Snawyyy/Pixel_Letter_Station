@@ -183,7 +183,7 @@ bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in t
 		L"Arial");              // Font name
 	HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
 
-	SetTextColor(hdc, RGB(0, 0, 0));// text color
+	SetTextColor(hdc, PAPER_COLOR);// text color
 	SetBkMode(hdc, TRANSPARENT); // To make background transparent
 	TextOut(hdc, SMALL_MARGIN + BORDER_EFFECT_SIZE * 2 + width, ((WIN_BAR_SIZE / 2) - (TITLE_SIZE / 2) + 1), L"Pixel Letter Station", strlen("Pixel Letter Station"));
 	return 0; // Indicate we handled the message
