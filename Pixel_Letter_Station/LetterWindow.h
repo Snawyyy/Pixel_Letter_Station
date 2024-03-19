@@ -13,3 +13,4 @@ HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int wid
 LRESULT LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 #define WM_LETTER_WINDOW WM_USER + 100
+#define WM_LETTER_RECIVED WM_USER + 101

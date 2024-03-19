@@ -221,6 +221,16 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		}
+		case WM_LETTER_RECIVED:
+		{
+			HBITMAP letterBitmap = (HBITMAP)wParam;
+			if (letterBitmap != NULL)
+			{
+			HINSTANCE hInstance = GetModuleHandle(NULL);
+			HWND hwndLetter = CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), 600 - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, letterBitmap);
+			}
+			break;
+		}
 		case WM_NCHITTEST: // Window Dragging logic
 		{
 			// Convert the mouse position to screen coordinates
