@@ -56,3 +56,40 @@ void ServerStatusBar(HDC hdc, int isConnected);
 #define BUTTON_WIDTH 100 //Button
 #define BUTTON_HEIGHT 30
 
+// Ui Colors
+
+// WindowBar Colors
+#define WINODW_UI_COLOR RGB(255, 100, 100)
+#define WINODW_UI_COLOR_SHADOW RGB(155, 0, 0)
+#define WINDOW_UI_COLOR_SHINE RGB(255, 200, 200)
+
+// Letter Colors
+#define LETTER_BORDER RGB(50, 0, 0)
+#define PAPER_COLOR RGB(255, 223, 133)
+#define PAPER_COLOR_SHADOW RGB(200, 160, 50)
+
+// UI Colors
+#define UI_BORDER RGB(50, 0, 0)
+#define UI_BORDER_SHINE RGB(150, 100, 70)
+#define UI_BORDER_SHADOW RGB(100, 50, 50)
+
+// Server Status Colors
+#define STATUS_OFFLINE_COLOR RGB(255, 100, 100)
+#define STATUS_ONLINE_COLOR RGB(100, 255, 100)
+#define STATUS_Server_COLOR RGB(150, 150, 255)
+
+#define DEFULT_BUTTON_COLOR RGB(255, 0, 0)
+#define DEFULT_BUTTON_COLOR_SHADOW RGB(160, 120, 95)
+#define DEFULT_BUTTON_COLOR_SHINE RGB(255, 240, 200) 
+#define DEFULT_BUTTON_COLOR_PRESSED RGB(200, 200, 255)
+#define DEFULT_BUTTON_COLOR_PRESSED_TEXT RGB(255, 255, 255)
+
+
+
+
+
+
+
+
+
+
