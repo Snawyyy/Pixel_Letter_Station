@@ -185,7 +185,7 @@ bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in t
 
 	SetTextColor(hdc, RGB(0, 0, 0));// text color
 	SetBkMode(hdc, TRANSPARENT); // To make background transparent
-	TextOut(hdc, MARGIN * 2, ((WIN_BAR_SIZE / 2) - (TITLE_SIZE / 2)), L"Pixel Letter Station", strlen("Pixel Letter Station"));
+	TextOut(hdc, SMALL_MARGIN + BORDER_EFFECT_SIZE * 2 + width, ((WIN_BAR_SIZE / 2) - (TITLE_SIZE / 2) + 1), L"Pixel Letter Station", strlen("Pixel Letter Station"));
 	return 0; // Indicate we handled the message
 
 
