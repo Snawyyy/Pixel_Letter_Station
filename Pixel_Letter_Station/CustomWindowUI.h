@@ -38,14 +38,14 @@ void ServerStatusBar(HDC hdc, int isConnected);
 #define TIMER_UPDATE_ID 1
 // learn about enum
 
- //Window Bar Settings
+ // Window Bar Settings
 #define TITLE_SIZE 20
 #define WIN_BAR_SIZE 30
 #define BAR_MARGIN  5
 #define BAR_BUTTON_SIZE  20
 #define BORDER_EFFECT_SIZE 4
 
- //Ui Settings
+ // Ui Settings
 #define MARGIN  20
 #define SMALL_MARGIN  7.5
 
