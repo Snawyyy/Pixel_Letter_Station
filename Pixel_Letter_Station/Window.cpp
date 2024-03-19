@@ -251,7 +251,7 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 	wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wndClass.lpfnWndProc = WindowProc;
 
-	wndClass.hbrBackground = CreateSolidBrush(RGB(255, 250, 215));
+	wndClass.hbrBackground = CreateSolidBrush(BACKGROUND_COLOR);
 	RegisterClass(&wndClass);
 
 	DWORD style = WS_POPUP | WS_CLIPCHILDREN;
