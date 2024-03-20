@@ -11,8 +11,8 @@ HWND CreateUserWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width
 
     // Calculate the desired position and size for the child window
     // For example, to place it 50 pixels to the right and 50 pixels down from the parent's top-left corner
-    x = parentRect.left + 75;
-    y = parentRect.top + 20;
+    x = (parentRect.right / 2) - (width / 2);
+    y = (parentRect.bottom / 2) - (height / 2);
 
 
     // Create the window.
