@@ -109,16 +109,12 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
-        HDC hdcMem = CreateCompatibleDC(hdc);
 
         // Bar and frame
         WindowFrame(hdc, hWnd, width, height);
         WindowBar(hdc, hWnd, width);
 
         ServerStatusBar(hdc, isConnected, (width / 2) - ((MARGIN * 8.5) / 2), MARGIN * 2);
-
-        // Cleanup
-        DeleteDC(hdcMem);
 
         EndPaint(hWnd, &ps);
         break;

@@ -208,6 +208,12 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			case 6:
 			{
+				HINSTANCE hInstance = GetModuleHandle(NULL);
+				userWindow = CreateUserWindow(hWnd, hInstance, 0, 0, 200, 200);
+				if (userWindow != NULL)
+				{
+					SendMessage(userWindow, WM_MAIN_WINDOW, (WPARAM)isConnected, 0);
+				}
 				thread recMessage(ReceiveLetterFromServer, clientSock, hWnd);
 				recMessage.detach();
 				break;
