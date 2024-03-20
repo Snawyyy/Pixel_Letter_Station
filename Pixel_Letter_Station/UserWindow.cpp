@@ -39,8 +39,6 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
 
-    static HBITMAP hbmScreen = NULL;
-
     switch (uMsg)
     {
     case WM_CREATE: // where you create all the interface
