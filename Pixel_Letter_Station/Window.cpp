@@ -73,6 +73,20 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			SetTimer(hWnd, TIMER_UPDATE_ID, 1000, NULL);
 
+			// Circular User button
+			HINSTANCE hInstance = GetModuleHandle(NULL);
+			HWND circularButton = CreateWindowEx(
+				0,                          // extended styles
+				L"UserButton",            // custom button class name
+				L"Button",                  // button text
+				WS_CHILD | WS_VISIBLE,      // window styles
+				BORDER_EFFECT_SIZE + MARGIN, height - BORDER_EFFECT_SIZE - 100 - MARGIN, 100, 100,         // x, y, width, height
+				hWnd,               // parent window handle
+				NULL,                       // menu or child window identifier
+				hInstance,                  // instance handle
+				NULL                        // additional creation parameters
+			);
+
 			break;
 		}
 		case WM_TIMER:
@@ -315,6 +329,14 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 	Uc.lpszClassName = L"UserWindowClass";
 
 	RegisterClass(&Uc);
+
+	// UserButton Class
+	WNDCLASS Cc = {};
+	Cc.lpfnWndProc = UserButton;
+	Cc.hInstance = m_hinstance;
+	Cc.lpszClassName = L"UserButton";
+
+	RegisterClass(&Cc);
 
 
 	m_hwnd = CreateWindowEx(

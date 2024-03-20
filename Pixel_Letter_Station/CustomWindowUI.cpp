@@ -148,6 +148,153 @@ bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId) // GUI Defa
 	}
 }
 
+
+LRESULT CALLBACK UserButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	static HBRUSH hBrush = NULL;
+	static RECT rect;
+	PAINTSTRUCT ps;
+	HDC hdc;
+	static bool isPressed;
+
+	switch (msg)
+	{
+	case WM_CREATE:
+	{
+		// Creates a solid brush for the button background color
+		hBrush = CreateSolidBrush(UI_BORDER); // Change the RGB values to set your desired background color
+		break;
+	}
+	case WM_SIZE:
+	{
+		// Stores the button's client area dimensions
+		GetClientRect(hwnd, &rect);
+
+		// Create a circular region based on the updated client rect
+		HRGN hRgn = CreateEllipticRgn(0, 0, rect.right, rect.bottom);
+		SetWindowRgn(hwnd, hRgn, TRUE); // Set the window region. TRUE to redraw the window immediately
+
+		// NOTE: The region is now owned by the system, no need to call DeleteObject on hRgn
+		break;
+	}
+	case WM_PAINT:
+	{
+		hdc = BeginPaint(hwnd, &ps);
+
+		// Create the outer and inner rectangles
+		RECT outerRect = { 0, 0, rect.right, rect.bottom };
+		RECT innerRect = { BORDER_EFFECT_SIZE, BORDER_EFFECT_SIZE, rect.right - BORDER_EFFECT_SIZE, rect.bottom - BORDER_EFFECT_SIZE };
+
+		// Create the outer and inner regions
+		HRGN outerRgn = CreateEllipticRgnIndirect(&outerRect);
+		HRGN innerRgn = CreateEllipticRgnIndirect(&innerRect);
+
+		// Combine the regions to create a ring shape
+		CombineRgn(outerRgn, outerRgn, innerRgn, RGN_DIFF);
+		if (isPressed)
+		{
+			// Set the brush color for the outer ring
+			HBRUSH outerBrush = CreateSolidBrush(RGB(255, 0, 0));
+			SelectObject(hdc, outerBrush);
+
+			// Fill the outer ring
+			FillRgn(hdc, outerRgn, outerBrush);
+
+			// Set the brush color for the inner circle
+			HBRUSH innerBrush = CreateSolidBrush(RGB(255, 0, 0));
+			SelectObject(hdc, innerBrush);
+
+			// Fill the inner circle
+			Ellipse(hdc, innerRect.left, innerRect.top, innerRect.right, innerRect.bottom);
+			FillRgn(hdc, innerRgn, innerBrush);
+			// Clean up the brushes and regions
+			DeleteObject(outerBrush);
+			DeleteObject(innerBrush);
+		}
+		else
+		{
+			// Set the brush color for the outer ring
+			HBRUSH outerBrush = CreateSolidBrush(UI_BORDER);
+			SelectObject(hdc, outerBrush);
+
+			// Fill the outer ring
+			FillRgn(hdc, outerRgn, outerBrush);
+
+			// Set the brush color for the inner circle
+			HBRUSH innerBrush = CreateSolidBrush(UI_BORDER_SHADOW);
+			SelectObject(hdc, innerBrush);
+
+			// Fill the inner circle
+			Ellipse(hdc, innerRect.left, innerRect.top, innerRect.right, innerRect.bottom);
+			FillRgn(hdc, innerRgn, innerBrush);
+			// Clean up the brushes and regions
+			DeleteObject(outerBrush);
+			DeleteObject(innerBrush);
+		}
+		DeleteObject(outerRgn);
+		DeleteObject(innerRgn);
+
+		// Draw the button text centered in the circle
+		SetBkMode(hdc, TRANSPARENT);
+		DrawText(hdc, L"Button", -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+
+		EndPaint(hwnd, &ps);
+		break;
+
+
+	}
+	case WM_MOUSEMOVE:
+	{
+		TRACKMOUSEEVENT tme;
+		tme.cbSize = sizeof(TRACKMOUSEEVENT);
+		tme.dwFlags = TME_LEAVE; // Specifies that we want a WM_MOUSELEAVE message when the mouse leaves
+		tme.hwndTrack = hwnd;
+		tme.dwHoverTime = HOVER_DEFAULT; // Not needed for WM_MOUSELEAVE but required to be set
+
+		TrackMouseEvent(&tme); // Call this function to start tracking
+
+		break;
+	}
+	case WM_MOUSELEAVE:
+	{
+		// The mouse has left the window, you can handle it here
+		isPressed = FALSE; // Reset the isPressed state if needed
+		InvalidateRect(hwnd, NULL, TRUE); // Redraw the window if necessary
+
+		break;
+	}
+	case WM_LBUTTONDOWN:
+	{
+		// Update the button's pressed state
+		isPressed = TRUE;
+		// Invalidate the button to trigger a redraw
+		InvalidateRect(hwnd, NULL, TRUE);
+
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		// Update the button's pressed state
+		isPressed = FALSE;
+		SendMessage(GetParent(hwnd), WM_COMMAND, (WPARAM)6, (LPARAM)hwnd);
+		// Invalidate the button to trigger a redraw
+		InvalidateRect(hwnd, NULL, TRUE);
+
+		break;
+	}
+	case WM_DESTROY:
+	{
+		// Clean up resources
+		DeleteObject(hBrush);
+		break;
+	}
+	default:
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+
+	return 0;
+}
+
 bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in the GUI
 {
 	HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP_LOGO), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
