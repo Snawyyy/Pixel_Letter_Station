@@ -301,6 +301,14 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 
 	RegisterClass(&Sc);
 
+	// UserWindow Class
+	WNDCLASS Uc = {};
+	Sc.lpfnWndProc = UserWindowProc;
+	Sc.hInstance = m_hinstance;
+	Sc.lpszClassName = L"UserWindowClass";
+
+	RegisterClass(&Uc);
+
 
 	m_hwnd = CreateWindowEx(
 		0,
