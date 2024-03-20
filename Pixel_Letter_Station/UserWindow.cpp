@@ -49,6 +49,18 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             (width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
             hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
+        // Initialize server
+        HWND initializeServerButton = CreateWindowA("BUTTON",
+            "Test",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            (width / 2) - (BUTTON_WIDTH * 1.5) / 2, height - BUTTON_HEIGHT - MARGIN, BUTTON_WIDTH * 1.5, BUTTON_HEIGHT,
+            hWnd, (HMENU)S_INITIALIZE_BUTTON_ID, NULL, NULL);
+        // Connect to server
+        HWND connectServerButton = CreateWindowA("BUTTON",
+            "Test",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            (width / 2) - (BUTTON_WIDTH * 1.5) / 2, height - (BUTTON_HEIGHT * 2) - (MARGIN * 2), BUTTON_WIDTH * 1.5, BUTTON_HEIGHT,
+            hWnd, (HMENU)S_CONNECT_BUTTON_ID, NULL, NULL);
         break;
     }
     case WM_COMMAND: // Button logic
@@ -59,7 +71,14 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         case QUIT_BUTTON_ID: // Knows what button number was pressed
         {
             DestroyWindow(hWnd);
-
+            break;
+        }
+        case S_INITIALIZE_BUTTON_ID:
+        {
+            break;
+        }
+        case S_CONNECT_BUTTON_ID:
+        {
             break;
         }
         }
@@ -85,6 +104,8 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     case WM_DRAWITEM:
     {
         QuitButton(lParam, QUIT_BUTTON_ID);
+        DefaultButton(lParam, L"Initialize server", S_INITIALIZE_BUTTON_ID);
+        DefaultButton(lParam, L"Connect to server", S_CONNECT_BUTTON_ID);
         break;
     }
     case WM_ERASEBKGND:
