@@ -276,7 +276,7 @@ LRESULT CALLBACK UserButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		// Update the button's pressed state
 		isPressed = FALSE;
-		SendMessage(GetParent(hwnd), WM_COMMAND, (WPARAM)6, (LPARAM)hwnd);
+		SendMessage(GetParent(hwnd), WM_COMMAND, (WPARAM)7, (LPARAM)hwnd);
 		// Invalidate the button to trigger a redraw
 		InvalidateRect(hwnd, NULL, TRUE);
 
