@@ -285,6 +285,7 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 
 	DWORD style = WS_POPUP | WS_CLIPCHILDREN;
 
+	// LetterWindow Class
 	WNDCLASS wc = {};
 	wc.lpfnWndProc = LetterWindowProc;
 	wc.hInstance = m_hinstance;
@@ -292,7 +293,7 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 
 	RegisterClass(&wc);
 
-
+	// StickerWindow Class
 	WNDCLASS Sc = {};
 	Sc.lpfnWndProc = StickerWindowProc;
 	Sc.hInstance = m_hinstance;
