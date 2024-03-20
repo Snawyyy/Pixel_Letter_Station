@@ -14,6 +14,7 @@ int isConnected = 0;
 bool letterOpened = false;
 
 HWND letterContents;
+HWND userWindow;
 
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -212,6 +213,60 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			}
 			}
+		}
+		case WM_USER_WINDOW:
+		{
+			// Gets message from User Window regarding server connections
+			if ((int)wParam == S_INITIALIZE_BUTTON_ID)
+			{
+				if (serverSock == NULL)
+				{
+					serverSock = InitializeServer();
+				}
+				if (serverSock != NULL && isConnected != 1) // Checks if is running the server or connected to it.
+				{
+					isConnected = 2;
+				}
+				// Invalidate the status bar area
+				RECT rect;
+				GetClientRect(hWnd, &rect); // Assuming status bar is at the top of the window
+				rect.bottom = rect.top + (MARGIN * 4); // Adjust height as needed
+				InvalidateRect(hWnd, &rect, TRUE);
+
+				// Redraw immediately
+				UpdateWindow(hWnd);
+				// Sends connected status to User Window
+				if (userWindow != NULL)
+				{
+					SendMessage(userWindow, WM_MAIN_WINDOW, (WPARAM)isConnected, 0);
+				}
+			}
+
+			if ((int)wParam == S_CONNECT_BUTTON_ID)
+			{
+				if (clientSock == NULL)
+				{
+					clientSock = ConnectToServer();
+				}
+				if (clientSock != NULL && isConnected != 2) // Checks if is running the server or connected to it.
+				{
+					isConnected = 1;
+				}
+				// Invalidate the status bar area
+				RECT rect;
+				GetClientRect(hWnd, &rect); // Assuming status bar is at the top of the window
+				rect.bottom = rect.top + (MARGIN * 4); // Adjust height as needed
+				InvalidateRect(hWnd, &rect, TRUE);
+
+				// Redraw immediately
+				UpdateWindow(hWnd);
+				// Sends connected status to User Window
+				if (userWindow != NULL)
+				{
+					SendMessage(userWindow, WM_MAIN_WINDOW, (WPARAM)isConnected, 0);
+				}
+			}
+			break;
 		}
 		case WM_LETTER_WINDOW:
 		{

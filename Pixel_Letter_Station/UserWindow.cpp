@@ -77,14 +77,32 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         }
         case S_INITIALIZE_BUTTON_ID:
         {
+            SendMessage(GetParent(hWnd), WM_USER_WINDOW, (WPARAM)S_INITIALIZE_BUTTON_ID, 0);
             break;
         }
         case S_CONNECT_BUTTON_ID:
         {
+            SendMessage(GetParent(hWnd), WM_USER_WINDOW, (WPARAM)S_CONNECT_BUTTON_ID, 0);
             break;
         }
         }
 
+        break;
+    }
+    case WM_MAIN_WINDOW:
+    {
+        int recConnected = (int)wParam;
+        if ((isConnected != recConnected))
+        {
+            isConnected = recConnected;
+            // Invalidate the status bar area
+            RECT rect;
+            GetClientRect(hWnd, &rect);
+            InvalidateRect(hWnd, &rect, TRUE);
+
+            // Redraw immediately
+            UpdateWindow(hWnd);
+        }
         break;
     }
     case WM_PAINT:

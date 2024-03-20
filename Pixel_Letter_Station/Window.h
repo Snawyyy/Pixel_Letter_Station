@@ -29,3 +29,5 @@ private:
 	HINSTANCE m_hinstance;
 	HWND m_hwnd;
 };
+
+#define WM_MAIN_WINDOW WM_USER + 1
