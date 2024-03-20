@@ -43,10 +43,27 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     {
     case WM_CREATE: // where you create all the interface
     {
+        // Quit Button
+        HWND quitButton = CreateWindowA("BUTTON",
+            "Quit",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            (width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
+            hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
         break;
     }
     case WM_COMMAND: // Button logic
     {
+        switch (LOWORD(wParam))
+        {
+
+        case QUIT_BUTTON_ID: // Knows what button number was pressed
+        {
+            DestroyWindow(hWnd);
+
+            break;
+        }
+        }
+
         break;
     }
     case WM_PAINT:
@@ -67,6 +84,7 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     }
     case WM_DRAWITEM:
     {
+        QuitButton(lParam, QUIT_BUTTON_ID);
         break;
     }
     case WM_ERASEBKGND:
