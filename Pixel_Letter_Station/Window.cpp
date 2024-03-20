@@ -52,18 +52,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
 				(width - LETTER_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH * 2, BUTTON_HEIGHT,
 				hWnd, (HMENU)6, NULL, NULL);
-			// Initialize server
-			HWND initializeServerButton = CreateWindowA("BUTTON",
-				"Test",
-				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				MARGIN * 2, MARGIN * 5, BUTTON_WIDTH * 1.5, BUTTON_HEIGHT,
-				hWnd, (HMENU)S_INITIALIZE_BUTTON_ID, NULL, NULL);
-			// Connect to server
-			HWND connectServerButton = CreateWindowA("BUTTON",
-				"Test",
-				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				MARGIN * 2, MARGIN * 7, BUTTON_WIDTH * 1.5, BUTTON_HEIGHT,
-				hWnd, (HMENU)S_CONNECT_BUTTON_ID, NULL, NULL);
 
 			// Letter UI
 			// 
@@ -104,8 +92,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			MinimizeButton(lParam);
 			DefaultButton(lParam, L"Ink Letter", INK_LETTER_BUTTON_ID);
 			DefaultButton(lParam, L"Button 2", 6);
-			DefaultButton(lParam, L"Initialize server", S_INITIALIZE_BUTTON_ID);
-			DefaultButton(lParam, L"Connect to server", S_CONNECT_BUTTON_ID);
 
 			break;
 		}
@@ -138,46 +124,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case MINIMIZE_BUTTON_ID:
 				ShowWindow(hWnd, SW_MINIMIZE);
 				break;
-			case S_INITIALIZE_BUTTON_ID:
-			{
-				if (serverSock == NULL)
-				{
-					serverSock = InitializeServer();
-				}
-				if (serverSock != NULL && isConnected != 1) // Checks if is running the server or connected to it.
-				{
-					isConnected = 2;
-				}
-				// Invalidate the status bar area
-				RECT rect;
-				GetClientRect(hWnd, &rect); // Assuming status bar is at the top of the window
-				rect.bottom = rect.top + (MARGIN * 4); // Adjust height as needed
-				InvalidateRect(hWnd, &rect, TRUE);
-
-				// Redraw immediately
-				UpdateWindow(hWnd);
-				break;
-			}
-			case S_CONNECT_BUTTON_ID:
-			{
-				if (clientSock == NULL) 
-				{
-					clientSock = ConnectToServer();
-				}
-				if (clientSock != NULL && isConnected != 2) // Checks if is running the server or connected to it.
-				{
-					isConnected = 1;
-				}
-				// Invalidate the status bar area
-				RECT rect;
-				GetClientRect(hWnd, &rect); // Assuming status bar is at the top of the window
-				rect.bottom = rect.top + (MARGIN * 4); // Adjust height as needed
-				InvalidateRect(hWnd, &rect, TRUE);
-
-				// Redraw immediately
-				UpdateWindow(hWnd);
-				break;
-			}
 			case INK_LETTER_BUTTON_ID:
 			{
 				if (letterOpened == false)
