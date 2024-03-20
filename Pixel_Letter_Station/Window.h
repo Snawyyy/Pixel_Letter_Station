@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include "CustomWindowUI.h"
 #include "LetterWindow.h"
+#include "UserWindow.h"
 #include "StickerManager.h"
 #include <locale>
 #include <codecvt>
