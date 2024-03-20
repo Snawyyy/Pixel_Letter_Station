@@ -39,7 +39,7 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
 
-    int isConnected = 0;
+    static int isConnected = 0;
 
     switch (uMsg)
     {
