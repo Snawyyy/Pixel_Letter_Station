@@ -39,6 +39,8 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
 
+    int isConnected = 0;
+
     switch (uMsg)
     {
     case WM_CREATE: // where you create all the interface
@@ -94,6 +96,8 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         // Bar and frame
         WindowFrame(hdc, hWnd, width, height);
         WindowBar(hdc, hWnd, width);
+
+        ServerStatusBar(hdc, isConnected, (width / 2) - ((MARGIN * 8.5) / 2), MARGIN * 2);
 
         // Cleanup
         DeleteDC(hdcMem);

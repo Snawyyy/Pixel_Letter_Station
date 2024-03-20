@@ -19,7 +19,7 @@ void LetterBackground(HDC hdc, HWND hWnd, int width, int height);
 
 void RichTextBoxPaint(HWND Box);
 
-void ServerStatusBar(HDC hdc, int isConnected);
+void ServerStatusBar(HDC hdc, int isConnected, int x, int y);
 
  // HMENU id
 #define TITLE_ID 0

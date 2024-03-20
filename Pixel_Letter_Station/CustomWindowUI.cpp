@@ -280,21 +280,24 @@ void RichTextBoxPaint(HWND box)
 
 }
 
-void ServerStatusBar(HDC hdc, int isConnected)
+void ServerStatusBar(HDC hdc, int isConnected, int x, int y)
 {
+	int height = (MARGIN * 1.5) + SMALL_MARGIN;
+	int width = MARGIN * 8.5;
+
 	// First, draw the larger rectangle with a solid color
 	HBRUSH brushMain = CreateSolidBrush(UI_BORDER); // Black color for the Border
-	RECT rectMain = { MARGIN * 1.5, MARGIN * 2.5, MARGIN * 10, (MARGIN * 4) + SMALL_MARGIN }; // Main rectangle coordinates
+	RECT rectMain = { x, y, x + width, y + height }; // Main rectangle coordinates
 	FillRect(hdc, &rectMain, brushMain);
 
 	//Then, the "Shine" by drawing it with the Shine color
 	HBRUSH brushShading = CreateSolidBrush(UI_BORDER_SHINE); // Brush for the cutout, using the Shine color
-	RECT rectShading = { MARGIN * 1.5 + BORDER_EFFECT_SIZE, MARGIN * 2.5 + BORDER_EFFECT_SIZE, MARGIN * 10 - BORDER_EFFECT_SIZE, (MARGIN * 4) + SMALL_MARGIN - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
+	RECT rectShading = { x + BORDER_EFFECT_SIZE, y + BORDER_EFFECT_SIZE, x + width - BORDER_EFFECT_SIZE, y + height - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
 	FillRect(hdc, &rectShading, brushShading);
 
 	//Then, the "Paper" by drawing it with the paper color
 	HBRUSH brushPaper = CreateSolidBrush(UI_BORDER_SHADOW); // Brush for the cutout, using the window background color
-	RECT rectCutout = { MARGIN * 1.5 + (BORDER_EFFECT_SIZE * 2), MARGIN * 2.5 + (BORDER_EFFECT_SIZE * 2), MARGIN * 10 - BORDER_EFFECT_SIZE, (MARGIN * 4) + SMALL_MARGIN - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
+	RECT rectCutout = { x + (BORDER_EFFECT_SIZE * 2), y + (BORDER_EFFECT_SIZE * 2), x + width - BORDER_EFFECT_SIZE, y + height - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
 	FillRect(hdc, &rectCutout, brushPaper);
 
 
@@ -318,21 +321,21 @@ void ServerStatusBar(HDC hdc, int isConnected)
 
 	SetTextColor(hdc, RGB(255, 255, 255));// text color
 	SetBkMode(hdc, TRANSPARENT); // To make background transparent
-	TextOut(hdc, MARGIN * 2, MARGIN * 3, L"Status:", strlen("Status:"));
+	TextOut(hdc, x + SMALL_MARGIN + BORDER_EFFECT_SIZE, y + (height / 2) + BORDER_EFFECT_SIZE - (TITLE_SIZE / 2), L"Status:", strlen("Status:"));
 	if (isConnected == 0)
 	{
 		SetTextColor(hdc, STATUS_OFFLINE_COLOR);// text color
-		TextOut(hdc, MARGIN * 5, MARGIN * 3, L"Offline", strlen("Offline"));
+		TextOut(hdc, x + MARGIN * 3, y + (height / 2) + BORDER_EFFECT_SIZE - (TITLE_SIZE / 2), L"Offline", strlen("Offline"));
 	}
 	if (isConnected == 1)
 	{
 		SetTextColor(hdc, STATUS_ONLINE_COLOR);// text color
-		TextOut(hdc, MARGIN * 5, MARGIN * 3, L"Connected", strlen("Connected"));
+		TextOut(hdc, x + MARGIN * 3, y + (height / 2) + BORDER_EFFECT_SIZE - (TITLE_SIZE / 2), L"Connected", strlen("Connected"));
 	}
 	if (isConnected == 2)
 	{
 		SetTextColor(hdc, STATUS_Server_COLOR);// text color
-		TextOut(hdc, MARGIN * 5, MARGIN * 3, L"server", strlen("server"));
+		TextOut(hdc, x + MARGIN * 3, y + (height / 2) + BORDER_EFFECT_SIZE - (TITLE_SIZE / 2), L"server", strlen("server"));
 	}
 
 	// Clean up
