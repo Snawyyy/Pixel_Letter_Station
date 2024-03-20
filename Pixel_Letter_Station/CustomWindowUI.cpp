@@ -150,7 +150,7 @@ bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId) // GUI Defa
 
 bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in the GUI
 {
-	HBITMAP hBitmap = (HBITMAP)LoadImage(NULL, L"C:\\Users\\Snawy\\source\\repos\\Snawyyy\\Pixel_Letter_Station\\Images\\LOGO.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+	HBITMAP hBitmap = (HBITMAP)LoadImage(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP_LOGO), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
 	if (hBitmap == NULL)
 	{
 		MessageBox(NULL, L"Load Failed", L"Fail", MB_OK);

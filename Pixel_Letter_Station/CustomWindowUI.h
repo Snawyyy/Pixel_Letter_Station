@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Windows.h>
+#include "resource.h"
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
 #include <objbase.h>
