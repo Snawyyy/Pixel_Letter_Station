@@ -178,7 +178,7 @@ bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in t
 		ANSI_CHARSET,          // Character set identifier
 		OUT_DEFAULT_PRECIS,    // Output precision
 		CLIP_DEFAULT_PRECIS,   // Clipping precision
-		DEFAULT_QUALITY,       // Output quality
+		NONANTIALIASED_QUALITY,       // Output quality
 		DEFAULT_PITCH | FF_SWISS, // Pitch and family
 		L"Arial");              // Font name
 	HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
@@ -314,7 +314,7 @@ void ServerStatusBar(HDC hdc, int isConnected, int x, int y)
 		ANSI_CHARSET,          // Character set identifier
 		OUT_DEFAULT_PRECIS,    // Output precision
 		CLIP_DEFAULT_PRECIS,   // Clipping precision
-		DEFAULT_QUALITY,       // Output quality
+		NONANTIALIASED_QUALITY,       // Output quality
 		DEFAULT_PITCH | FF_SWISS, // Pitch and family
 		L"Arial");              // Font name
 	HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
