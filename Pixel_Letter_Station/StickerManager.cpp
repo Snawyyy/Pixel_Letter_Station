@@ -24,6 +24,8 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
         int bitmapWidth = 20;
         int bitmapHeight = 20;
+        if (bitmapFiles.size() > 0)
+        {
 
         // Load the bitmaps
         HBITMAP hbmSticker0 = (HBITMAP)LoadImage(NULL, bitmapFiles[index].c_str(), IMAGE_BITMAP, bitmapWidth, bitmapHeight, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
@@ -56,6 +58,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             ReleaseDC(hwnd, hdc);
         }
 
+        }
         EndPaint(hwnd, &ps);
         break;
 
