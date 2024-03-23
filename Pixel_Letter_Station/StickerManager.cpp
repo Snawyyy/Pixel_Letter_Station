@@ -83,3 +83,22 @@ wstring PickFolderAndReturnPath()
 
     return folderPath; // Return the selected folder path
 }
+
+vector<wstring> GetBitmapFiles() 
+{
+    wstring folderPath = PickFolderAndReturnPath();
+    vector<wstring> filePaths;
+
+    WIN32_FIND_DATA findFileData;
+    HANDLE hFind = FindFirstFile((folderPath + L"\\*.bmp").c_str(), &findFileData);
+
+    if (hFind != INVALID_HANDLE_VALUE) {
+        do {
+            // Construct full file path and add it to the vector
+            filePaths.push_back(folderPath + L"\\" + findFileData.cFileName);
+        } while (FindNextFile(hFind, &findFileData) != 0);
+        FindClose(hFind);
+    }
+
+    return filePaths;
+}

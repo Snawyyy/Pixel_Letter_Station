@@ -11,3 +11,5 @@ using namespace std;
 LRESULT StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 wstring PickFolderAndReturnPath();
+
+vector<wstring> GetBitmapFiles();
