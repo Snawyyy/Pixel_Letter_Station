@@ -9,6 +9,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     static bool isPressed;
 
     static vector<wstring> bitmapFiles;
+    int index = 0;
 
     switch (msg)
     {
@@ -20,6 +21,40 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
     {
         hdc = BeginPaint(hwnd, &ps);
+
+        int bitmapWidth = 20;
+        int bitmapHeight = 20;
+
+        // Load the bitmaps
+        HBITMAP hbmSticker0 = (HBITMAP)LoadImage(NULL, bitmapFiles[index].c_str(), IMAGE_BITMAP, bitmapWidth, bitmapHeight, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+        HBITMAP hbmSticker1 = (HBITMAP)LoadImage(NULL, bitmapFiles[index + 1].c_str(), IMAGE_BITMAP, bitmapWidth, bitmapHeight, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+        HBITMAP hbmSticker2 = (HBITMAP)LoadImage(NULL, bitmapFiles[index + 1].c_str(), IMAGE_BITMAP, bitmapWidth, bitmapHeight, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+
+        // Draw the bitmaps
+        if (hbmSticker0 && hbmSticker1 && hbmSticker2) {
+            HDC hdc = GetDC(hwnd);
+            HDC hdcMem = CreateCompatibleDC(hdc);
+
+            int y = SMALL_MARGIN; // Initial y-coordinate
+
+            // Draw the first bitmap
+            SelectObject(hdcMem, hbmSticker0);
+            BitBlt(hdc, 10, y, bitmapWidth, bitmapHeight, hdcMem, 0, 0, SRCCOPY);
+            y += bitmapHeight + SMALL_MARGIN; // Update y-coordinate for the next bitmap
+
+            // Draw the second bitmap
+            SelectObject(hdcMem, hbmSticker1);
+            BitBlt(hdc, 10, y, bitmapWidth, bitmapHeight, hdcMem, 0, 0, SRCCOPY);
+            y += bitmapHeight + SMALL_MARGIN; // Update y-coordinate for the next bitmap
+
+            // Draw the third bitmap
+            SelectObject(hdcMem, hbmSticker2);
+            BitBlt(hdc, 10, y, bitmapWidth, bitmapHeight, hdcMem, 0, 0, SRCCOPY);
+
+            // Cleanup
+            DeleteDC(hdcMem);
+            ReleaseDC(hwnd, hdc);
+        }
 
         EndPaint(hwnd, &ps);
         break;
