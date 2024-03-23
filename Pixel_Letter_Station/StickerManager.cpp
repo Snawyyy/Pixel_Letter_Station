@@ -53,7 +53,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         hdc = BeginPaint(hwnd, &ps);
 
-        int bitmapHeight = height / 6; // Set the desired height for the bitmaps
+        int bitmapHeight = height / 12; // Set the desired height for the bitmaps
 
         if (bitmapFiles.size() > 0) // Make sure there are at least 3 bitmaps
         {
