@@ -72,6 +72,19 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
         CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
         hbmScreen = reinterpret_cast<HBITMAP>(pCreate->lpCreateParams); // Retrieve and store the bitmap handle
+
+        HINSTANCE hInstance = GetModuleHandle(NULL);
+        HWND StickerMenu = CreateWindowEx(
+            0,                          // extended styles
+            L"StickerMenu",            // custom button class name
+            L"Button",                  // button text
+            WS_CHILD | WS_VISIBLE,      // window styles
+            BORDER_EFFECT_SIZE + MARGIN, WIN_BAR_SIZE + MARGIN, 100, 200,         // x, y, width, height
+            hWnd,               // parent window handle
+            NULL,                       // menu or child window identifier
+            hInstance,                  // instance handle
+            NULL                        // additional creation parameters
+        );
     }
     case WM_COMMAND: // Button logic
     {
