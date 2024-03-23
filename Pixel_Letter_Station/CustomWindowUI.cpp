@@ -504,3 +504,40 @@ void ServerStatusBar(HDC hdc, int isConnected, int x, int y)
 	return;
 
 }
+
+LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	static HBRUSH hBrush = NULL;
+	static RECT rect;
+	PAINTSTRUCT ps;
+	HDC hdc;
+	static bool isPressed;
+
+	switch (msg)
+	{
+	case WM_CREATE:
+	{
+
+		break;
+	}
+	case WM_PAINT:
+	{
+		hdc = BeginPaint(hwnd, &ps);
+
+		EndPaint(hwnd, &ps);
+		break;
+
+
+	}
+	case WM_DESTROY:
+	{
+		// Clean up resources
+		DeleteObject(hBrush);
+		break;
+	}
+	default:
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+
+	return 0;
+}
