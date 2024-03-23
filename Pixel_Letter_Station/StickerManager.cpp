@@ -15,7 +15,6 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
     case WM_CREATE:
     {
-        bitmapFiles = GetBitmapFiles();
         break;
     }
     case WM_PAINT:
