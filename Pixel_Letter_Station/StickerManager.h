@@ -4,6 +4,7 @@
 #include <objbase.h> // For CoInitialize and CoUninitialize
 #include <vector>
 #include <iostream>
+#include "CustomWindowUI.h"
 
 #pragma comment(lib, "Ole32.lib")
 
