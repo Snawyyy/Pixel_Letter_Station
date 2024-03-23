@@ -541,3 +541,54 @@ bool BitmapButton(HWND hWnd, LPARAM lParam, HBITMAP recBitmap, const wchar_t* Te
 		return TRUE; // Indicate we handled the message
 	}
 }
+
+LRESULT CALLBACK StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	static HBRUSH hBrush = NULL;
+	static RECT rect;
+	PAINTSTRUCT ps;
+	HDC hdc;
+	static bool isPressed;
+
+	HBITMAP hBitmap = NULL;
+
+	switch (msg)
+	{
+	case WM_CREATE:
+	{
+		CREATESTRUCT* pCreateStruct = (CREATESTRUCT*)lParam;
+		hBitmap = (HBITMAP)pCreateStruct->lpCreateParams;
+
+		// Creates a solid brush for the button background color
+		hBrush = CreateSolidBrush(UI_BORDER); // Change the RGB values to set your desired background color
+		break;
+	}
+	case WM_COMMAND:
+	{
+		switch (LOWORD(wParam))
+		{
+		case 1:
+		{
+			break;
+		}
+		break;
+		}
+		break;
+	}
+	case WM_DRAWITEM:
+	{
+		BitmapButton(hwnd, lParam, hBitmap, NULL, 1);
+		break;
+	}
+	case WM_DESTROY:
+	{
+		// Clean up resources
+		DeleteObject(hBrush);
+		break;
+	}
+	default:
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+
+	return 0;
+}
