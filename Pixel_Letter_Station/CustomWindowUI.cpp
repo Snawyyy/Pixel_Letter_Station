@@ -381,6 +381,17 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 	// Draw the rectangle
 	Rectangle(hdc, 0, 0, width, height);
 
+	// Draw smaller Darker rectangle for shading
+	hPen = CreatePen(PS_SOLID, BORDER_EFFECT_SIZE, WINODW_UI_COLOR_SHADOW);
+	hOldPen = (HPEN)SelectObject(hdc, hPen);
+
+	Rectangle(hdc, 0, 0 , width, height);
+
+	hPen = CreatePen(PS_SOLID, BORDER_EFFECT_SIZE, WINDOW_UI_COLOR_SHINE);
+	hOldPen = (HPEN)SelectObject(hdc, hPen);
+
+	Rectangle(hdc, 0, 0, 1, height);
+
 	// Restore the original pen and brush
 	SelectObject(hdc, hOldPen);
 	SelectObject(hdc, hOldBrush);
