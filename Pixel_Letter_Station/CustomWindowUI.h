@@ -8,6 +8,7 @@
 #include <Richedit.h>
 #pragma comment(lib, "comctl32.lib")
 #include "WinServer.h"
+#include "StickerManager.h"
 
 bool QuitButton(LPARAM lParam, int buttonId);
 bool MinimizeButton(LPARAM lParam);
