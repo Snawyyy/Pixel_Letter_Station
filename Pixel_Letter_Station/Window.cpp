@@ -120,6 +120,19 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WindowBar(hdc, hWnd, width);
 			Title(hdc, hWnd, centerW);
 
+			HBRUSH brush = CreateSolidBrush(WINODW_UI_COLOR); // orangeish color
+			HPEN nullPen = CreatePen(PS_NULL, 1, RGB(0, 0, 0)); // Null pen, color doesn't matter
+			SelectObject(hdc, brush);
+			SelectObject(hdc, nullPen);
+
+			// Draw the rectangle
+			// Parameters: HDC, left, top, right, bottom
+			Rectangle(hdc, 0, height - (WIN_BAR_SIZE * 2.5), width, height);
+			// Clean up
+			DeleteObject(brush);
+			DeleteObject(nullPen);
+
+
 			LetterBackground(hdc, hWnd,  width,  height);
 
 			ServerStatusBar(hdc, isConnected, MARGIN * 1.5, MARGIN * 2.5);
