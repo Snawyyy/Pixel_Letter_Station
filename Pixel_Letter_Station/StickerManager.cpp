@@ -50,14 +50,6 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
         if (bitmapFiles.size() > 0) // Make sure there are at least 3 bitmaps
         {
-        // Load the bitmaps
-            HBITMAP hbmSticker0 = (HBITMAP)LoadImage(NULL, bitmapFiles[index].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-            HBITMAP hbmSticker1 = (HBITMAP)LoadImage(NULL, bitmapFiles[index + 1].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-            HBITMAP hbmSticker2 = (HBITMAP)LoadImage(NULL, bitmapFiles[index + 1].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-
-        // Draw the bitmaps
-        if (hbmSticker0 && hbmSticker1 && hbmSticker2) {
-            HDC hdc = GetDC(hwnd);
             HDC hdcMem = CreateCompatibleDC(hdc);
 
             int y = SMALL_MARGIN; // Initial y-coordinate
@@ -80,9 +72,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             // Cleanup
             DeleteDC(hdcMem);
             }
-        }
 
-        }
         EndPaint(hwnd, &ps);
         break;
     }
