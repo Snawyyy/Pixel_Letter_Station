@@ -543,47 +543,36 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 
 
-bool BitmapButton(HWND hWnd, LPARAM lParam , static HBITMAP recBitmap, const wchar_t* Text, int buttonId) // GUI Default Button
+bool BitmapButton(HWND hWnd, LPARAM lParam, HBITMAP recBitmap, const wchar_t* Text, int buttonId) // GUI Default Button
 {
 	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
 	if (pDIS->CtlID == buttonId)// Matching the HMENU value passed when creating the button
 	{
 
-		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
+	BOOL isPressed = pDIS->itemState & ODS_SELECTED;
 
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hWnd, &ps);
-		HDC hdcMem = CreateCompatibleDC(hdc);
+	// Assuming hdc is provided via pDIS->hDC...
+	HDC hdcMem = CreateCompatibleDC(pDIS->hDC);
+	HGDIOBJ oldBitmap = SelectObject(hdcMem, recBitmap);
 
-		HGDIOBJ oldBitmap = SelectObject(hdcMem, recBitmap); // Use the bitmap handle
+	BITMAP bitmap;
+	GetObject(recBitmap, sizeof(bitmap), &bitmap);
+	int width = (bitmap.bmWidth * pDIS->rcItem.bottom) / bitmap.bmHeight;
 
-		// Get bitmap dimensions
-		BITMAP bitmap;
-		GetObject(recBitmap, sizeof(bitmap), &bitmap);
+	SetTextColor(pDIS->hDC, RGB(0, 0, 0));
+	BitBlt(pDIS->hDC, 0, 0, width, pDIS->rcItem.bottom, hdcMem, 0, 0, SRCCOPY);
 
-		// Calculate the new width based on the aspect ratio and the desired height
-		int width = (bitmap.bmWidth * pDIS->rcItem.bottom) / bitmap.bmHeight;
+	RECT textRect = pDIS->rcItem;
+	if (isPressed) {
+		SetTextColor(pDIS->hDC, RGB(255, 0, 0));
+		// Adjust textRect as necessary
+	}
 
-		// Set the background and text colors
-		SetTextColor(pDIS->hDC, RGB(0, 0, 0));
-		BitBlt(hdc, 0, 0, width, pDIS->rcItem.bottom, hdcMem, 0, 0, SRCCOPY);
+	DrawText(pDIS->hDC, Text, -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
-		// Prepare the rectangle for the text, adjusting if the button is pressed
-		RECT textRect = pDIS->rcItem;
-		if (isPressed) {
-			// Offset the textRect and change color to simulate the text moving when pressed
-			SetTextColor(pDIS->hDC, RGB(255, 0, 0));
+	SelectObject(hdcMem, oldBitmap);
+	DeleteDC(hdcMem);
 
-		}
-
-		// Draw the button text using the adjusted rectangle
-		DrawText(pDIS->hDC, Text, -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-
-		// Cleanup
-		SelectObject(hdcMem, oldBitmap);
-		DeleteDC(hdcMem);
-
-		EndPaint(hWnd, &ps);
 		return TRUE; // Indicate we handled the message
 	}
 }
