@@ -23,6 +23,8 @@ void RichTextBoxPaint(HWND Box);
 
 void ServerStatusBar(HDC hdc, int isConnected, int x, int y);
 
+bool BitmapButton(HWND hWnd, LPARAM lParam, HBITMAP recBitmap, const wchar_t* Text, int buttonId);
+
  // HMENU id
 #define TITLE_ID 0
 
