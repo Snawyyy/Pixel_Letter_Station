@@ -355,6 +355,14 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 
 	RegisterClass(&Cc);
 
+	// StickerMenu Class
+	WNDCLASS SMc = {};
+	SMc.lpfnWndProc = StickerMenu;
+	SMc.hInstance = m_hinstance;
+	SMc.lpszClassName = L"StickerMenu";
+
+	RegisterClass(&SMc);
+
 
 	m_hwnd = CreateWindowEx(
 		0,
