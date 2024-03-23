@@ -25,6 +25,8 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
     case WM_COMMAND:
     {
+        switch (LOWORD(wParam))
+        {
     case 6:
     {
         bitmapFiles = GetBitmapFiles();
@@ -32,6 +34,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         InvalidateRect(hwnd, NULL, TRUE);
         break;
     }
+        }
     break;
     }
     case WM_DRAWITEM:
