@@ -43,15 +43,14 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         hdc = BeginPaint(hwnd, &ps);
 
-        int bitmapWidth = 20;
-        int bitmapHeight = 20;
-        if (bitmapFiles.size() > 0)
-        {
+        int bitmapHeight = height / 6; // Set the desired height for the bitmaps
 
+        if (bitmapFiles.size() > 0) // Make sure there are at least 3 bitmaps
+        {
         // Load the bitmaps
-        HBITMAP hbmSticker0 = (HBITMAP)LoadImage(NULL, bitmapFiles[index].c_str(), IMAGE_BITMAP, bitmapWidth, bitmapHeight, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-        HBITMAP hbmSticker1 = (HBITMAP)LoadImage(NULL, bitmapFiles[index + 1].c_str(), IMAGE_BITMAP, bitmapWidth, bitmapHeight, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-        HBITMAP hbmSticker2 = (HBITMAP)LoadImage(NULL, bitmapFiles[index + 1].c_str(), IMAGE_BITMAP, bitmapWidth, bitmapHeight, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+            HBITMAP hbmSticker0 = (HBITMAP)LoadImage(NULL, bitmapFiles[index].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+            HBITMAP hbmSticker1 = (HBITMAP)LoadImage(NULL, bitmapFiles[index + 1].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+            HBITMAP hbmSticker2 = (HBITMAP)LoadImage(NULL, bitmapFiles[index + 1].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
 
         // Draw the bitmaps
         if (hbmSticker0 && hbmSticker1 && hbmSticker2) {
@@ -60,29 +59,32 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             int y = SMALL_MARGIN; // Initial y-coordinate
 
-            // Draw the first bitmap
-            SelectObject(hdcMem, hbmSticker0);
-            BitBlt(hdc, 10, y, bitmapWidth, bitmapHeight, hdcMem, 0, 0, SRCCOPY);
+            if (hbmSticker0) 
+            {
+                for (size_t i = 0; i < 5; i++)
+                {
+                    HBITMAP hbmSticker = (HBITMAP)LoadImage(NULL, bitmapFiles[i].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+                    if (hbmSticker)
+                    {
+                        // Draw the bitmap
+                        BITMAP bitmapInfo;
+                        GetObject(hbmSticker, sizeof(BITMAP), &bitmapInfo);
+                        int stickerWidth = (bitmapInfo.bmWidth * bitmapHeight) / bitmapInfo.bmHeight;
+
+                        SelectObject(hdcMem, hbmSticker);
+                        StretchBlt(hdc, width / 2 - stickerWidth / 2, y, stickerWidth, bitmapHeight, hdcMem, 0, 0, bitmapInfo.bmWidth, bitmapInfo.bmHeight, SRCCOPY);
             y += bitmapHeight + SMALL_MARGIN; // Update y-coordinate for the next bitmap
-
-            // Draw the second bitmap
-            SelectObject(hdcMem, hbmSticker1);
-            BitBlt(hdc, 10, y, bitmapWidth, bitmapHeight, hdcMem, 0, 0, SRCCOPY);
-            y += bitmapHeight + SMALL_MARGIN; // Update y-coordinate for the next bitmap
-
-            // Draw the third bitmap
-            SelectObject(hdcMem, hbmSticker2);
-            BitBlt(hdc, 10, y, bitmapWidth, bitmapHeight, hdcMem, 0, 0, SRCCOPY);
-
+                    }
+                }
             // Cleanup
             DeleteDC(hdcMem);
-            ReleaseDC(hwnd, hdc);
+            }
         }
 
         }
         EndPaint(hwnd, &ps);
         break;
-
+    }
 
     }
     case WM_DESTROY:
