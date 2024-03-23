@@ -14,8 +14,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
     case WM_CREATE:
     {
-        vector<wstring> bitmapFiles = GetBitmapFiles();
-        MessageBox(hwnd, bitmapFiles[0].c_str(), L"", MB_OK);
+        bitmapFiles = GetBitmapFiles();
         break;
     }
     case WM_PAINT:
