@@ -1,4 +1,4 @@
-#include "StickerManager.h"
+#include "Sticker.h"
 
 HWND g_hwndSticker = NULL;
 

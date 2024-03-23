@@ -145,7 +145,7 @@
     <ClCompile Include="LetterWindow.cpp" />
     <ClCompile Include="Pixel_Letter_Station.cpp" />
     <ClCompile Include="CustomWindowUI.cpp" />
-    <ClCompile Include="StickerManager.cpp" />
+    <ClCompile Include="Sticker.cpp" />
     <ClCompile Include="UserWindow.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinServer.cpp" />
@@ -155,7 +155,7 @@
     <ClInclude Include="LetterManager.h" />
     <ClInclude Include="LetterWindow.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="StickerManager.h" />
+    <ClInclude Include="Sticker.h" />
     <ClInclude Include="UserWindow.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WinServer.h" />

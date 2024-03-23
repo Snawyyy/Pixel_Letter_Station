@@ -4,7 +4,7 @@
 #include "CustomWindowUI.h"
 #include "LetterWindow.h"
 #include "UserWindow.h"
-#include "StickerManager.h"
+#include "Sticker.h"
 #include <locale>
 #include <codecvt>
 #include <vector>

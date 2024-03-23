@@ -33,7 +33,7 @@
     <ClCompile Include="LetterManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StickerManager.cpp">
+    <ClCompile Include="Sticker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UserWindow.cpp">
@@ -56,7 +56,7 @@
     <ClInclude Include="LetterManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StickerManager.h">
+    <ClInclude Include="Sticker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UserWindow.h">

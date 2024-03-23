@@ -551,25 +551,28 @@ bool BitmapButton(HWND hWnd, LPARAM lParam, HBITMAP recBitmap, const wchar_t* Te
 
 	BOOL isPressed = pDIS->itemState & ODS_SELECTED;
 
-	// Assuming hdc is provided via pDIS->hDC...
 	HDC hdcMem = CreateCompatibleDC(pDIS->hDC);
 	HGDIOBJ oldBitmap = SelectObject(hdcMem, recBitmap);
 
 	BITMAP bitmap;
 	GetObject(recBitmap, sizeof(bitmap), &bitmap);
+
+		// Calculate the new width based on the aspect ratio and the desired height
 	int width = (bitmap.bmWidth * pDIS->rcItem.bottom) / bitmap.bmHeight;
 
+		// Set the background and text colors
 	SetTextColor(pDIS->hDC, RGB(0, 0, 0));
 	BitBlt(pDIS->hDC, 0, 0, width, pDIS->rcItem.bottom, hdcMem, 0, 0, SRCCOPY);
 
 	RECT textRect = pDIS->rcItem;
 	if (isPressed) {
 		SetTextColor(pDIS->hDC, RGB(255, 0, 0));
-		// Adjust textRect as necessary
+
 	}
 
 	DrawText(pDIS->hDC, Text, -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
+		// Cleanup
 	SelectObject(hdcMem, oldBitmap);
 	DeleteDC(hdcMem);
 
