@@ -15,6 +15,28 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
     case WM_CREATE:
     {
+        // Test
+        HWND button = CreateWindowA("BUTTON",
+            "Test",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            (width / 2) - (BUTTON_WIDTH / 2), height - BUTTON_HEIGHT -MARGIN, BUTTON_WIDTH, BUTTON_HEIGHT,
+            hwnd, (HMENU)6, NULL, NULL);
+        break;
+    }
+    case WM_COMMAND:
+    {
+    case 6:
+    {
+        bitmapFiles = GetBitmapFiles();
+        UpdateWindow(hwnd);
+        InvalidateRect(hwnd, NULL, TRUE);
+        break;
+    }
+    break;
+    }
+    case WM_DRAWITEM:
+    {
+        DefaultButton(lParam, L"Button 2", 6);
         break;
     }
     case WM_PAINT:
