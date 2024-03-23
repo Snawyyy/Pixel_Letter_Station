@@ -62,9 +62,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             int y = SMALL_MARGIN; // Initial y-coordinate
 
-            if (hbmSticker0) 
-            {
-                for (size_t i = 0; i < 5; i++)
+            for (size_t i = 0; i < bitmapFiles.size(); i++)
                 {
                     HBITMAP hbmSticker = (HBITMAP)LoadImage(NULL, bitmapFiles[i].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
                     if (hbmSticker)
