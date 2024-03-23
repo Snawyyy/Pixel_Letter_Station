@@ -8,6 +8,13 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     HDC hdc;
     static bool isPressed;
 
+    RECT rcClient;
+    GetClientRect(hwnd, &rcClient);
+
+    int width = rcClient.right - rcClient.left;
+    int height = rcClient.bottom - rcClient.top;
+
+
     static vector<wstring> bitmapFiles;
     int index = 0;
 
