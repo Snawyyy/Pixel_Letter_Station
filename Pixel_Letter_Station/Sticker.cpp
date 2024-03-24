@@ -40,7 +40,7 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height, 
         hParent,
         NULL,
         hInstance,
-        NULL
+        (LPVOID)hbmSticker
     );
 
     SetWindowPos(hwndSticker, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
