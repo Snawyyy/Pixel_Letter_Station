@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include "CustomWindowUI.h"
+#include "Sticker.h"
 
 #pragma comment(lib, "Ole32.lib")
 
