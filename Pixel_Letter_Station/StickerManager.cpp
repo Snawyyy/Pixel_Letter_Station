@@ -55,32 +55,20 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         hdc = BeginPaint(hwnd, &ps);
 
-        int bitmapHeight = height / 12; // Set the desired height for the bitmaps
+        // First, draw the larger rectangle with a solid color
+        HBRUSH brushMain = CreateSolidBrush(LETTER_BORDER); // Black color for the Border
+        RECT rectMain = { 0, 0, width, height }; // Main rectangle coordinates
+        FillRect(hdc, &rectMain, brushMain);
 
-        if (bitmapFiles.size() > 0) // Make sure there are at least 3 bitmaps
-        {
-            HDC hdcMem = CreateCompatibleDC(hdc);
+        //Then, the "Paper" by drawing it with the paper color
+        HBRUSH brushShading = CreateSolidBrush(PAPER_COLOR_SHADOW); // Brush for the Shadow, using the shadow color
+        RECT rectShading = { 0 + BORDER_EFFECT_SIZE, 0 + BORDER_EFFECT_SIZE, width - BORDER_EFFECT_SIZE, height - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
+        FillRect(hdc, &rectShading, brushShading);
 
-            int y = SMALL_MARGIN; // Initial y-coordinate
-
-            for (size_t i = 0; i < bitmapFiles.size(); i++)
-                {
-                    HBITMAP hbmSticker = (HBITMAP)LoadImage(NULL, bitmapFiles[i].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-                    if (hbmSticker)
-                    {
-                        // Draw the bitmap
-                        BITMAP bitmapInfo;
-                        GetObject(hbmSticker, sizeof(BITMAP), &bitmapInfo);
-                        int stickerWidth = (bitmapInfo.bmWidth * bitmapHeight) / bitmapInfo.bmHeight;
-
-                        SelectObject(hdcMem, hbmSticker);
-                        StretchBlt(hdc, width / 2 - stickerWidth / 2, y, stickerWidth, bitmapHeight, hdcMem, 0, 0, bitmapInfo.bmWidth, bitmapInfo.bmHeight, SRCCOPY);
-            y += bitmapHeight + SMALL_MARGIN; // Update y-coordinate for the next bitmap
-                    }
-                }
-            // Cleanup
-            DeleteDC(hdcMem);
-            }
+        //Then, the "Paper" by drawing it with the paper color
+        HBRUSH brushPaper = CreateSolidBrush(RGB(240, 230, 230)); // Brush for the cutout, using the paper background color
+        RECT rectCutout = { 0 + BORDER_EFFECT_SIZE * 2, 0 + BORDER_EFFECT_SIZE * 2, width - BORDER_EFFECT_SIZE, height - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
+        FillRect(hdc, &rectCutout, brushPaper);
 
         EndPaint(hwnd, &ps);
         break;
