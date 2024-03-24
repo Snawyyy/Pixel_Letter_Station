@@ -544,11 +544,11 @@ bool BitmapButton(HWND hWnd, LPARAM lParam, HBITMAP recBitmap, const wchar_t* Te
 
 LRESULT CALLBACK StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	static HBRUSH hBrush = NULL;
-	static RECT rect;
+	static HBITMAP hBitmap = NULL; // Handle to the button's bitmap
 	PAINTSTRUCT ps;
-	HDC hdc;
-	static bool isPressed;
+	HDC hdc, hdcMem;
+	BITMAP bitmap;
+	HGDIOBJ oldBitmap;
 
 	HBITMAP hBitmap = NULL;
 
