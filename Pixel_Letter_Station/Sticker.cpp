@@ -30,9 +30,6 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height, 
     x = cursorPos.x - (width / 2);
     y = cursorPos.y - (height / 2);
 
-    // Delete the bitmap since it's no longer needed
-    DeleteObject(hbmSticker);
-
     // Create the window.
     HWND hwndSticker = CreateWindowEx(
         0,
