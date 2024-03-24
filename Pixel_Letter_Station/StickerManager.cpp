@@ -34,17 +34,17 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         switch (LOWORD(wParam))
         {
-    case 6:
-    {
-        bitmapFiles = GetBitmapFiles();
+        case 6:
+        {
+            bitmapFiles = GetBitmapFiles();
             CreateStickerButtons(hwnd, width, height, bitmapFiles);
 
-        UpdateWindow(hwnd);
-        InvalidateRect(hwnd, NULL, TRUE);
-        break;
-    }
+            UpdateWindow(hwnd);
+            InvalidateRect(hwnd, NULL, TRUE);
+            break;
         }
-    break;
+        }
+        break;
     }
     case WM_DRAWITEM:
     {
@@ -94,27 +94,30 @@ void CreateStickerButtons(HWND hwnd, int width, int height,const vector<wstring>
 
     for (size_t i = 0; i < bitmapFiles.size(); i++)
     {
-        HBITMAP hbmSticker = (HBITMAP)LoadImage(NULL, bitmapFiles[i].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-        if (hbmSticker)
+        if (y + bitmapHeight + SMALL_MARGIN * 2 + MARGIN < height)
         {
-            //MessageBox(hwnd, bitmapFiles[i].c_str(), L"beep", MB_OK);
-            BITMAP bitmapInfo;
-            GetObject(hbmSticker, sizeof(BITMAP), &bitmapInfo);
-            int stickerWidth = (bitmapInfo.bmWidth * bitmapHeight) / bitmapInfo.bmHeight;
+            HBITMAP hbmSticker = (HBITMAP)LoadImage(NULL, bitmapFiles[i].c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+            if (hbmSticker)
+            {
+                //MessageBox(hwnd, bitmapFiles[i].c_str(), L"beep", MB_OK);
+                BITMAP bitmapInfo;
+                GetObject(hbmSticker, sizeof(BITMAP), &bitmapInfo);
+                int stickerWidth = (bitmapInfo.bmWidth * bitmapHeight) / bitmapInfo.bmHeight;
 
-            HINSTANCE hInstance = GetModuleHandle(NULL);
-            HWND StickerButton = CreateWindowEx(
-                0,
-                L"StickerButton",
-                L"Button",
-                WS_CHILD | WS_VISIBLE,
-                width / 2 - stickerWidth / 2, y, stickerWidth, bitmapHeight,
-                hwnd,
-                NULL,
-                hInstance,
-                (LPVOID)hbmSticker
-            );
-            y += bitmapHeight + SMALL_MARGIN;
+                HINSTANCE hInstance = GetModuleHandle(NULL);
+                HWND StickerButton = CreateWindowEx(
+                    0,
+                    L"StickerButton",
+                    L"Button",
+                    WS_CHILD | WS_VISIBLE,
+                    width / 2 - stickerWidth / 2, y, stickerWidth, bitmapHeight,
+                    hwnd,
+                    NULL,
+                    hInstance,
+                    (LPVOID)hbmSticker
+                );
+                y += bitmapHeight + SMALL_MARGIN;
+            }
         }
     }
 }
