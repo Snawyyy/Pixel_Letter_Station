@@ -26,7 +26,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         HWND button = CreateWindowA("BUTTON",
             "Test",
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-            (width / 2) - ((width - SMALL_MARGIN) / 2), height - BUTTON_HEIGHT - MARGIN, width - SMALL_MARGIN, BUTTON_HEIGHT,
+            (width / 2) - ((width - BORDER_EFFECT_SIZE * 2) / 2), height - BUTTON_HEIGHT - BORDER_EFFECT_SIZE, width - BORDER_EFFECT_SIZE * 2, BUTTON_HEIGHT,
             hwnd, (HMENU)6, NULL, NULL);
         break;
     }
