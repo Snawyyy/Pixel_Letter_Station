@@ -550,7 +550,11 @@ LRESULT CALLBACK StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 	BITMAP bitmap;
 	HGDIOBJ oldBitmap;
 
-	HBITMAP hBitmap = NULL;
+	RECT rcClient;
+	GetClientRect(hwnd, &rcClient);
+
+	int width = rcClient.right - rcClient.left;
+	int height = rcClient.bottom - rcClient.top;
 
 	switch (msg)
 	{
