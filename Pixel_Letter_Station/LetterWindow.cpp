@@ -79,7 +79,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             L"StickerMenu",            // custom button class name
             L"Button",                  // button text
             WS_CHILD | WS_VISIBLE,      // window styles
-            BORDER_EFFECT_SIZE + SMALL_MARGIN, WIN_BAR_SIZE + SMALL_MARGIN, 75, height - WIN_BAR_SIZE - MARGIN * 4,         // x, y, width, height
+            BORDER_EFFECT_SIZE + SMALL_MARGIN, WIN_BAR_SIZE + SMALL_MARGIN, MARGIN * 4.5, height - WIN_BAR_SIZE - MARGIN * 4,         // x, y, width, height
             hWnd,               // parent window handle
             NULL,                       // menu or child window identifier
             hInstance,                  // instance handle
