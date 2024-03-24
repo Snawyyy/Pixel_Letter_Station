@@ -154,6 +154,7 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
     }
     case WM_DESTROY: {
         // Cleanup: the bitmap we didn't delete gets deleted
+        SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
         if (hbmSticker != NULL) {
             DeleteObject(hbmSticker);
             hbmSticker = NULL;
