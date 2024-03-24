@@ -26,6 +26,8 @@ void ServerStatusBar(HDC hdc, int isConnected, int x, int y);
 
 bool BitmapButton(HWND hWnd, LPARAM lParam, HBITMAP recBitmap, const wchar_t* Text, int buttonId);
 
+LRESULT StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
  // HMENU id
 #define TITLE_ID 0
 

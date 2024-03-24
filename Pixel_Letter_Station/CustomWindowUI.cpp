@@ -563,31 +563,50 @@ LRESULT CALLBACK StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		CREATESTRUCT* pCreateStruct = (CREATESTRUCT*)lParam;
 		hBitmap = (HBITMAP)pCreateStruct->lpCreateParams;
 
-		// Creates a solid brush for the button background color
-		hBrush = CreateSolidBrush(UI_BORDER); // Change the RGB values to set your desired background color
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)hBitmap);
+
 		break;
 	}
-	case WM_COMMAND:
-	{
-		switch (LOWORD(wParam))
+	case WM_PAINT:
+		hdc = BeginPaint(hwnd, &ps);
+
+		hBitmap = (HBITMAP)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+
+		if (hBitmap != NULL) 
 		{
-		case 1:
+			hdcMem = CreateCompatibleDC(hdc);
+			oldBitmap = SelectObject(hdcMem, hBitmap);
+
+			// Retrieve the dimensions of the bitmap
+			GetObject(hBitmap, sizeof(bitmap), &bitmap);
+			StretchBlt(hdc, 0, 0, width, height, hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
+
+			// Cleanup
+			SelectObject(hdcMem, oldBitmap);
+			DeleteDC(hdcMem);
+		}
+		else
 		{
-			break;
+			MessageBox(hwnd, L"failed loading", L"", MB_OK);
 		}
+
+		EndPaint(hwnd, &ps);
 		break;
-		}
-		break;
-	}
-	case WM_DRAWITEM:
+
+	case WM_LBUTTONDOWN:
 	{
-		BitmapButton(hwnd, lParam, hBitmap, NULL, 1);
+		// Action to take when the button is clicked
+		HINSTANCE hInstance = GetModuleHandle(NULL);
+		hBitmap = (HBITMAP)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+		CreateSticker(GetParent(GetParent(hwnd)), hInstance, 0, 0, 30, hBitmap);
 		break;
 	}
 	case WM_DESTROY:
 	{
-		// Clean up resources
-		DeleteObject(hBrush);
+		// Remove the bitmap handle from the window's memory
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, 0);
+		DeleteObject(hBitmap);
+
 		break;
 	}
 	default:
