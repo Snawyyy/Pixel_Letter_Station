@@ -2,7 +2,7 @@
 
 HWND g_hwndSticker = NULL;
 
-HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height)
+HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height, HBITMAP hbmSticker)
 {
     // Define the class name. Make sure this class is registered in WinMain.
     const wchar_t CLASS_NAME[] = L"StickerWindowClass";
