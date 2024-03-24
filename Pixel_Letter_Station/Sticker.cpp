@@ -8,7 +8,6 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height, 
     const wchar_t CLASS_NAME[] = L"StickerWindowClass";
 
     // Load the bitmap to get its dimensions
-    HBITMAP hbmSticker = (HBITMAP)LoadImage(NULL, L"C:\\Users\\Snawy\\source\\repos\\Snawyyy\\Pixel_Letter_Station\\Images\\LOGO.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
     if (hbmSticker == NULL)
     {
         MessageBox(NULL, L"Load Failed", L"Fail", MB_OK);
