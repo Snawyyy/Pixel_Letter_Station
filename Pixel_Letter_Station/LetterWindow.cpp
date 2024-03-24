@@ -111,8 +111,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         }
         case 7:
         {
-            HINSTANCE hInstance = GetModuleHandle(NULL);
-            CreateSticker(hWnd, hInstance, 0, 0, 25);
+
             break;
         }
         }
