@@ -5,7 +5,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     static HBRUSH hBrush = NULL;
     static RECT rect;
     PAINTSTRUCT ps;
-    HDC hdc;
+    HDC hdc = NULL;
     static bool isPressed;
 
     RECT rcClient;
