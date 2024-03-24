@@ -80,7 +80,7 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         HDC hdc = BeginPaint(hWnd, &ps);
         HDC hdcMem = CreateCompatibleDC(hdc);
 
-        HBITMAP hbmSticker = (HBITMAP)LoadImage(NULL, L"C:\\Users\\Snawy\\source\\repos\\Snawyyy\\Pixel_Letter_Station\\Images\\LOGO.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+        hbmSticker = (HBITMAP)GetWindowLongPtr(hWnd, GWLP_USERDATA);
         if (hbmSticker == NULL)
         {
             MessageBox(NULL, L"Load Failed", L"Fail", MB_OK);
