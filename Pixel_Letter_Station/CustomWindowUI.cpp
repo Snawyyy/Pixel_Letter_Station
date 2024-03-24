@@ -598,7 +598,9 @@ LRESULT CALLBACK StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		// Action to take when the button is clicked
 		HINSTANCE hInstance = GetModuleHandle(NULL);
 		hBitmap = (HBITMAP)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-		CreateSticker(GetParent(GetParent(hwnd)), hInstance, 0, 0, 30, hBitmap);
+		HWND hwndSticker = CreateSticker(GetParent(GetParent(hwnd)), hInstance, 0, 0, 30, hBitmap);
+		SendMessage(hwndSticker, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+
 		break;
 	}
 	case WM_DESTROY:
