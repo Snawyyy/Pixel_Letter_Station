@@ -48,7 +48,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
     case WM_DRAWITEM:
     {
-        DefaultButton(lParam, L"Button 2", 6);
+        DefaultButton(lParam, L"Pick Folder", 6);
         break;
     }
     case WM_PAINT:
