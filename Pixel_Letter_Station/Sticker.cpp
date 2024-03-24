@@ -64,6 +64,10 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
     {
     case WM_CREATE: // where you create all the interface
     {
+        CREATESTRUCT* pCreateStruct = (CREATESTRUCT*)lParam;
+        hbmSticker = (HBITMAP)pCreateStruct->lpCreateParams;
+
+        SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)hbmSticker);
         break;
     }
     case WM_COMMAND: // Button logic
