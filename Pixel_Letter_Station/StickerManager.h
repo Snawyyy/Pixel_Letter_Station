@@ -12,6 +12,8 @@ using namespace std;
 
 LRESULT StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+void CreateStickerButtons(HWND hwnd, int width, int height, const vector<wstring>& bitmapFiles);
+
 wstring PickFolderAndReturnPath();
 
 vector<wstring> GetBitmapFiles();
