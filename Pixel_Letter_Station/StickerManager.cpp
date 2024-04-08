@@ -28,6 +28,15 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             (width / 2) - ((width - BORDER_EFFECT_SIZE * 2) / 2), height - BUTTON_HEIGHT - BORDER_EFFECT_SIZE, width - BORDER_EFFECT_SIZE * 2, BUTTON_HEIGHT,
             hwnd, (HMENU)6, NULL, NULL);
+
+        folderPath = ReadFileIntoWString(L"config.txt");
+
+        if (!folderPath.empty())
+        {
+            bitmapFiles = GetBitmapFiles(folderPath);
+            CreateStickerButtons(hwnd, width, height, bitmapFiles);
+        }
+
         break;
     }
     case WM_COMMAND:
