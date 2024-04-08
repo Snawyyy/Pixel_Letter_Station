@@ -6,6 +6,9 @@ HBITMAP GetLetter(HWND hWnd, int posX, int posY)
     HDC hDesktopDC = GetDC(hDesktopWnd);
     HDC hdcMemDC = CreateCompatibleDC(hDesktopDC);
 
+    // get Client top left coordinates in relation to screen
+    POINT screenCords = { 0, 0 };
+    ClientToScreen(hWnd, &screenCords);
 
     RECT rcClient;
     GetClientRect(hWnd, &rcClient);
