@@ -21,7 +21,7 @@ HBITMAP GetLetter(HWND hWnd, int posX, int posY)
     HBITMAP hbmScreen = CreateCompatibleBitmap(hDesktopDC, width, height);
     HGDIOBJ oldBitmap = SelectObject(hdcMemDC, hbmScreen);
 
-    BitBlt(hdcMemDC, 0, 0, letterWidth, letterHeight, hdcWindow, posX, posY, SRCCOPY);
+    BitBlt(hdcMemDC, 0, 0, letterWidth, letterHeight, hDesktopDC, screenCords.x + posX, screenCords.y + posY, SRCCOPY);
 
     // Cleanup: Only delete the memory DC and release the window DC.
     SelectObject(hdcMemDC, oldBitmap); // Restore the old bitmap
