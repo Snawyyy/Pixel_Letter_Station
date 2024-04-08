@@ -428,3 +428,20 @@ bool Window::ProcessMessages()
 	return true;
 }
 
+BOOL CALLBACK EnumStickerWindowsProc(HWND hwnd, LPARAM lParam) {
+	WCHAR className[256];
+	GetClassName(hwnd, className, ARRAYSIZE(className));
+
+	if (wcscmp(className, L"StickerWindowClass") == 0) {
+		// This window is a sticker window, move it according to the offset
+		POINT stickerCords = { 0, 0 };
+		ClientToScreen(hwnd, &stickerCords);
+
+		// lParam points to the offset (x, y)
+		POINT* pOffset = (POINT*)lParam;
+
+		SetWindowPos(hwnd, NULL, stickerCords.x + pOffset->x, stickerCords.y + pOffset->y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+	}
+
+	return TRUE; // Continue enumeration
+}

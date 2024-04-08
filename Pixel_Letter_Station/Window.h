@@ -12,6 +12,8 @@
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+BOOL EnumStickerWindowsProc(HWND hwnd, LPARAM lParam);
+
 extern SOCKET serverSock;
 extern SOCKET clientSock;
 
