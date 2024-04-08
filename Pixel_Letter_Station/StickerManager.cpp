@@ -14,7 +14,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
 
-
+    static wstring folderPath;
     static vector<wstring> bitmapFiles;
     int index = 0;
 
