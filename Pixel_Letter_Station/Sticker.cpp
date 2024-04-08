@@ -1,7 +1,5 @@
 #include "Sticker.h"
 
-HWND g_hwndSticker = NULL;
-
 HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height, HBITMAP hbmSticker)
 {
     // Define the class name. Make sure this class is registered in WinMain.
@@ -43,8 +41,6 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height, 
     );
 
     SetWindowPos(hwndSticker, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-
-    g_hwndSticker = hwndSticker;
 
     return hwndSticker;
 }
