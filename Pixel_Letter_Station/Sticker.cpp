@@ -59,7 +59,24 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 
     static HBITMAP hbmSticker = NULL;
 
+    HWND hWndParent = GetParent(hWnd);
+
+    // get Client top left coordinates in relation to screen
+    POINT screenCords = { 0, 0 };
+    ClientToScreen(hWnd, &screenCords);
+
+    // get parent client for limiting sticker to bounds
+    RECT parentClientRect;
+    GetClientRect(GetParent(hWnd), &parentClientRect);
+
+    MapWindowPoints(hWndParent, NULL, (LPPOINT)&parentClientRect, 2);
+    int parentWidth = parentClientRect.right - parentClientRect.left;
+    int parentHeight = parentClientRect.bottom - parentClientRect.top;
+
+
     static bool isDragging = true;
+
+
     switch (uMsg)
     {
     case WM_CREATE: // where you create all the interface
