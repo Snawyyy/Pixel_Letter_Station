@@ -122,6 +122,25 @@ void CreateStickerButtons(HWND hwnd, int width, int height,const vector<wstring>
     }
 }
 
+
+BOOL CALLBACK EnumChildProc(HWND hwndChild, LPARAM lParam)
+{
+    // Get the class name of the child window
+    wchar_t className[256];
+    GetClassNameW(hwndChild, className, 256);
+
+    // Check if the class name matches "StickerButton"
+    if (wcscmp(className, L"StickerButton") == 0)
+    {
+        // If it matches, destroy the child window
+        DestroyWindow(hwndChild);
+    }
+
+    // Always return TRUE to continue enumeration
+    return TRUE;
+}
+
+
 wstring PickFolderAndReturnPath() 
 {
     wstring folderPath; // This will store the selected folder path
