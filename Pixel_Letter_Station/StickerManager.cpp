@@ -185,3 +185,77 @@ vector<wstring> GetBitmapFiles(wstring folderPath)
 
     return filePaths;
 }
+
+bool StorePathConfig(wstring directoryPath)
+{
+    // Create (or open if it already exists) a file
+    HANDLE hFile = CreateFile(
+        L"config.txt",          // File name
+        GENERIC_WRITE,     // Open for writing
+        0,                 // Do not share
+        NULL,              // Default security
+        CREATE_ALWAYS,     // Overwrite existing
+        FILE_ATTRIBUTE_NORMAL, // Normal file
+        NULL);             // No template
+
+    if (hFile == INVALID_HANDLE_VALUE) {
+        // Failed to open or create the file
+        MessageBox(NULL, L"Failed to create Config file.", L"Error", MB_OK);
+        return false;
+    }
+
+    DWORD bytesWritten;
+    DWORD strLength = static_cast<DWORD>(directoryPath.length() * sizeof(wchar_t));
+
+    BOOL writeResult = WriteFile(
+        hFile,                           // Handle to the file
+        directoryPath.c_str(),           // Buffer to write from
+        strLength,                       // Number of bytes to write
+        &bytesWritten,                   // Number of bytes written
+        NULL                             // Not overlapped I/O
+    );
+
+    if (!writeResult) {
+        // Failed to write to the file
+        MessageBox(NULL, L"Failed to write to the Config.", L"Error", MB_OK);
+    }
+
+    // Close the file handle
+    CloseHandle(hFile);
+
+    return true;
+}
+
+wstring ReadFileIntoWString(const wstring& filePath) {
+    // Open the file
+    HANDLE hFile = CreateFileW(filePath.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile == INVALID_HANDLE_VALUE) {
+        // Handle error (e.g., display an error message or throw an exception)
+        return wstring();
+    }
+
+    // Get the file size
+    LARGE_INTEGER fileSize;
+    if (!GetFileSizeEx(hFile, &fileSize)) {
+        CloseHandle(hFile);
+        // Handle error
+        return wstring();
+    }
+
+    // Read the file in chunks
+    const DWORD bufferSize = 4096; // Adjust this value as needed
+    vector<wchar_t> buffer(bufferSize);
+    wstring fileContents;
+    DWORD bytesRead;
+    do {
+        if (!ReadFile(hFile, buffer.data(), bufferSize * sizeof(wchar_t), &bytesRead, NULL)) {
+            CloseHandle(hFile);
+            // Handle error
+            return wstring();
+        }
+        fileContents.append(buffer.data(), bytesRead / sizeof(wchar_t));
+    } while (bytesRead == bufferSize * sizeof(wchar_t));
+
+    CloseHandle(hFile);
+    return fileContents;
+}

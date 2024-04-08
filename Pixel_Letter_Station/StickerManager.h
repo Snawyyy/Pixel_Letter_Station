@@ -17,4 +17,8 @@ void CreateStickerButtons(HWND hwnd, int width, int height, const vector<wstring
 
 wstring PickFolderAndReturnPath();
 
-vector<wstring> GetBitmapFiles();
+vector<wstring> GetBitmapFiles(wstring folderPath);
+
+bool StorePathConfig(wstring directoryPath);
+
+wstring ReadFileIntoWString(const wstring& filePath);
