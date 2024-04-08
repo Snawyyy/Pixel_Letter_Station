@@ -72,19 +72,6 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
         CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
         hbmScreen = reinterpret_cast<HBITMAP>(pCreate->lpCreateParams); // Retrieve and store the bitmap handle
-
-        HINSTANCE hInstance = GetModuleHandle(NULL);
-        HWND StickerMenu = CreateWindowEx(
-            0,                          // extended styles
-            L"StickerMenu",            // custom button class name
-            L"Button",                  // button text
-            WS_CHILD | WS_VISIBLE,      // window styles
-            BORDER_EFFECT_SIZE + SMALL_MARGIN, WIN_BAR_SIZE + SMALL_MARGIN, MARGIN * 4.5, height - WIN_BAR_SIZE - MARGIN * 4,         // x, y, width, height
-            hWnd,               // parent window handle
-            NULL,                       // menu or child window identifier
-            hInstance,                  // instance handle
-            NULL                        // additional creation parameters
-        );
     }
     case WM_COMMAND: // Button logic
     {
@@ -134,7 +121,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         GetObject(hbmScreen, sizeof(bitmap), &bitmap);
 
         // Draw the bitmap
-        BitBlt(hdc, width - (BAR_MARGIN + SMALL_MARGIN) - (LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2), WIN_BAR_SIZE + SMALL_MARGIN, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 5 + SMALL_MARGIN), hdcMem, 0, 0, SRCCOPY);
+        BitBlt(hdc, BORDER_EFFECT_SIZE + SMALL_MARGIN, WIN_BAR_SIZE + SMALL_MARGIN, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 5 + SMALL_MARGIN), hdcMem, 0, 0, SRCCOPY);
         WindowFrame(hdc, hWnd, width, height);
         WindowBar(hdc, hWnd, width);
 
