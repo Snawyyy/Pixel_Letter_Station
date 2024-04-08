@@ -2,8 +2,9 @@
 
 HBITMAP GetLetter(HWND hWnd, int posX, int posY)
 {
-    HDC hdcWindow = GetDC(hWnd);
-    HDC hdcMemDC = CreateCompatibleDC(hdcWindow);
+    HWND hDesktopWnd = GetDesktopWindow();
+    HDC hDesktopDC = GetDC(hDesktopWnd);
+    HDC hdcMemDC = CreateCompatibleDC(hDesktopDC);
 
 
     RECT rcClient;
