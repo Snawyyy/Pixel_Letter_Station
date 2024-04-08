@@ -100,9 +100,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         }
         case SEND_ID:
         {
-            int posX = BAR_MARGIN + SMALL_MARGIN;
-            int PosY = WIN_BAR_SIZE + SMALL_MARGIN;
-            HBITMAP hBitmap = GetLetter(hWnd, posX, PosY); // Retrieve the bitmap handle from GetLetter
+            HBITMAP hBitmap = GetLetter(hWnd); // Retrieve the bitmap handle from GetLetter
 
             vector<BYTE> BitMap = SerializeBitmap(hBitmap);
             SendData(serverSock, BitMap);
