@@ -388,6 +388,7 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 	);
 
 	ShowWindow(m_hwnd, SW_SHOW);
+	SetProcessDPIAware();
 
 }
 
