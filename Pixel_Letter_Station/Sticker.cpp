@@ -59,6 +59,7 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 
     static HBITMAP hbmSticker = NULL;
 
+    static bool isDragging = true;
     switch (uMsg)
     {
     case WM_CREATE: // where you create all the interface
@@ -128,24 +129,51 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         return 0;
         break;
     }
-    case WM_NCHITTEST: // Window Dragging logic
+    case WM_MOUSEMOVE:
     {
-        // Convert the mouse position to screen coordinates
-        POINT pt = { LOWORD(lParam), HIWORD(lParam) };
-        ScreenToClient(hWnd, &pt);
+        TRACKMOUSEEVENT tme;
+        tme.cbSize = sizeof(TRACKMOUSEEVENT);
+        tme.dwFlags = TME_LEAVE; // Specifies that we want a WM_MOUSELEAVE message when the mouse leaves
+        tme.hwndTrack = hWnd;
+        tme.dwHoverTime = HOVER_DEFAULT; // Not needed for WM_MOUSELEAVE but required to be set
 
-        // Define the draggable area
-        RECT draggableArea = { 0, 0, width, height}; // You need to define windowWidth
+        TrackMouseEvent(&tme); // Call this function to start tracking
 
-        // Check if the point is within the draggable area
-        if (PtInRect(&draggableArea, pt))
+        POINT cursorPos;
+        GetCursorPos(&cursorPos);
+        if (isDragging)
         {
-            return HTCAPTION;
+            SetWindowPos(hWnd, NULL, cursorPos.x - width / 2, cursorPos.y - height / 2, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
         }
-        else
+
+        break;
+    }
+    case WM_LBUTTONDOWN:
         {
-            return DefWindowProc(hWnd, uMsg, wParam, lParam);
+        isDragging = true;
+
+        // Set the capture to the window
+        SetCapture(hWnd);
+        break;
         }
+    case WM_LBUTTONUP:
+        {
+        isDragging = false;
+
+        // Release the capture
+        ReleaseCapture();
+        break;
+        }
+    case WM_WINDOWPOSCHANGING:
+    {
+        WINDOWPOS* pWinPos = (WINDOWPOS*)lParam;
+        pWinPos->x = max(parentClientRect.left + BORDER_EFFECT_SIZE, pWinPos->x);
+        pWinPos->y = max(parentClientRect.top + WIN_BAR_SIZE, pWinPos->y);
+
+        pWinPos->x = min(parentClientRect.right - width - BORDER_EFFECT_SIZE, pWinPos->x);
+        pWinPos->y = min(parentClientRect.bottom - height - BORDER_EFFECT_SIZE, pWinPos->y);
+
+        break;
     }
     case WM_CLOSE: {
         DestroyWindow(hWnd);
