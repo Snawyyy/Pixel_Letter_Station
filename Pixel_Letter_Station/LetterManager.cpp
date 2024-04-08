@@ -1,6 +1,6 @@
 #include "LetterManager.h"
 
-HBITMAP GetLetter(HWND hWnd, int posX, int posY)
+HBITMAP GetLetter(HWND hWnd)
 {
     HWND hDesktopWnd = GetDesktopWindow();
     HDC hDesktopDC = GetDC(hDesktopWnd);

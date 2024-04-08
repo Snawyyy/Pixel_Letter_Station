@@ -157,7 +157,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				{
 					int posX = width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN;
 					int PosY = WIN_BAR_SIZE + MARGIN;
-					HBITMAP hBitmap = GetLetter(hWnd, posX, PosY); // Retrieve the bitmap handle from GetLetter
+					HBITMAP hBitmap = GetLetter(hWnd); // Retrieve the bitmap handle from GetLetter
 
 					if (hBitmap != NULL) // Check if the bitmap handle is valid
 					{
