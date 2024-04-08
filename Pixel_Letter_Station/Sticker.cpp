@@ -70,7 +70,7 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
     int parentHeight = parentClientRect.bottom - parentClientRect.top;
 
 
-    static bool isDragging = true;
+    static bool isDragging = false;
 
 
     switch (uMsg)
