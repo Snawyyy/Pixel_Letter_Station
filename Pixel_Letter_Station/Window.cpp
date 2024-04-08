@@ -80,7 +80,19 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				L"UserButton",            // custom button class name
 				L"Button",                  // button text
 				WS_CHILD | WS_VISIBLE,      // window styles
-				BORDER_EFFECT_SIZE + MARGIN, height - BORDER_EFFECT_SIZE - 100 - MARGIN, 100, 100,         // x, y, width, height
+				BORDER_EFFECT_SIZE + SMALL_MARGIN, height - BORDER_EFFECT_SIZE - 100 - MARGIN, 100, 100,         // x, y, width, height
+				hWnd,               // parent window handle 
+				NULL,                       // menu or child window identifier
+				hInstance,                  // instance handle
+				NULL                        // additional creation parameters
+			);
+
+			HWND StickerMenu = CreateWindowEx(
+				0,                          // extended styles
+				L"StickerMenu",            // custom button class name
+				L"Button",                  // button text
+				WS_CHILD | WS_VISIBLE,      // window styles
+				BORDER_EFFECT_SIZE + SMALL_MARGIN, WIN_BAR_SIZE + MARGIN, MARGIN * 9, MARGIN * 20,         // x, y, width, height
 				hWnd,               // parent window handle
 				NULL,                       // menu or child window identifier
 				hInstance,                  // instance handle
