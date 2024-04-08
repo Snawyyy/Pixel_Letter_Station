@@ -24,7 +24,6 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height, 
     // Calculate the desired position and size for the child window
     POINT cursorPos;
     GetCursorPos(&cursorPos);
-    ScreenToClient(hParent, &cursorPos);
 
     // bug doesn't work with 2 clients
     x = cursorPos.x - (width / 2);
