@@ -15,13 +15,16 @@ HBITMAP GetLetter(HWND hWnd)
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
 
+    int letterPosX = width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN;
+    int letterPosY = WIN_BAR_SIZE + MARGIN;
+
     int letterWidth = LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2;
     int letterHeight = height - (MARGIN * 2.5) - (MARGIN * 2.5);
 
     HBITMAP hbmScreen = CreateCompatibleBitmap(hDesktopDC, width, height);
     HGDIOBJ oldBitmap = SelectObject(hdcMemDC, hbmScreen);
 
-    BitBlt(hdcMemDC, 0, 0, letterWidth, letterHeight, hDesktopDC, screenCords.x + posX, screenCords.y + posY, SRCCOPY);
+    BitBlt(hdcMemDC, 0, 0, letterWidth, letterHeight, hDesktopDC, screenCords.x + letterPosX, screenCords.y + letterPosY, SRCCOPY);
 
     // Cleanup: Only delete the memory DC and release the window DC.
     SelectObject(hdcMemDC, oldBitmap); // Restore the old bitmap
