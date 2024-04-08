@@ -168,9 +168,8 @@ wstring PickFolderAndReturnPath()
     return folderPath; // Return the selected folder path
 }
 
-vector<wstring> GetBitmapFiles() 
+vector<wstring> GetBitmapFiles(wstring folderPath)
 {
-    wstring folderPath = PickFolderAndReturnPath();
     vector<wstring> filePaths;
 
     WIN32_FIND_DATA findFileData;
