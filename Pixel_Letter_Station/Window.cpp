@@ -291,7 +291,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			// Check if the point is within the draggable area
 			if (PtInRect(&draggableArea, pt)) 
 			{
-				SendMessage(FindWindow(L"StickerWindowClass", NULL), WM_WINDOWPOSCHANGING, (WPARAM)pt.x, 0);
 				return HTCAPTION;
 			}
 			else 
@@ -299,6 +298,26 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				return DefWindowProc(hWnd, uMsg, wParam, lParam);
 			}
 		}
+		case WM_MOVE:
+		{
+			int newX = (int)LOWORD(lParam);
+			int newY = (int)HIWORD(lParam);
+
+			int offsetX = newX - preWindowX;
+			int offsetY = newY - preWindowY;
+
+			// Create a POINT structure to hold the offset
+			POINT offset = { offsetX, offsetY };
+
+			// Enumerate all top-level windows, moving the sticker windows
+			EnumWindows(EnumStickerWindowsProc, (LPARAM)&offset);
+
+			// Update the previous position for next time
+			preWindowX = newX;
+			preWindowY = newY;
+		}
+		break;
+
 		case WM_CLOSE:
 		{
 			return DestroyWindow(hWnd);
