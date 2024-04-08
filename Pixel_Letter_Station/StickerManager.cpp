@@ -45,9 +45,17 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         {
         case 6:
         {
-            bitmapFiles = GetBitmapFiles();
-            CreateStickerButtons(hwnd, width, height, bitmapFiles);
+            // get folder path and store it
+            wstring folderPath = PickFolderAndReturnPath();
+            StorePathConfig(folderPath);
 
+            // create sticker buttons, and get rid of old ones
+            bitmapFiles = GetBitmapFiles(folderPath);
+            if (bitmapFiles.size() != 0)
+            {
+                EnumChildWindows(hwnd, EnumChildProc, 0);
+            CreateStickerButtons(hwnd, width, height, bitmapFiles);
+            }
             UpdateWindow(hwnd);
             InvalidateRect(hwnd, NULL, TRUE);
             break;
