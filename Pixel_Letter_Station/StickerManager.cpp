@@ -56,6 +56,10 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 EnumChildWindows(hwnd, EnumChildProc, 0);
             CreateStickerButtons(hwnd, width, height, bitmapFiles);
             }
+            else
+            {
+                EnumChildWindows(hwnd, EnumChildProc, 0);
+            }
             // update the window
             UpdateWindow(hwnd);
             InvalidateRect(hwnd, NULL, TRUE);
