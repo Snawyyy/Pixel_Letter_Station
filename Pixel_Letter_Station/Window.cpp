@@ -16,6 +16,9 @@ bool letterOpened = false;
 HWND letterContents;
 HWND userWindow;
 
+int preWindowX;
+int preWindowY;
+
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
