@@ -129,8 +129,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			LetterBackground(hdc, hWnd,  width,  height);
 
-			ServerStatusBar(hdc, isConnected, MARGIN * 1.5, MARGIN * 2.5);
-
 			// components
 			WindowFrame(hdc, hWnd, width, height);
 			WindowBar(hdc, hWnd, width);
