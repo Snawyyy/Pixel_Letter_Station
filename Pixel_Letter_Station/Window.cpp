@@ -291,6 +291,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			// Check if the point is within the draggable area
 			if (PtInRect(&draggableArea, pt)) 
 			{
+				SendMessage(FindWindow(L"StickerWindowClass", NULL), WM_WINDOWPOSCHANGING, (WPARAM)pt.x, 0);
 				return HTCAPTION;
 			}
 			else 
