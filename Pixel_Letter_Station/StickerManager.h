@@ -15,6 +15,8 @@ LRESULT StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void CreateStickerButtons(HWND hwnd, int width, int height, const vector<wstring>& bitmapFiles);
 
+BOOL EnumChildProc(HWND hwndChild, LPARAM lParam);
+
 wstring PickFolderAndReturnPath();
 
 vector<wstring> GetBitmapFiles(wstring folderPath);
