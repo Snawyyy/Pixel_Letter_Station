@@ -1,5 +1,6 @@
 #include "LetterWindow.h"
 
+bool pressingPen = false;
 
 HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height, HBITMAP bitmapHandle)
 {
@@ -42,6 +43,8 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
     static HBITMAP hbmScreen = NULL;
 
+    static HDC penHdc;
+
     switch (uMsg)
     {
     case WM_CREATE: // where you create all the interface
@@ -72,6 +75,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
         CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
         hbmScreen = reinterpret_cast<HBITMAP>(pCreate->lpCreateParams); // Retrieve and store the bitmap handle
+
     }
     case WM_COMMAND: // Button logic
     {
@@ -115,8 +119,21 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         BITMAP bitmap;
         GetObject(hbmScreen, sizeof(bitmap), &bitmap);
 
+        RECT bitmapRect;
+        SetRect(&bitmapRect,
+            rcClient.left + BORDER_EFFECT_SIZE + SMALL_MARGIN,
+            rcClient.top + WIN_BAR_SIZE + SMALL_MARGIN,
+            rcClient.left - BORDER_EFFECT_SIZE - SMALL_MARGIN,
+            rcClient.bottom - (MARGIN * 5 + SMALL_MARGIN));
+
         // Draw the bitmap
-        BitBlt(hdc, BORDER_EFFECT_SIZE + SMALL_MARGIN, WIN_BAR_SIZE + SMALL_MARGIN, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 5 + SMALL_MARGIN), hdcMem, 0, 0, SRCCOPY);
+        BitBlt(hdc,
+            bitmapRect.left, // left
+            bitmapRect.top, // top
+            LETTER_BOX_BORDER_W, // width
+            LETTER_BOX_BORDER_H, // height
+            hdcMem, 0, 0, SRCCOPY);
+
         WindowFrame(hdc, hWnd, width, height);
         WindowBar(hdc, hWnd, width);
 
@@ -132,6 +149,35 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         QuitButton(lParam, QUIT_BUTTON_ID);
         DefaultButton(lParam, L"Send", SEND_ID);
         DefaultButton(lParam, L"Sticker", 7);
+        break;
+    }
+    case WM_LBUTTONDOWN:
+    {
+        // the drawing on letter logic
+        penHdc = GetDC(hWnd);
+
+        POINT cursorPos;
+
+        // pen settings
+        HPEN blackPen = CreatePen(PS_SOLID, 1.5, RGB(0, 0, 0));
+        HPEN oldPen = (HPEN)SelectObject(penHdc, blackPen);
+
+        RECT border;
+        SetRect(&border,
+            rcClient.left + BORDER_EFFECT_SIZE + SMALL_MARGIN,
+            rcClient.top + WIN_BAR_SIZE + SMALL_MARGIN,
+            rcClient.left + BORDER_EFFECT_SIZE + SMALL_MARGIN + LETTER_BOX_BORDER_W,
+            rcClient.top + WIN_BAR_SIZE + SMALL_MARGIN + LETTER_BOX_BORDER_H);
+
+        pressingPen = true;
+        thread drawing(draw, cursorPos, hWnd, penHdc, border);
+        drawing.detach();
+        break;
+    }
+    case WM_LBUTTONUP:
+    {
+        pressingPen = false;
+        ReleaseDC(hWnd, penHdc); // release memory
         break;
     }
     case WM_ERASEBKGND:
@@ -177,4 +223,29 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     }
     }
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
+}
+
+void draw(POINT cursorPos, HWND hWnd, HDC penHdc, RECT border)
+{
+    // get Cursor pos to for starting point of line
+    GetCursorPos(&cursorPos);
+    ScreenToClient(hWnd, &cursorPos);
+
+    // set prevCursorPos to current cursor position so line would start on clicked point
+    POINT prevCursorPos = cursorPos;
+
+    while (pressingPen) // if drawing
+    {
+        // get cursor pos
+        GetCursorPos(&cursorPos);
+        ScreenToClient(hWnd, &cursorPos);
+        if (cursorPos.x >= border.left && cursorPos.x <= border.right && cursorPos.y >= border.top && cursorPos.y <= border.bottom)
+        {
+        MoveToEx(penHdc, prevCursorPos.x, prevCursorPos.y, NULL); // move start of line to the previous x,y cords captured
+        LineTo(penHdc, cursorPos.x, cursorPos.y); // draw line from previous point to current one
+
+        prevCursorPos = cursorPos;
+        }
+    }
+    return;
 }
