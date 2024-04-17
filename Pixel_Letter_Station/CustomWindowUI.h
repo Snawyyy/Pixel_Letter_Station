@@ -51,7 +51,7 @@ LRESULT StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 #define SCREEN_HEIGHT GetSystemMetrics(SM_CYFULLSCREEN)
 
 #define WINDOW_WIDTH 900
-#define WINDOW_HEIGHT 600
+#define WINDOW_HEIGHT WINDOW_WIDTH * 0.7
 
  // --Window Bar Settings-- //
 #define TITLE_SIZE WIN_BAR_SIZE * 0.6
