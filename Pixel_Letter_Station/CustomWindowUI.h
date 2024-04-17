@@ -45,6 +45,10 @@ LRESULT StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 #define TIMER_UPDATE_ID 1
 // learn about enum
 
+// Window size
+#define WINDOW_WIDTH 900
+#define WINDOW_HEIGHT 600
+
  // Window Bar Settings
 #define TITLE_SIZE 17.5
 #define WIN_BAR_SIZE 30
