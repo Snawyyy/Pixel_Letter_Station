@@ -139,6 +139,27 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			DeleteObject(brush);
 			DeleteObject(nullPen);
 
+			RECT box{ BORDER_EFFECT_SIZE + SMALL_MARGIN + WINDOW_HEIGHT * 0.1,
+			WINDOW_HEIGHT - BORDER_EFFECT_SIZE - WINDOW_HEIGHT * 0.2 + SMALL_MARGIN,
+			SMALL_MARGIN + WINDOW_WIDTH * 0.25,
+			WINDOW_HEIGHT - BORDER_EFFECT_SIZE - SMALL_MARGIN
+			};
+
+			brush = CreateSolidBrush(WINODW_UI_COLOR_SHADOW); // orangeish color
+			SelectObject(hdc, brush);
+			Rectangle(hdc, box.left,
+				box.top,
+				box.right,
+				box.bottom);
+
+			brush = CreateSolidBrush(WINODW_UI_COLOR); // orangeish color
+			SelectObject(hdc, brush);
+			Rectangle(hdc, box.left + BORDER_EFFECT_SIZE,
+				box.top + BORDER_EFFECT_SIZE,
+				box.right - BORDER_EFFECT_SIZE,
+				box.bottom - BORDER_EFFECT_SIZE);
+
+			DeleteObject(brush);
 
 			LetterBackground(hdc, hWnd);
 
