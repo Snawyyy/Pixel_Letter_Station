@@ -1,9 +1,7 @@
 #include "Window.h"
 
-int width = 900;
-int height = 600;
-int centerW = width / 2;
-int centerH = height / 2;
+int centerW = WINDOW_WIDTH / 2;
+int centerH = WINDOW_HEIGHT / 2;
 wchar_t wLetterText[LETTER_BOX_CAP] = {};
 HBITMAP hBitmap;
 
@@ -32,13 +30,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			HWND quitButton = CreateWindowA("BUTTON",
 				"Quit",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				(width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
+				(WINDOW_WIDTH - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
 				hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
 			// Minimize Button
 			HWND minimizeButton = CreateWindowA("BUTTON",
 				"-",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				(width - (BAR_BUTTON_SIZE * 2) - (BAR_MARGIN * 2)), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
+				(WINDOW_WIDTH - (BAR_BUTTON_SIZE * 2) - (BAR_MARGIN * 2)), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
 				hWnd, (HMENU)MINIMIZE_BUTTON_ID, NULL, NULL);
 
 			// Window Ui buttons
@@ -47,13 +45,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			HWND sendButton = CreateWindowA("BUTTON",
 				"Send",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+				WINDOW_WIDTH - MARGIN - BUTTON_WIDTH, (WINDOW_HEIGHT - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
 				hWnd, (HMENU)INK_LETTER_BUTTON_ID, NULL, NULL);
 			// Test
 			HWND button = CreateWindowA("BUTTON",
 				"Test",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				(width - LETTER_BOX_WIDTH - MARGIN), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH * 2, BUTTON_HEIGHT,
+				(WINDOW_WIDTH - LETTER_BOX_WIDTH - MARGIN), (WINDOW_HEIGHT - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH * 2, BUTTON_HEIGHT,
 				hWnd, (HMENU)6, NULL, NULL);
 
 			// Letter UI
@@ -62,13 +60,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			HWND letterTitle = CreateWindowA("RichEdit20W",
 				"-Title-",
 				WS_VISIBLE | WS_CHILD | ES_CENTER,
-				((width - (LETTER_BOX_WIDTH / 2) - MARGIN) - (LETTER_BOX_WIDTH / 2)), MARGIN * 4, LETTER_BOX_WIDTH, MARGIN,
+				((WINDOW_WIDTH - (LETTER_BOX_WIDTH / 2) - MARGIN + (BORDER_EFFECT_SIZE * 2)) - (LETTER_BOX_WIDTH / 2) - BAR_MARGIN + SMALL_MARGIN), MARGIN * 4, LETTER_BOX_WIDTH - SMALL_MARGIN * 2, MARGIN,
 				hWnd, NULL, NULL, NULL);
 			// Letter Contents
 			letterContents = CreateWindowA("RichEdit20W",
 				"Write Here...",
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
-				(width - LETTER_BOX_WIDTH - MARGIN), MARGIN * 6, LETTER_BOX_WIDTH, LETTER_BOX_HEIGHT,
+				(WINDOW_WIDTH - (LETTER_BOX_WIDTH / 2) - MARGIN + (BORDER_EFFECT_SIZE * 2)) - (LETTER_BOX_WIDTH / 2) - BAR_MARGIN + SMALL_MARGIN, MARGIN * 6, LETTER_BOX_WIDTH - SMALL_MARGIN * 2, LETTER_BOX_HEIGHT,
 				hWnd, NULL, NULL, NULL);
 			// Customizable RichText edit box
 			RichTextBoxPaint(letterContents);
@@ -83,7 +81,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				L"UserButton",            // custom button class name
 				L"Button",                  // button text
 				WS_CHILD | WS_VISIBLE,      // window styles
-				BORDER_EFFECT_SIZE + SMALL_MARGIN, height - BORDER_EFFECT_SIZE - 100 - MARGIN, 100, 100,         // x, y, width, height
+				BORDER_EFFECT_SIZE + SMALL_MARGIN, WINDOW_HEIGHT - BORDER_EFFECT_SIZE - 100 - MARGIN, 100, 100,         // x, y, WINDOW_WIDTH, height
 				hWnd,               // parent window handle 
 				NULL,                       // menu or child window identifier
 				hInstance,                  // instance handle
@@ -136,17 +134,17 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			// Draw the rectangle
 			// Parameters: HDC, left, top, right, bottom
-			Rectangle(hdc, 0, height - (WIN_BAR_SIZE * 2.5), width, height);
+			Rectangle(hdc, 0, WINDOW_HEIGHT - (WIN_BAR_SIZE * 2.5), WINDOW_WIDTH, WINDOW_HEIGHT);
 			// Clean up
 			DeleteObject(brush);
 			DeleteObject(nullPen);
 
 
-			LetterBackground(hdc, hWnd,  width,  height);
+			LetterBackground(hdc, hWnd,  WINDOW_WIDTH,  WINDOW_HEIGHT);
 
 			// components
-			WindowFrame(hdc, hWnd, width, height);
-			WindowBar(hdc, hWnd, width);
+			WindowFrame(hdc, hWnd, WINDOW_WIDTH, WINDOW_HEIGHT);
+			WindowBar(hdc, hWnd, WINDOW_WIDTH);
 			Title(hdc, hWnd, centerW);
 
 
@@ -168,14 +166,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				if (letterOpened == false)
 				{
-					int posX = width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN;
+					int posX = WINDOW_WIDTH - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN;
 					int PosY = WIN_BAR_SIZE + MARGIN;
 					HBITMAP hBitmap = GetLetter(hWnd); // Retrieve the bitmap handle from GetLetter
 
 					if (hBitmap != NULL) // Check if the bitmap handle is valid
 					{
 						HINSTANCE hInstance = GetModuleHandle(NULL);
-						CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 4) + (BAR_MARGIN * 2), height - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, hBitmap);
+						CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 4) + (BAR_MARGIN * 2), WINDOW_HEIGHT - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, hBitmap);
 						letterOpened = true;
 					}
 					else
@@ -289,7 +287,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			ScreenToClient(hWnd, &pt);
 
 			// Define the draggable area, e.g., top 50 pixels of the window
-			RECT draggableArea = { 0, 0, width, WIN_BAR_SIZE }; // You need to define windowWidth
+			RECT draggableArea = { 0, 0, WINDOW_WIDTH, WIN_BAR_SIZE }; // You need to define windowWidth
 
 			// Check if the point is within the draggable area
 			if (PtInRect(&draggableArea, pt)) 
@@ -412,8 +410,8 @@ Window::Window(): m_hinstance(GetModuleHandle(nullptr))
 		style,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		width,
-		height,
+		WINDOW_WIDTH,
+		WINDOW_HEIGHT,
 		NULL,
 		NULL,
 		m_hinstance,
