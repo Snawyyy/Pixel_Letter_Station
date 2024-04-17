@@ -45,13 +45,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			HWND sendButton = CreateWindowA("BUTTON",
 				"Send",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				WINDOW_WIDTH - MARGIN - BUTTON_WIDTH, (WINDOW_HEIGHT - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+				LETTER_BOX_RECT_RIGHT - BUTTON_WIDTH, (WINDOW_HEIGHT - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
 				hWnd, (HMENU)INK_LETTER_BUTTON_ID, NULL, NULL);
 			// Test
 			HWND button = CreateWindowA("BUTTON",
 				"Test",
 				WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-				(WINDOW_WIDTH - LETTER_BOX_WIDTH - MARGIN), (WINDOW_HEIGHT - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH * 2, BUTTON_HEIGHT,
+				LETTER_BOX_RECT_LEFT, (WINDOW_HEIGHT - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH * 2, BUTTON_HEIGHT,
 				hWnd, (HMENU)6, NULL, NULL);
 
 			// Letter UI
@@ -60,13 +60,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			HWND letterTitle = CreateWindowA("RichEdit20W",
 				"-Title-",
 				WS_VISIBLE | WS_CHILD | ES_CENTER,
-				((WINDOW_WIDTH - (LETTER_BOX_WIDTH / 2) - MARGIN + (BORDER_EFFECT_SIZE * 2)) - (LETTER_BOX_WIDTH / 2) - BAR_MARGIN + SMALL_MARGIN), MARGIN * 4, LETTER_BOX_WIDTH - SMALL_MARGIN * 2, MARGIN,
+				WINDOW_WIDTH - LETTER_BOX_WIDTH - SMALL_MARGIN - BORDER_EFFECT_SIZE, MARGIN * 4, LETTER_BOX_WIDTH - SMALL_MARGIN * 2, MARGIN,
 				hWnd, NULL, NULL, NULL);
 			// Letter Contents
 			letterContents = CreateWindowA("RichEdit20W",
 				"Write Here...",
 				WS_VISIBLE | WS_CHILD | ES_MULTILINE,
-				(WINDOW_WIDTH - (LETTER_BOX_WIDTH / 2) - MARGIN + (BORDER_EFFECT_SIZE * 2)) - (LETTER_BOX_WIDTH / 2) - BAR_MARGIN + SMALL_MARGIN, MARGIN * 6, LETTER_BOX_WIDTH - SMALL_MARGIN * 2, LETTER_BOX_HEIGHT,
+				WINDOW_WIDTH - LETTER_BOX_WIDTH - SMALL_MARGIN - BORDER_EFFECT_SIZE, MARGIN * 6, LETTER_BOX_WIDTH - SMALL_MARGIN * 2, LETTER_BOX_HEIGHT,
 				hWnd, NULL, NULL, NULL);
 			// Customizable RichText edit box
 			RichTextBoxPaint(letterContents);
@@ -81,7 +81,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				L"UserButton",            // custom button class name
 				L"Button",                  // button text
 				WS_CHILD | WS_VISIBLE,      // window styles
-				BORDER_EFFECT_SIZE + SMALL_MARGIN, WINDOW_HEIGHT - BORDER_EFFECT_SIZE - 100 - MARGIN, 100, 100,         // x, y, WINDOW_WIDTH, height
+				BORDER_EFFECT_SIZE + SMALL_MARGIN, WINDOW_HEIGHT - BORDER_EFFECT_SIZE - WINDOW_HEIGHT * 0.2, WINDOW_HEIGHT * 0.2, WINDOW_HEIGHT * 0.2,         // x, y, width, height
 				hWnd,               // parent window handle 
 				NULL,                       // menu or child window identifier
 				hInstance,                  // instance handle
@@ -93,7 +93,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				L"StickerMenu",            // custom button class name
 				L"Button",                  // button text
 				WS_CHILD | WS_VISIBLE,      // window styles
-				BORDER_EFFECT_SIZE + SMALL_MARGIN, WIN_BAR_SIZE + MARGIN, MARGIN * 9, MARGIN * 20,         // x, y, width, height
+				BORDER_EFFECT_SIZE + SMALL_MARGIN, LETTER_BOX_RECT_TOP, WINDOW_WIDTH * 0.3 - MARGIN - BAR_MARGIN * 2 - SMALL_MARGIN, WINDOW_HEIGHT * 0.7,         // x, y, width, height
 				hWnd,               // parent window handle
 				NULL,                       // menu or child window identifier
 				hInstance,                  // instance handle
@@ -140,7 +140,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			DeleteObject(nullPen);
 
 
-			LetterBackground(hdc, hWnd,  WINDOW_WIDTH,  WINDOW_HEIGHT);
+			LetterBackground(hdc, hWnd);
 
 			// components
 			WindowFrame(hdc, hWnd, WINDOW_WIDTH, WINDOW_HEIGHT);

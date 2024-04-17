@@ -400,7 +400,7 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 	DeleteObject(hPen);
 }
 
-void LetterBackground(HDC hdc, HWND hWnd, int width, int height)
+void LetterBackground(HDC hdc, HWND hWnd)
 {
 	// First, draw the border, a larger rectangle with a solid color
 	HBRUSH brushMain = CreateSolidBrush(LETTER_BORDER); // Black color for the Border

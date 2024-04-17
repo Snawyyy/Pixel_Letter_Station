@@ -18,7 +18,7 @@ bool Title(HDC hdc, HWND hWnd, int centerW);
 void WindowBar(HDC hdc, HWND hWnd, int width);
 void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
 
-void LetterBackground(HDC hdc, HWND hWnd, int width, int height);
+void LetterBackground(HDC hdc, HWND hWnd);
 
 void RichTextBoxPaint(HWND Box);
 
@@ -46,12 +46,16 @@ LRESULT StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 // learn about enum
 
 // Window size
+
+#define SCREEN_WIDTH GetSystemMetrics(SM_CXFULLSCREEN)
+#define SCREEN_HEIGHT GetSystemMetrics(SM_CYFULLSCREEN)
+
 #define WINDOW_WIDTH 900
 #define WINDOW_HEIGHT 600
 
  // Window Bar Settings
-#define TITLE_SIZE 17.5
-#define WIN_BAR_SIZE 30
+#define TITLE_SIZE WIN_BAR_SIZE * 0.6
+#define WIN_BAR_SIZE SCREEN_HEIGHT / 30
 #define BAR_MARGIN  5
 #define BAR_BUTTON_SIZE  20
 #define BORDER_EFFECT_SIZE 4
@@ -60,8 +64,8 @@ LRESULT StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 #define MARGIN  20
 #define SMALL_MARGIN  7.5
 
-#define LETTER_BOX_WIDTH 650 //Letter writing box
-#define LETTER_BOX_HEIGHT 400 
+#define LETTER_BOX_WIDTH (WINDOW_WIDTH * 0.7) //Letter writing box
+#define LETTER_BOX_HEIGHT (WINDOW_HEIGHT * 0.65)
 
 #define LETTER_BOX_RECT_LEFT WINDOW_WIDTH - LETTER_BOX_WIDTH - MARGIN - BAR_MARGIN
 #define LETTER_BOX_RECT_RIGHT WINDOW_WIDTH - (SMALL_MARGIN * 2)
