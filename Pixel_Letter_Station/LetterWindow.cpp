@@ -55,13 +55,13 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         HWND sendButton = CreateWindowA("BUTTON",
             "Send",
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-            width - MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+            width - BORDER_EFFECT_SIZE - SMALL_MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
             hWnd, (HMENU)SEND_ID, NULL, NULL);
         // Test
         HWND Sticker = CreateWindowA("BUTTON",
             "Test",
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-            (MARGIN * 2), (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+            BORDER_EFFECT_SIZE + SMALL_MARGIN, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
             hWnd, (HMENU)7, NULL, NULL);
 
         // Window Bar Buttons
