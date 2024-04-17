@@ -28,7 +28,7 @@ bool BitmapButton(HWND hWnd, LPARAM lParam, HBITMAP recBitmap, const wchar_t* Te
 
 LRESULT StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
- // HMENU id
+ // --HMENU id-- //
 #define TITLE_ID 0
 
 #define QUIT_BUTTON_ID 1
@@ -45,7 +45,7 @@ LRESULT StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 #define TIMER_UPDATE_ID 1
 // learn about enum
 
-// Window size
+// --Window size-- //
 
 #define SCREEN_WIDTH GetSystemMetrics(SM_CXFULLSCREEN)
 #define SCREEN_HEIGHT GetSystemMetrics(SM_CYFULLSCREEN)
@@ -53,33 +53,37 @@ LRESULT StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 #define WINDOW_WIDTH 900
 #define WINDOW_HEIGHT 600
 
- // Window Bar Settings
+ // --Window Bar Settings-- //
 #define TITLE_SIZE WIN_BAR_SIZE * 0.6
 #define WIN_BAR_SIZE SCREEN_HEIGHT / 30
 #define BAR_MARGIN  5
 #define BAR_BUTTON_SIZE  20
 #define BORDER_EFFECT_SIZE 4
 
- // Ui Settings
+ // --Ui Settings-- //
 #define MARGIN  20
 #define SMALL_MARGIN  7.5
 
 #define LETTER_BOX_WIDTH (WINDOW_WIDTH * 0.7) //Letter writing box
 #define LETTER_BOX_HEIGHT (WINDOW_HEIGHT * 0.65)
 
-#define LETTER_BOX_RECT_LEFT WINDOW_WIDTH - LETTER_BOX_WIDTH - MARGIN - BAR_MARGIN
-#define LETTER_BOX_RECT_RIGHT WINDOW_WIDTH - (SMALL_MARGIN * 2)
-#define LETTER_BOX_RECT_TOP MARGIN * 2.5
-#define LETTER_BOX_RECT_BOTTOM WINDOW_HEIGHT - (MARGIN * 3)
+// Most of the ui elements are positioned relative to this
+
+#define LETTER_BOX_RECT_LEFT WINDOW_WIDTH - LETTER_BOX_WIDTH - MARGIN - BAR_MARGIN // Left rect
+#define LETTER_BOX_RECT_TOP MARGIN * 2.5										   // Top rect
+#define LETTER_BOX_RECT_RIGHT WINDOW_WIDTH - (SMALL_MARGIN * 2)                    // Right rect
+#define LETTER_BOX_RECT_BOTTOM WINDOW_HEIGHT - (MARGIN * 3)						   // Bottom rect
 
 #define LETTER_BOX_BORDER_W ((LETTER_BOX_RECT_RIGHT) - (LETTER_BOX_RECT_LEFT))
 #define LETTER_BOX_BORDER_H ((LETTER_BOX_RECT_BOTTOM) - (LETTER_BOX_RECT_TOP))
 #define LETTER_BOX_CAP 1400 // Max letters in the letter box
 
-#define BUTTON_WIDTH 100 //Button
+// --Button size-- //
+
+#define BUTTON_WIDTH 100 
 #define BUTTON_HEIGHT 30
 
-// Ui Colors
+// --Ui Colors-- //
 
 #define BACKGROUND_COLOR RGB(159, 123, 89)
 
