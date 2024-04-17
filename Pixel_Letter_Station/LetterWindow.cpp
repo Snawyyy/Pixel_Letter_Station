@@ -159,7 +159,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         POINT cursorPos;
 
         // pen settings
-        HPEN blackPen = CreatePen(PS_SOLID, 1.5, RGB(0, 0, 0));
+        HPEN blackPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
         HPEN oldPen = (HPEN)SelectObject(penHdc, blackPen);
 
         RECT border;
