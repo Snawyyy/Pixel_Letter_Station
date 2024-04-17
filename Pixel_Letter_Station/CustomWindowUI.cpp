@@ -402,12 +402,12 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 
 void LetterBackground(HDC hdc, HWND hWnd, int width, int height)
 {
-	// First, draw the larger rectangle with a solid color
+	// First, draw the border, a larger rectangle with a solid color
 	HBRUSH brushMain = CreateSolidBrush(LETTER_BORDER); // Black color for the Border
 	RECT rectMain = { width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN, MARGIN * 2.5, width - (SMALL_MARGIN * 2), height - (MARGIN * 3)}; // Main rectangle coordinates
 	FillRect(hdc, &rectMain, brushMain);
 
-	//Then, the "Paper" by drawing it with the paper color
+	//Then, the "Shadow" by drawing it with the paper color
 	HBRUSH brushShading = CreateSolidBrush(PAPER_COLOR_SHADOW); // Brush for the Shadow, using the shadow color
 	RECT rectShading = { (width - (LETTER_BOX_WIDTH / 2) - MARGIN + BORDER_EFFECT_SIZE) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, (MARGIN * 2.5) + BORDER_EFFECT_SIZE, width - (SMALL_MARGIN * 2) - BORDER_EFFECT_SIZE, height - (MARGIN * 3) - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
 	FillRect(hdc, &rectShading, brushShading);
