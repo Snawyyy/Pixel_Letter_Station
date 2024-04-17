@@ -91,7 +91,14 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         }
         case SEND_ID:
         {
-            HBITMAP hBitmap = GetLetter(hWnd); // Retrieve the bitmap handle from GetLetter
+            RECT bitmapRect;
+            SetRect(&bitmapRect,
+                rcClient.left + BORDER_EFFECT_SIZE + SMALL_MARGIN,
+                rcClient.top + WIN_BAR_SIZE + SMALL_MARGIN,
+                rcClient.left - BORDER_EFFECT_SIZE - SMALL_MARGIN,
+                rcClient.bottom - (MARGIN * 5 + SMALL_MARGIN));
+
+            HBITMAP hBitmap = GetLetter(hWnd, bitmapRect); // Retrieve the bitmap handle from GetLetter
 
             vector<BYTE> BitMap = SerializeBitmap(hBitmap);
             SendData(serverSock, BitMap);
