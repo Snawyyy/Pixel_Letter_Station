@@ -1,6 +1,6 @@
 #include "LetterManager.h"
 
-HBITMAP GetLetter(HWND hWnd)
+HBITMAP GetLetter(HWND hWnd, RECT letterArea)
 {
     HWND hDesktopWnd = GetDesktopWindow();
     HDC hDesktopDC = GetDC(hDesktopWnd);
@@ -15,8 +15,8 @@ HBITMAP GetLetter(HWND hWnd)
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
 
-    int letterPosX = LETTER_BOX_RECT_LEFT;
-    int letterPosY = LETTER_BOX_RECT_TOP;
+    int letterPosX = letterArea.left;
+    int letterPosY = letterArea.top;
 
     int letterWidth = LETTER_BOX_BORDER_W;
     int letterHeight = LETTER_BOX_BORDER_H;
