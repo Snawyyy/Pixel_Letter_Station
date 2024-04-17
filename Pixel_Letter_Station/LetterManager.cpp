@@ -15,11 +15,11 @@ HBITMAP GetLetter(HWND hWnd)
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
 
-    int letterPosX = width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN;
-    int letterPosY = WIN_BAR_SIZE + MARGIN;
+    int letterPosX = LETTER_BOX_RECT_LEFT;
+    int letterPosY = LETTER_BOX_RECT_TOP;
 
-    int letterWidth = LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2;
-    int letterHeight = height - (MARGIN * 2.5) - (MARGIN * 2.5);
+    int letterWidth = LETTER_BOX_BORDER_W;
+    int letterHeight = LETTER_BOX_BORDER_H;
 
     HBITMAP hbmScreen = CreateCompatibleBitmap(hDesktopDC, width, height);
     HGDIOBJ oldBitmap = SelectObject(hdcMemDC, hbmScreen);
