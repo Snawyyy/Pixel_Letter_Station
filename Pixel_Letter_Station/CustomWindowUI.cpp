@@ -308,9 +308,9 @@ bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in t
 
 	BITMAP bitmap;
 	GetObject(hBitmap, sizeof(BITMAP), &bitmap);
-	int height = WIN_BAR_SIZE - (BORDER_EFFECT_SIZE * 2) - SMALL_MARGIN;
+	int height = WIN_BAR_SIZE - (BORDER_EFFECT_SIZE * 3);
 	int width = (bitmap.bmWidth * height) / bitmap.bmHeight;
-	StretchBlt(hdc, SMALL_MARGIN + BORDER_EFFECT_SIZE, (WIN_BAR_SIZE / 2) - (height / 2), width, height, hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
+	StretchBlt(hdc,BORDER_EFFECT_SIZE * 2 , (WIN_BAR_SIZE / 2) - (height / 2), width, height, hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
 
 	// Custom drawing code goes here
 	HFONT hFont = CreateFont(
