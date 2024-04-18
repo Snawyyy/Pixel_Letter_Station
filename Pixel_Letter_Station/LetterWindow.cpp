@@ -124,7 +124,12 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         }
         case 7:
         {
+            // Delete the old pen
+            if (currentPen != NULL)
+                DeleteObject(currentPen);
 
+            // Create a new pen with the desired color
+            currentPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0)); // Red color
             break;
         }
         }
