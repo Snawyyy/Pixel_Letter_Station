@@ -45,6 +45,23 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
     static HDC penHdc;
 
+    // --UserDrawingSettings-- // 
+
+    RECT drawingBorder; // Area able to draw in
+    SetRect(&drawingBorder,
+        rcClient.left + BORDER_EFFECT_SIZE + SMALL_MARGIN,
+        rcClient.top + WIN_BAR_SIZE + SMALL_MARGIN,
+        rcClient.left + BORDER_EFFECT_SIZE + SMALL_MARGIN + LETTER_BOX_BORDER_W,
+        rcClient.top + WIN_BAR_SIZE + SMALL_MARGIN + LETTER_BOX_BORDER_H);
+
+    penHdc = GetDC(hWnd);
+
+    POINT cursorPos; // Pen position (calculated on LMouseButtonDown
+
+    // pen settings
+    static HPEN currentPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // Default color
+    static HPEN oldPen = (HPEN)SelectObject(penHdc, currentPen);
+
     switch (uMsg)
     {
     case WM_CREATE: // where you create all the interface
@@ -161,23 +178,10 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     case WM_LBUTTONDOWN:
     {
         // the drawing on letter logic
-        penHdc = GetDC(hWnd);
-
-        POINT cursorPos;
-
-        // pen settings
-        HPEN blackPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
-        HPEN oldPen = (HPEN)SelectObject(penHdc, blackPen);
-
-        RECT border;
-        SetRect(&border,
-            rcClient.left + BORDER_EFFECT_SIZE + SMALL_MARGIN,
-            rcClient.top + WIN_BAR_SIZE + SMALL_MARGIN,
-            rcClient.left + BORDER_EFFECT_SIZE + SMALL_MARGIN + LETTER_BOX_BORDER_W,
-            rcClient.top + WIN_BAR_SIZE + SMALL_MARGIN + LETTER_BOX_BORDER_H);
-
         pressingPen = true;
-        thread drawing(draw, cursorPos, hWnd, penHdc, border);
+        oldPen = (HPEN)SelectObject(penHdc, currentPen);
+
+        thread drawing(draw, cursorPos, hWnd, penHdc, drawingBorder);
         drawing.detach();
         break;
     }
