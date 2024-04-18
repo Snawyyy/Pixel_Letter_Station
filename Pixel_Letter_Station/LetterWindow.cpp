@@ -329,6 +329,10 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             DeleteObject(hbmScreen); 
             hbmScreen = NULL;
         }
+        // Clean the brush
+        if (currentPen != NULL)
+            DeleteObject(currentPen);
+
         SendMessage(GetParent(hWnd), WM_LETTER_WINDOW, (WPARAM)101, 0);
         DestroyWindow(hWnd);
         return 0; 
