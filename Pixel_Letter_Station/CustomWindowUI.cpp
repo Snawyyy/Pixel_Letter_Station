@@ -160,7 +160,13 @@ bool ColorButton(LPARAM lParam, int buttonId, COLORREF color) // GUI Default But
 		BYTE green = GetGValue(color);
 		BYTE blue = GetBValue(color);
 
-		HBRUSH shadowBrush = CreateSolidBrush(RGB((red - 100) & 0xFF, (green - 100) & 0xFF, (blue - 100)) & 0xFF);
+		// Calculate the shadow color by reducing the brightness of the original color
+		BYTE shadowRed = max(0, static_cast<int>(red) - 100);
+		BYTE shadowGreen = max(0, static_cast<int>(green) - 100);
+		BYTE shadowBlue = max(0, static_cast<int>(blue) - 100);
+		COLORREF shadowColor = RGB(shadowRed, shadowGreen, shadowBlue);
+
+		HBRUSH shadowBrush = CreateSolidBrush(shadowColor);
 
 		// Set the background
 		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(color));
