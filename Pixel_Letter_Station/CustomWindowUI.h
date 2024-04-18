@@ -13,6 +13,7 @@
 bool QuitButton(LPARAM lParam, int buttonId);
 bool MinimizeButton(LPARAM lParam);
 bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId);
+bool ColorButton(LPARAM lParam, int buttonId, COLORREF color);
 LRESULT UserButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 bool Title(HDC hdc, HWND hWnd, int centerW);
 void WindowBar(HDC hdc, HWND hWnd, int width);

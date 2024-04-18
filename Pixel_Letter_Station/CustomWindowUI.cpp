@@ -148,6 +148,55 @@ bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId) // GUI Defa
 	}
 }
 
+bool ColorButton(LPARAM lParam, int buttonId, COLORREF color) // GUI Default Button
+{
+	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
+	if (pDIS->CtlID == buttonId)// Matching the HMENU value passed when creating the button
+	{
+
+		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
+
+		BYTE red = GetRValue(color);
+		BYTE green = GetGValue(color);
+		BYTE blue = GetBValue(color);
+
+		HBRUSH shadowBrush = CreateSolidBrush(RGB((red - 100) & 0xFF, (green - 100) & 0xFF, (blue - 100)) & 0xFF);
+
+		// Set the background
+		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(color));
+
+		// Button shading
+		RECT effectRect;
+
+		// Shadow
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BORDER_EFFECT_SIZE); // top effect
+		FillRect(pDIS->hDC, &effectRect, shadowBrush);
+
+		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BORDER_EFFECT_SIZE, pDIS->rcItem.bottom); // left effect
+		FillRect(pDIS->hDC, &effectRect, shadowBrush);
+
+		// Prepare the rectangle for the text, adjusting if the button is pressed
+		if (isPressed) {
+			// Change color to simulate the button pressed animation
+			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(DEFULT_BUTTON_COLOR_PRESSED));
+		}
+
+		// Draw a border around the button
+		// 
+		// Create a pen of desired thickness and color
+		HPEN hPen = CreatePen(PS_SOLID, BORDER_EFFECT_SIZE, LETTER_BORDER);
+
+		// Select the pen and a null brush into the DC
+		HPEN hOldPen = (HPEN)SelectObject(pDIS->hDC, hPen);
+		HBRUSH hOldBrush = (HBRUSH)SelectObject(pDIS->hDC, GetStockObject(NULL_BRUSH));
+
+		// Draw the rectangle
+		Rectangle(pDIS->hDC, 0, 0, pDIS->rcItem.right, pDIS->rcItem.bottom);
+
+		return TRUE; // Indicate we handled the message
+	}
+}
+
 
 LRESULT CALLBACK UserButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -372,7 +421,7 @@ void WindowBar(HDC hdc, HWND hWnd, int width)
 void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 {
 	// Create a pen of desired thickness and color
-	HPEN hPen = CreatePen(PS_SOLID, BAR_MARGIN * 2, WINODW_UI_COLOR); // Black pen
+	HPEN hPen = CreatePen(PS_SOLID, BAR_MARGIN * 2, WINODW_UI_COLOR);
 
 	// Select the pen and a null brush into the DC
 	HPEN hOldPen = (HPEN)SelectObject(hdc, hPen);
