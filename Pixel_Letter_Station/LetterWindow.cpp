@@ -66,7 +66,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     {
     case WM_CREATE: // where you create all the interface
     {
-        // Window Ui buttons
+        // --Window Ui buttons-- // 
         // 
         // Send Button
         HWND sendButton = CreateWindowA("BUTTON",
@@ -81,7 +81,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             BORDER_EFFECT_SIZE + SMALL_MARGIN, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
             hWnd, (HMENU)7, NULL, NULL);
 
-        // Window Bar Buttons
+        // --Window Bar Buttons-- //
         // 
         // Quit Button
         HWND quitButton = CreateWindowA("BUTTON",
