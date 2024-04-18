@@ -257,6 +257,10 @@ void draw(POINT cursorPos, HWND hWnd, HDC penHdc, RECT border)
 
         prevCursorPos = cursorPos;
         }
+        else
+        {
+            prevCursorPos = cursorPos;
+        }
     }
     return;
 }
