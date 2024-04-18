@@ -62,6 +62,18 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     static HPEN currentPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // Default color
     static HPEN oldPen = (HPEN)SelectObject(penHdc, currentPen);
 
+
+    // --Default Colors-- //
+
+    COLORREF black = RGB(0, 0, 0);
+    COLORREF white = RGB(255, 255, 255);
+    COLORREF red = RGB(255, 0, 0);
+    COLORREF yellow = RGB(255, 255, 0);
+    COLORREF green = RGB(0, 255, 0);
+    COLORREF blue = RGB(0, 0, 255);
+
+
+
     switch (uMsg)
     {
     case WM_CREATE: // where you create all the interface
@@ -74,11 +86,43 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             width - BORDER_EFFECT_SIZE - SMALL_MARGIN - BUTTON_WIDTH, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
             hWnd, (HMENU)SEND_ID, NULL, NULL);
-        // Test
-        HWND Sticker = CreateWindowA("BUTTON",
-            "Test",
+
+        // color palate
+        // black
+        HWND black = CreateWindowA("BUTTON",
+            "black",
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
-            BORDER_EFFECT_SIZE + SMALL_MARGIN, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_WIDTH, BUTTON_HEIGHT,
+            BORDER_EFFECT_SIZE + SMALL_MARGIN, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_HEIGHT, BUTTON_HEIGHT,
+            hWnd, (HMENU)2, NULL, NULL);
+        // white
+        HWND white = CreateWindowA("BUTTON",
+            "white",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            BORDER_EFFECT_SIZE + SMALL_MARGIN * 2 + BUTTON_HEIGHT, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_HEIGHT, BUTTON_HEIGHT,
+            hWnd, (HMENU)3, NULL, NULL);
+        // red
+        HWND red = CreateWindowA("BUTTON",
+            "red",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            BORDER_EFFECT_SIZE + SMALL_MARGIN * 3 + BUTTON_HEIGHT * 2, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_HEIGHT, BUTTON_HEIGHT,
+            hWnd, (HMENU)4, NULL, NULL);
+        // yellow
+        HWND yellow = CreateWindowA("BUTTON",
+            "yellow",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            BORDER_EFFECT_SIZE + SMALL_MARGIN * 4 + BUTTON_HEIGHT * 3, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_HEIGHT, BUTTON_HEIGHT,
+            hWnd, (HMENU)5, NULL, NULL);
+        // green
+        HWND green = CreateWindowA("BUTTON",
+            "green",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            BORDER_EFFECT_SIZE + SMALL_MARGIN * 5 + BUTTON_HEIGHT * 4, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_HEIGHT, BUTTON_HEIGHT,
+            hWnd, (HMENU)6, NULL, NULL);
+        // blue
+        HWND blue = CreateWindowA("BUTTON",
+            "blue",
+            WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
+            BORDER_EFFECT_SIZE + SMALL_MARGIN * 6 + BUTTON_HEIGHT * 5, (height - (MARGIN * 2) - (BUTTON_HEIGHT / 2)), BUTTON_HEIGHT, BUTTON_HEIGHT,
             hWnd, (HMENU)7, NULL, NULL);
 
         // --Window Bar Buttons-- //
@@ -122,14 +166,59 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             DestroyWindow(hWnd);
             break;
         }
-        case 7:
+        case 2:
         {
+            // Changes pen to the desired color
             // Delete the old pen
             if (currentPen != NULL)
                 DeleteObject(currentPen);
 
-            // Create a new pen with the desired color
-            currentPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0)); // Red color
+            currentPen = CreatePen(PS_SOLID, 1, black); // Red color
+            break;
+        }
+        case 3:
+        {
+            // Changes pen to the desired color
+            // Delete the old pen
+            if (currentPen != NULL)
+                DeleteObject(currentPen);
+            currentPen = CreatePen(PS_SOLID, 1, white); // Red color
+            break;
+        }
+        case 4:
+        {
+            // Changes pen to the desired color
+            // Delete the old pen
+            if (currentPen != NULL)
+                DeleteObject(currentPen);
+            currentPen = CreatePen(PS_SOLID, 1, red); // Red color
+            break;
+        }
+        case 5:
+        {
+            // Changes pen to the desired color
+            // Delete the old pen
+            if (currentPen != NULL)
+                DeleteObject(currentPen);
+            currentPen = CreatePen(PS_SOLID, 1, yellow); // Red color
+            break;
+        }
+        case 6:
+        {
+            // Changes pen to the desired color
+            // Delete the old pen
+            if (currentPen != NULL)
+                DeleteObject(currentPen);
+            currentPen = CreatePen(PS_SOLID, 1, green); // Red color
+            break;
+        }
+        case 7:
+        {
+            // Changes pen to the desired color
+            // Delete the old pen
+            if (currentPen != NULL)
+                DeleteObject(currentPen);
+            currentPen = CreatePen(PS_SOLID, 1, blue); // Red color
             break;
         }
         }
@@ -177,7 +266,14 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     { 
         QuitButton(lParam, QUIT_BUTTON_ID);
         DefaultButton(lParam, L"Send", SEND_ID);
-        DefaultButton(lParam, L"Sticker", 7);
+
+        ColorButton(lParam, 2, black);
+        ColorButton(lParam, 3, white);
+        ColorButton(lParam, 4, red);
+        ColorButton(lParam, 5, yellow);
+        ColorButton(lParam, 6, green);
+        ColorButton(lParam, 7, blue);
+
         break;
     }
     case WM_LBUTTONDOWN:
