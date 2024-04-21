@@ -162,21 +162,56 @@ LRESULT CALLBACK StickerWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         break;
     }
     case WM_LBUTTONDOWN:
-        {
-        isDragging = true;
+    {
+    isDragging = true;
 
-        // Set the capture to the window
-        SetCapture(hWnd);
-        break;
-        }
+    // Set the capture to the window
+    SetCapture(hWnd);
+    break;
+    }
     case WM_LBUTTONUP:
-        {
-        isDragging = false;
+    {
+    isDragging = false;
 
-        // Release the capture
-        ReleaseCapture();
-        break;
+    // Release the capture
+    ReleaseCapture();
+    break;
+    }
+    case WM_KEYDOWN:
+    {
+        UINT virtualKeyCode = (UINT)wParam;
+        RECT windowRect;
+        int offset = 1;
+
+        if (GetWindowRect(hWnd, &windowRect))
+        {
+            int currentX = windowRect.left;
+            int currentY = windowRect.top;
+
+            if (virtualKeyCode == VK_UP)
+            {
+                // Move window up
+                MoveWindow(hWnd, currentX, currentY - offset, width, height, TRUE);
+            }
+            else if (virtualKeyCode == VK_DOWN)
+            {
+                // Move window down
+                MoveWindow(hWnd, currentX, currentY + offset, width, height, TRUE);
+            }
+            else if (virtualKeyCode == VK_RIGHT)
+            {
+                // Move window right
+                MoveWindow(hWnd, currentX + offset, currentY, width, height, TRUE);
+            }
+            else if (virtualKeyCode == VK_LEFT)
+            {
+                // Move window left
+                MoveWindow(hWnd, currentX - offset, currentY, width, height, TRUE);
+            }
         }
+
+        break;
+    }
     case WM_WINDOWPOSCHANGING:
     {
         WINDOWPOS* pWinPos = (WINDOWPOS*)lParam;
