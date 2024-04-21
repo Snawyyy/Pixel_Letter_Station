@@ -43,7 +43,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
     static HBITMAP hbmScreen = NULL;
 
-    static HDC penHdc;
+    static HDC windowDc;
 
     // --UserDrawingSettings-- // 
 
@@ -54,13 +54,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         rcClient.left + BORDER_EFFECT_SIZE + SMALL_MARGIN + LETTER_BOX_BORDER_W,
         rcClient.top + WIN_BAR_SIZE + SMALL_MARGIN + LETTER_BOX_BORDER_H);
 
-    penHdc = GetDC(hWnd);
-
     POINT cursorPos; // Pen position (calculated on LMouseButtonDown
-
-    // pen settings
-    static HPEN currentPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // Default color
-    static HPEN oldPen = (HPEN)SelectObject(penHdc, currentPen);
 
 
     // --Default Colors-- //
@@ -72,12 +66,22 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     COLORREF green = RGB(0, 255, 0);
     COLORREF blue = RGB(0, 0, 255);
 
+    // --Double Buffering Variables-- //
 
+    static HDC memoryDC; // Back buffer
+    static HBITMAP holdBitmap;
+
+    // pen settings
+    static HPEN currentPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // Default color
+    static HPEN oldPen = (HPEN)SelectObject(memoryDC, currentPen);
 
     switch (uMsg)
     {
     case WM_CREATE: // where you create all the interface
     {
+
+        memoryDC = CreateCompatibleDC(NULL);
+
         // --Window Ui buttons-- // 
         // 
         // Send Button
@@ -228,10 +232,10 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(hWnd, &ps);
-        HDC hdcMem = CreateCompatibleDC(hdc);
+        windowDc = CreateCompatibleDC(hdc);
 
 
-        HGDIOBJ oldBitmap = SelectObject(hdcMem, hbmScreen); // Use the bitmap handle
+        holdBitmap = (HBITMAP)SelectObject(memoryDC, hbmScreen);
 
         // Get bitmap dimensions
         BITMAP bitmap;
@@ -250,16 +254,22 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             bitmapRect.top, // top
             LETTER_BOX_BORDER_W, // width
             LETTER_BOX_BORDER_H, // height
-            hdcMem, 0, 0, SRCCOPY);
+            memoryDC, 0, 0, SRCCOPY);
+
+        SelectObject(memoryDC, holdBitmap);
 
         WindowFrame(hdc, hWnd, width, height);
         WindowBar(hdc, hWnd, width);
 
+
+
         // Cleanup
-        SelectObject(hdcMem, oldBitmap);
-        DeleteDC(hdcMem);
+        SelectObject(memoryDC, holdBitmap);
+        DeleteDC(windowDc);
 
         EndPaint(hWnd, &ps);
+
+
         break;
     }
     case WM_DRAWITEM:
@@ -280,16 +290,21 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     {
         // the drawing on letter logic
         pressingPen = true;
-        oldPen = (HPEN)SelectObject(penHdc, currentPen);
 
-        thread drawing(draw, cursorPos, hWnd, penHdc, drawingBorder);
+        oldPen = (HPEN)SelectObject(memoryDC, currentPen);
+        holdBitmap = (HBITMAP)SelectObject(memoryDC, hbmScreen);
+
+        thread drawing(draw, cursorPos, hWnd, memoryDC, drawingBorder);
         drawing.detach();
+
         break;
     }
     case WM_LBUTTONUP:
     {
+        SelectObject(memoryDC, oldPen);
+        SelectObject(memoryDC, holdBitmap);
         pressingPen = false;
-        ReleaseDC(hWnd, penHdc); // release memory
+
         break;
     }
     case WM_ERASEBKGND:
@@ -350,22 +365,25 @@ void draw(POINT cursorPos, HWND hWnd, HDC penHdc, RECT border)
     // set prevCursorPos to current cursor position so line would start on clicked point
     POINT prevCursorPos = cursorPos;
 
+    int offsetX = BORDER_EFFECT_SIZE + SMALL_MARGIN;
+    int offsetY = WIN_BAR_SIZE + SMALL_MARGIN;
+
     while (pressingPen) // if drawing
     {
         // get cursor pos
         GetCursorPos(&cursorPos);
+
         ScreenToClient(hWnd, &cursorPos);
-        if (cursorPos.x >= border.left && cursorPos.x <= border.right && cursorPos.y >= border.top && cursorPos.y <= border.bottom)
-        {
-        MoveToEx(penHdc, prevCursorPos.x, prevCursorPos.y, NULL); // move start of line to the previous x,y cords captured
-        LineTo(penHdc, cursorPos.x, cursorPos.y); // draw line from previous point to current one
+
+        MoveToEx(penHdc, prevCursorPos.x - offsetX, prevCursorPos.y - offsetY, NULL); // move start of line to the previous x,y cords captured
+        LineTo(penHdc, cursorPos.x - offsetX, cursorPos.y - offsetY); // draw line from previous point to current one
+
+        Sleep(16);
 
         prevCursorPos = cursorPos;
-        }
-        else
-        {
-            prevCursorPos = cursorPos;
-        }
+
+        InvalidateRect(hWnd, &border, FALSE);
     }
+
     return;
 }
