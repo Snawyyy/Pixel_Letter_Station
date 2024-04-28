@@ -274,7 +274,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         // direct2d test
         /*graphics->BeginDraw();
         graphics->Clear(D2D1::ColorF(1.0f, 0.0f, 1.0f, 1.0));
-        graphics->EndDraw();*/
+        graphics->EndDraw();
 
         // Cleanup
         SelectObject(memoryDC, holdBitmap);
@@ -360,8 +360,6 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         // Clean the brush
         if (currentPen != NULL)
             DeleteObject(currentPen);
-
-        graphics->~Graphics();
 
         SendMessage(GetParent(hWnd), WM_LETTER_WINDOW, (WPARAM)101, 0);
         DestroyWindow(hWnd);
