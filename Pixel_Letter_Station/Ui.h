@@ -12,9 +12,27 @@ public:
 
 	}
 
-	void DrawBorder()
+	void Draw()
 	{
 
+	}
+
+	int GetWidth(HWND hWnd)
+	{
+		RECT rcClient;
+		GetClientRect(hWnd, &rcClient);
+
+		int width = rcClient.right - rcClient.left;
+		return width;
+	}
+
+	int GetHeight(HWND hWnd)
+	{
+		RECT rcClient;
+		GetClientRect(hWnd, &rcClient);
+
+		int height = rcClient.bottom - rcClient.top;
+		return height;
 	}
 
 	COLORREF GetShadow(COLORREF color, float factor)
