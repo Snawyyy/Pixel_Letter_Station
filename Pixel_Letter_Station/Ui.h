@@ -1,14 +1,6 @@
 #pragma once
 #include "CustomWindowUI.h"
 #include <Windows.h>
-#include "resource.h"
-#include <dwmapi.h>
-#pragma comment(lib, "dwmapi.lib")
-#include <objbase.h>
-#include <Richedit.h>
-#pragma comment(lib, "comctl32.lib")
-#include "WinServer.h"
-#include "StickerManager.h"
 
 class Ui
 {
@@ -67,5 +59,39 @@ public:
 		blue = static_cast<BYTE>(blue + (255 - blue) * factor);
 
 		return RGB(red, green, blue - hueShift);
+	}
+
+	void DrawFrame(HDC hdc)
+	{
+		int width = GetWidth(hWnd);
+		int height = GetHeight(hWnd);
+
+		// Create a pen of desired thickness and color
+		HPEN hPen = CreatePen(PS_SOLID, BAR_MARGIN * 2, WINODW_UI_COLOR);
+
+		// Select the pen and a null brush into the DC
+		HPEN hOldPen = (HPEN)SelectObject(hdc, hPen);
+		HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, GetStockObject(NULL_BRUSH));
+
+		// Draw the rectangle
+		Rectangle(hdc, 0, 0, width, height);
+
+		// Draw smaller Darker rectangle for shading
+		hPen = CreatePen(PS_SOLID, BORDER_EFFECT_SIZE, WINODW_UI_COLOR_SHADOW);
+		hOldPen = (HPEN)SelectObject(hdc, hPen);
+
+		Rectangle(hdc, 0, 0, width, height);
+
+		hPen = CreatePen(PS_SOLID, BORDER_EFFECT_SIZE, WINDOW_UI_COLOR_SHINE);
+		hOldPen = (HPEN)SelectObject(hdc, hPen);
+
+		Rectangle(hdc, 0, 0, 1, height);
+
+		// Restore the original pen and brush
+		SelectObject(hdc, hOldPen);
+		SelectObject(hdc, hOldBrush);
+
+		// Clean up
+		DeleteObject(hPen);
 	}
 };
