@@ -111,8 +111,11 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         HDC hdc = BeginPaint(hWnd, &ps);
 
         // Bar and frame
-        WindowFrame(hdc, hWnd, width, height);
-        WindowBar(hdc, hWnd, width);
+        Ui frame(hWnd);
+        frame.DrawFrame(hdc);
+
+        WindowBar bar(hdc, hWnd);
+        bar.Draw();
 
         ServerStatusBar(hdc, isConnected, (width / 2) - ((MARGIN * 8.5) / 2), MARGIN * 2);
 
@@ -121,9 +124,14 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     }
     case WM_DRAWITEM:
     {
-        QuitButton(lParam, QUIT_BUTTON_ID);
-        DefaultButton(lParam, L"Initialize server", S_INITIALIZE_BUTTON_ID);
-        DefaultButton(lParam, L"Connect to server", S_CONNECT_BUTTON_ID);
+        Button quitButton(lParam, QUIT_BUTTON_ID, L"X");
+        quitButton.Draw(RGB(255, 0, 0), RGB(0, 0, 0));
+
+        Button serverButton(lParam, S_INITIALIZE_BUTTON_ID, L"Initialize server");
+        serverButton.Draw(DEFULT_BUTTON_COLOR, RGB(0, 0, 0));
+
+        Button ConnectButton(lParam, S_CONNECT_BUTTON_ID, L"Connect to server");
+        ConnectButton.Draw(DEFULT_BUTTON_COLOR, RGB(0, 0, 0));
         break;
     }
     case WM_ERASEBKGND:

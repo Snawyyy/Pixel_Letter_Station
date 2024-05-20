@@ -83,6 +83,12 @@
     <ClInclude Include="Button.h">
       <Filter>Header Files\UiElemets</Filter>
     </ClInclude>
+    <ClInclude Include="WindowBar.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
+    <ClInclude Include="LetterUi.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
