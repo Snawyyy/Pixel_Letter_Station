@@ -2,9 +2,9 @@
 
 #include <Windows.h>
 #include "Window.h"
-#include "CustomWindowUI.h"
 #include "LetterManager.h"
 #include <thread>
+#include "UiElements.h"
 
 using namespace std;
 
