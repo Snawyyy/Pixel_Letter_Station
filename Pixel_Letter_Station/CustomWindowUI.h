@@ -16,10 +16,10 @@ bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId);
 bool ColorButton(LPARAM lParam, int buttonId, COLORREF color);
 LRESULT UserButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 bool Title(HDC hdc, HWND hWnd, int centerW);
-void WindowBar(HDC hdc, HWND hWnd, int width);
+void OldWindowBar(HDC hdc, HWND hWnd, int width);
 void WindowFrame(HDC hdc, HWND hWnd, int width, int height);
 
-void LetterBackground(HDC hdc, HWND hWnd);
+//void LetterBackground(HDC hdc, HWND hWnd);
 
 void RichTextBoxPaint(HWND Box);
 
