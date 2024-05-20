@@ -258,9 +258,11 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
         SelectObject(memoryDC, holdBitmap);
 
-        WindowFrame(hdc, hWnd, width, height);
-        WindowBar(hdc, hWnd, width);
+        Ui frame(hWnd);
+        frame.DrawFrame(hdc);
 
+        WindowBar bar(hdc, hWnd);
+        bar.Draw();
 
 
         // Cleanup
@@ -274,8 +276,11 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     }
     case WM_DRAWITEM:
     { 
-        QuitButton(lParam, QUIT_BUTTON_ID);
-        DefaultButton(lParam, L"Send", SEND_ID);
+        Button quitButton(lParam, QUIT_BUTTON_ID, L"X");
+        quitButton.Draw(RGB(255, 0, 0), RGB(0, 0, 0));
+
+        Button sendButton(lParam, SEND_ID, L"Send");
+        sendButton.Draw(DEFULT_BUTTON_COLOR, RGB(0, 0, 0));
 
         ColorButton(lParam, 2, black);
         ColorButton(lParam, 3, white);
