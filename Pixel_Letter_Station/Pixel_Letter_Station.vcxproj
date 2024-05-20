@@ -152,7 +152,9 @@
     <ClCompile Include="WinServer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="CustomWindowUI.h" />
+    <ClInclude Include="Ui.h" />
     <ClInclude Include="LetterManager.h" />
     <ClInclude Include="LetterWindow.h" />
     <ClInclude Include="resource.h" />
