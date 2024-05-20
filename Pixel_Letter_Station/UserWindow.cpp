@@ -115,7 +115,7 @@ LRESULT CALLBACK UserWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         frame.DrawFrame(hdc);
 
         WindowBar bar(hdc, hWnd);
-        bar.Draw();
+        bar.Draw(false);
 
         ServerStatusBar(hdc, isConnected, (width / 2) - ((MARGIN * 8.5) / 2), MARGIN * 2);
 

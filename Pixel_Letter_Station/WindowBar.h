@@ -12,10 +12,13 @@ public:
 		width = GetWidth(hWnd);
 	}
 
-	void Draw()
+	void Draw(bool title)
 	{
 		DrawWindowBar();
-		DrawTitle();
+		if (title)
+		{
+			DrawTitle();
+		}
 	}
 
 	void DrawWindowBar()

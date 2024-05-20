@@ -168,15 +168,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			DeleteObject(brush);
 
-			LetterBackground(hdc, hWnd);
+			LetterUi letter(hdc, hWnd);
+			letter.Draw();
 
-			// components
-			WindowFrame(hdc, hWnd, WINDOW_WIDTH, WINDOW_HEIGHT);
-			WindowBar(hdc, hWnd, WINDOW_WIDTH);
-			Title(hdc, hWnd, centerW);
+			Ui frame(hWnd);
+			frame.DrawFrame(hdc);
 
 			WindowBar bar(hdc, hWnd);
-			bar.Draw();
+			bar.Draw(true);
 
 			EndPaint(hWnd, &ps); // End painting
 

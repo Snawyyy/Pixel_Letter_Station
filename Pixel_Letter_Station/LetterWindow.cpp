@@ -262,7 +262,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         frame.DrawFrame(hdc);
 
         WindowBar bar(hdc, hWnd);
-        bar.Draw();
+        bar.Draw(false);
 
 
         // Cleanup
