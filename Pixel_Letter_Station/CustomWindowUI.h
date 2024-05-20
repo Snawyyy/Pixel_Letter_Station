@@ -10,11 +10,6 @@
 #include "WinServer.h"
 #include "StickerManager.h"
 
-#include <d3d12.h>
-#include <dxgi1_4.h>
-#include <d2d1_1.h>
-#include <d2d1_1helper.h>
-
 bool QuitButton(LPARAM lParam, int buttonId);
 bool MinimizeButton(LPARAM lParam);
 bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId);
