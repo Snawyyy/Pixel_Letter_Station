@@ -14,11 +14,11 @@ public:
 
 	void Draw()
 	{
-		OldWindowBar();
+		DrawWindowBar();
 		DrawTitle();
 	}
 
-	void OldWindowBar()
+	void DrawWindowBar()
 	{
 		// Set the color for the rectangle (optional)
 		HBRUSH brush = CreateSolidBrush(WINODW_UI_COLOR); // orangeish color
