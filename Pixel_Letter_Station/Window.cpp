@@ -115,10 +115,21 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		case WM_DRAWITEM:
 		{
-			QuitButton(lParam, QUIT_BUTTON_ID);
-			MinimizeButton(lParam);
-			DefaultButton(lParam, L"Ink Letter", INK_LETTER_BUTTON_ID);
-			DefaultButton(lParam, L"Button 2", 6);
+			//QuitButton(lParam, QUIT_BUTTON_ID);
+			Button quitButton(lParam, QUIT_BUTTON_ID, L"X");
+			quitButton.Draw(RGB(255, 0, 0), RGB(0, 0, 0));
+
+			//MinimizeButton(lParam);
+			Button minimizeButton(lParam, MINIMIZE_BUTTON_ID, L"-");
+			minimizeButton.Draw(DEFULT_BUTTON_COLOR, RGB(0, 0, 0));
+
+			//DefaultButton(lParam, L"Ink Letter", INK_LETTER_BUTTON_ID);
+			Button inkButton(lParam, INK_LETTER_BUTTON_ID, L"Ink Letter");
+			inkButton.Draw(DEFULT_BUTTON_COLOR, RGB(0, 0, 0));
+
+			//DefaultButton(lParam, L"Button 2", 6);
+			Button button (lParam, 6, L"aa");
+			button.Draw(DEFULT_BUTTON_COLOR, RGB(0, 0, 0));
 
 			break;
 		}
