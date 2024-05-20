@@ -389,11 +389,9 @@ bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in t
 	SetBkMode(hdc, TRANSPARENT); // To make background transparent
 	TextOut(hdc, SMALL_MARGIN + BORDER_EFFECT_SIZE * 2 + width, ((WIN_BAR_SIZE / 2) - (TITLE_SIZE / 2) + 1), L"Pixel Letter Station", strlen("Pixel Letter Station"));
 	return 0; // Indicate we handled the message
-
-
 }
 
-void WindowBar(HDC hdc, HWND hWnd, int width)
+void OldWindowBar(HDC hdc, HWND hWnd, int width)
 {
 	// Set the color for the rectangle (optional)
 	HBRUSH brush = CreateSolidBrush(WINODW_UI_COLOR); // orangeish color
@@ -455,7 +453,7 @@ void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
 	DeleteObject(hPen);
 }
 
-void LetterBackground(HDC hdc, HWND hWnd)
+/*void LetterBackground(HDC hdc, HWND hWnd)
 {
 	// First, draw the border, a larger rectangle with a solid color
 	HBRUSH brushMain = CreateSolidBrush(LETTER_BORDER); // Black color for the Border
@@ -497,7 +495,7 @@ void LetterBackground(HDC hdc, HWND hWnd)
 	DeleteObject(brushMain);
 	DeleteObject(brushShading);
 	DeleteObject(brushPaper);
-}
+}*/
 
 void RichTextBoxPaint(HWND box)
 {
