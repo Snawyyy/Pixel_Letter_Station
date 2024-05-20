@@ -75,10 +75,19 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     static HPEN currentPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0)); // Default color
     static HPEN oldPen = (HPEN)SelectObject(memoryDC, currentPen);
 
+    static Graphics* graphics = nullptr;
+
     switch (uMsg)
     {
     case WM_CREATE: // where you create all the interface
     {
+        graphics = new Graphics();
+
+        if (!graphics->Init(hWnd)) {
+            // Initialization failed, handle error
+            delete graphics;
+            graphics = nullptr;
+        }
 
         memoryDC = CreateCompatibleDC(NULL);
 
@@ -262,6 +271,10 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         WindowBar(hdc, hWnd, width);
 
 
+        // direct2d test
+        /*graphics->BeginDraw();
+        graphics->Clear(D2D1::ColorF(1.0f, 0.0f, 1.0f, 1.0));
+        graphics->EndDraw();
 
         // Cleanup
         SelectObject(memoryDC, holdBitmap);

@@ -10,6 +10,8 @@
 #include "WinServer.h"
 #include "StickerManager.h"
 
+#include "Graphics.h"
+
 bool QuitButton(LPARAM lParam, int buttonId);
 bool MinimizeButton(LPARAM lParam);
 bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId);
