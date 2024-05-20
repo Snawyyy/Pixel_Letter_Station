@@ -78,7 +78,7 @@ public:
 			// Offset the textRect and change color to simulate the text moving when pressed
 			OffsetRect(&textRect, 1, 1);
 			SetTextColor(pDIS->hDC, RGB(255, 255, 255));
-			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(GetShine(color, 0.5)));
+			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(DEFULT_BUTTON_COLOR_PRESSED));
 			DrawText(pDIS->hDC, text, -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 		}
 	}

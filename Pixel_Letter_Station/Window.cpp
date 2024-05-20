@@ -179,6 +179,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WindowBar(hdc, hWnd, WINDOW_WIDTH);
 			Title(hdc, hWnd, centerW);
 
+			WindowBar bar(hdc, hWnd);
+			bar.Draw();
 
 			EndPaint(hWnd, &ps); // End painting
 
