@@ -79,20 +79,11 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         hdc = BeginPaint(hwnd, &ps);
 
-        // First, draw the larger rectangle with a solid color
-        HBRUSH brushMain = CreateSolidBrush(LETTER_BORDER); // Black color for the Border
-        RECT rectMain = { 0, 0, width, height }; // Main rectangle coordinates
-        FillRect(hdc, &rectMain, brushMain);
+        RECT backgroundRect;
+        GetWindowRect(hWnd, &backgroundRect);
 
-        //Then, the "Paper" by drawing it with the paper color
-        HBRUSH brushShading = CreateSolidBrush(PAPER_COLOR_SHADOW); // Brush for the Shadow, using the shadow color
-        RECT rectShading = { 0 + BORDER_EFFECT_SIZE, 0 + BORDER_EFFECT_SIZE, width - BORDER_EFFECT_SIZE, height - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
-        FillRect(hdc, &rectShading, brushShading);
-
-        //Then, the "Paper" by drawing it with the paper color
-        HBRUSH brushPaper = CreateSolidBrush(RGB(240, 230, 230)); // Brush for the cutout, using the paper background color
-        RECT rectCutout = { 0 + BORDER_EFFECT_SIZE * 2, 0 + BORDER_EFFECT_SIZE * 2, width - BORDER_EFFECT_SIZE, height - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
-        FillRect(hdc, &rectCutout, brushPaper);
+        LetterUi Letter(hdc, hWnd);
+        Letter.Draw(backgroundRect);
 
         EndPaint(hwnd, &ps);
         break;
