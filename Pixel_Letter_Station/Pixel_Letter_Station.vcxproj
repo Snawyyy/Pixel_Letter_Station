@@ -156,6 +156,7 @@
     <ClInclude Include="ColorButton.h" />
     <ClInclude Include="CustomWindowUI.h" />
     <ClInclude Include="LetterUi.h" />
+    <ClInclude Include="ServerStatusBar.h" />
     <ClInclude Include="Ui.h" />
     <ClInclude Include="LetterManager.h" />
     <ClInclude Include="LetterWindow.h" />

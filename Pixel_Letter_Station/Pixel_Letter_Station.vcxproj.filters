@@ -95,6 +95,9 @@
     <ClInclude Include="ColorButton.h">
       <Filter>Header Files\UiElemets</Filter>
     </ClInclude>
+    <ClInclude Include="ServerStatusBar.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
