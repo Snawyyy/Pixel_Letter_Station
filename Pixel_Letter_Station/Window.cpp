@@ -134,7 +134,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			PAINTSTRUCT ps;
 			HDC hdc = BeginPaint(hWnd, &ps); // Start painting
 
-			HBRUSH brush = CreateSolidBrush(WINODW_UI_COLOR); // orangeish color
+			HBRUSH brush = CreateSolidBrush(WINODW_UI_COLOR); 
 			HPEN nullPen = CreatePen(PS_NULL, 1, RGB(0, 0, 0)); // Null pen, color doesn't matter
 			SelectObject(hdc, brush);
 			SelectObject(hdc, nullPen);
@@ -152,14 +152,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			WINDOW_HEIGHT - BORDER_EFFECT_SIZE - SMALL_MARGIN
 			};
 
-			brush = CreateSolidBrush(WINODW_UI_COLOR_SHADOW); // orangeish color
+			brush = CreateSolidBrush(LETTER_BORDER); 
 			SelectObject(hdc, brush);
 			Rectangle(hdc, box.left,
 				box.top,
 				box.right,
 				box.bottom);
 
-			brush = CreateSolidBrush(WINODW_UI_COLOR); // orangeish color
+			brush = CreateSolidBrush(WINODW_UI_COLOR); 
 			SelectObject(hdc, brush);
 			Rectangle(hdc, box.left + BORDER_EFFECT_SIZE,
 				box.top + BORDER_EFFECT_SIZE,
