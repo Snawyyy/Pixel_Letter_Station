@@ -11,34 +11,28 @@ public:
 
 	}
 
-	void Draw()
+	void Draw(RECT rectMain)
 	{
-		LetterBackground(hdc, hWnd);
+		RECT clientRect = ScreenToClientRect(hWnd, rectMain);
+		LetterBackground(hdc, hWnd, clientRect);
 	}
 
-	void LetterBackground(HDC hdc, HWND hWnd)
+	void LetterBackground(HDC hdc, HWND hWnd, RECT rectMain)
 	{
 		// First, draw the border, a larger rectangle with a solid color
 		HBRUSH brushMain = CreateSolidBrush(LETTER_BORDER); // Black color for the Border
 
-		// Main rectangle rect
-		RECT rectMain = {
-			LETTER_BOX_RECT_LEFT, // left
-			LETTER_BOX_RECT_TOP, // top
-			LETTER_BOX_RECT_RIGHT, // right
-			LETTER_BOX_RECT_BOTTOM };  // bottom
-
 		FillRect(hdc, &rectMain, brushMain);
 
 		//Then, the "Shadow" by drawing it with the paper color
-		HBRUSH brushShading = CreateSolidBrush(PAPER_COLOR_SHADOW); // Brush for the Shadow, using the shadow color
+		HBRUSH brushShading = CreateSolidBrush(GetShadow(PAPER_COLOR, factor)); // Brush for the Shadow, using the shadow color
 
 		// Smaller rectangle coordinates for the cutout
 		RECT rectShading = {
-			LETTER_BOX_RECT_LEFT + BORDER_EFFECT_SIZE, // left
-			LETTER_BOX_RECT_TOP + BORDER_EFFECT_SIZE, // top
-			LETTER_BOX_RECT_RIGHT - BORDER_EFFECT_SIZE, // right
-			LETTER_BOX_RECT_BOTTOM - BORDER_EFFECT_SIZE }; // bottom
+			rectMain.left + BORDER_EFFECT_SIZE, // left
+			rectMain.top + BORDER_EFFECT_SIZE, // top
+			rectMain.right - BORDER_EFFECT_SIZE, // right
+			rectMain.bottom - BORDER_EFFECT_SIZE }; // bottom
 
 		FillRect(hdc, &rectShading, brushShading);
 
@@ -47,10 +41,10 @@ public:
 
 		// Smaller rectangle coordinates for the cutout
 		RECT rectCutout = {
-			LETTER_BOX_RECT_LEFT + BORDER_EFFECT_SIZE * 2, // left
-			LETTER_BOX_RECT_TOP + BORDER_EFFECT_SIZE * 2, // top
-			LETTER_BOX_RECT_RIGHT - BORDER_EFFECT_SIZE, // right
-			LETTER_BOX_RECT_BOTTOM - BORDER_EFFECT_SIZE }; // bottom
+			rectMain.left + BORDER_EFFECT_SIZE * 2, // left
+			rectMain.top + BORDER_EFFECT_SIZE * 2, // top
+			rectMain.right - BORDER_EFFECT_SIZE, // right
+			rectMain.bottom - BORDER_EFFECT_SIZE }; // bottom
 
 		FillRect(hdc, &rectCutout, brushPaper);
 
@@ -58,5 +52,17 @@ public:
 		DeleteObject(brushMain);
 		DeleteObject(brushShading);
 		DeleteObject(brushPaper);
+	}
+
+	RECT ScreenToClientRect(HWND hWnd, RECT rect)
+	{
+		POINT topLeft = { rect.left, rect.top };
+		POINT bottomRight = { rect.right, rect.bottom };
+
+		ScreenToClient(hWnd, &topLeft);
+		ScreenToClient(hWnd, &bottomRight);
+
+		RECT clientRect = { topLeft.x, topLeft.y, bottomRight.x, bottomRight.y };
+		return clientRect;
 	}
 };
