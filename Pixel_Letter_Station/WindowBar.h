@@ -24,7 +24,7 @@ public:
 	void DrawWindowBar()
 	{
 		// Set the color for the rectangle (optional)
-		HBRUSH brush = CreateSolidBrush(WINODW_UI_COLOR); // orangeish color
+		HBRUSH brush = CreateSolidBrush(WINODW_UI_COLOR); 
 		HPEN nullPen = CreatePen(PS_NULL, 1, RGB(0, 0, 0)); // Null pen, color doesn't matter
 		SelectObject(hdc, brush);
 		SelectObject(hdc, nullPen);
@@ -34,13 +34,13 @@ public:
 		Rectangle(hdc, 0, 0, width, WIN_BAR_SIZE);
 
 		// Draw the Border Shadow
-		brush = CreateSolidBrush(WINODW_UI_COLOR_SHADOW); // orangeish color
+		brush = CreateSolidBrush(GetShadow(WINODW_UI_COLOR, factor));
 		SelectObject(hdc, brush);
 		Rectangle(hdc, 0, WIN_BAR_SIZE, width, WIN_BAR_SIZE - BORDER_EFFECT_SIZE);
 		Rectangle(hdc, width - BORDER_EFFECT_SIZE + 1, 0, width + 1, WIN_BAR_SIZE);
 
 		// Draw the Border shine
-		brush = CreateSolidBrush(WINDOW_UI_COLOR_SHINE); // orangeish color
+		brush = CreateSolidBrush(GetShine(WINODW_UI_COLOR, factor));
 		SelectObject(hdc, brush);
 		Rectangle(hdc, 0, 0, width + 1, BORDER_EFFECT_SIZE);
 		Rectangle(hdc, 0, 0, BORDER_EFFECT_SIZE, WIN_BAR_SIZE);

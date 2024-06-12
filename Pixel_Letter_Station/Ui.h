@@ -6,6 +6,7 @@ class Ui
 {
 public:
 	HWND hWnd;
+	float factor = 0.5;
 
 	Ui(HWND hw) :hWnd(hw)
 	{
@@ -95,12 +96,12 @@ public:
 		Rectangle(hdc, 0, 0, width, height);
 
 		// Draw smaller Darker rectangle for shading
-		hPen = CreatePen(PS_SOLID, BORDER_EFFECT_SIZE, WINODW_UI_COLOR_SHADOW);
+		hPen = CreatePen(PS_SOLID, BORDER_EFFECT_SIZE, GetShadow(WINODW_UI_COLOR, factor));
 		hOldPen = (HPEN)SelectObject(hdc, hPen);
 
 		Rectangle(hdc, 0, 0, width, height);
 
-		hPen = CreatePen(PS_SOLID, BORDER_EFFECT_SIZE, WINDOW_UI_COLOR_SHINE);
+		hPen = CreatePen(PS_SOLID, BORDER_EFFECT_SIZE, GetShine(WINODW_UI_COLOR, factor));
 		hOldPen = (HPEN)SelectObject(hdc, hPen);
 
 		Rectangle(hdc, 0, 0, 1, height);
