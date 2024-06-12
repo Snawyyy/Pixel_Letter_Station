@@ -5,3 +5,4 @@
 #include "LetterUi.h"
 #include "UiSettings.h"
 #include "ColorButton.h"
+#include "ServerStatusBar.h"
