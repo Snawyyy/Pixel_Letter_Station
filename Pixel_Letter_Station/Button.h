@@ -26,10 +26,12 @@ public:
 			DrawBorder();
 		}
 	}
-	void DrawBorder()
+
+	virtual void DrawBorder()
 	{
 		FrameRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(0, 0, 0))); // Draw the border around the button
 	}
+
 	void DrawBackground(COLORREF backgroundColor, COLORREF textColor)
 	{
 		SetBkMode(pDIS->hDC, TRANSPARENT);
@@ -78,7 +80,7 @@ public:
 			// Offset the textRect and change color to simulate the text moving when pressed
 			OffsetRect(&textRect, 1, 1);
 			SetTextColor(pDIS->hDC, RGB(255, 255, 255));
-			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(DEFULT_BUTTON_COLOR_PRESSED));
+			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(GetShadow(color, 0.5)));
 			DrawText(pDIS->hDC, text, -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 		}
 	}

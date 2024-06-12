@@ -282,13 +282,31 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         Button sendButton(lParam, SEND_ID, L"Send");
         sendButton.Draw(DEFULT_BUTTON_COLOR, RGB(0, 0, 0));
 
+        //ColorPick Buttons
+        ColorButtonA blackButton(lParam, 2, L"");
+        blackButton.Draw(black, NULL);
 
-        ColorButton(lParam, 2, black);
+        ColorButtonA whiteButton(lParam, 3, L"");
+        whiteButton.Draw(white, NULL);
+
+        ColorButtonA redButton(lParam, 4, L"");
+        redButton.Draw(red, NULL);
+
+        ColorButtonA yellowButton(lParam, 5, L"");
+        yellowButton.Draw(yellow, NULL);
+
+        ColorButtonA greenButton(lParam, 6, L"");
+        greenButton.Draw(green, NULL);
+
+        ColorButtonA blueButton(lParam, 7, L"");
+        blueButton.Draw(blue, NULL);
+
+        /*ColorButton(lParam, 2, black);
         ColorButton(lParam, 3, white);
         ColorButton(lParam, 4, red);
         ColorButton(lParam, 5, yellow);
         ColorButton(lParam, 6, green);
-        ColorButton(lParam, 7, blue);
+        ColorButton(lParam, 7, blue);*/
 
         break;
     }
