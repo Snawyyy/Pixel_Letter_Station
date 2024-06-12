@@ -168,8 +168,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			DeleteObject(brush);
 
+			RECT letterRect = {
+			LETTER_BOX_RECT_LEFT, // left
+			LETTER_BOX_RECT_TOP, // top
+			LETTER_BOX_RECT_RIGHT, // right
+			LETTER_BOX_RECT_BOTTOM };  // bottom
+
 			LetterUi letter(hdc, hWnd);
-			letter.Draw();
+			letter.Draw(letterRect);
 
 			Ui frame(hWnd);
 			frame.DrawFrame(hdc);
