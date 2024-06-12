@@ -10,7 +10,6 @@
 #include "WinServer.h"
 #include "StickerManager.h"
 
-bool ColorButton(LPARAM lParam, int buttonId, COLORREF color);
 LRESULT UserButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 //void LetterBackground(HDC hdc, HWND hWnd);

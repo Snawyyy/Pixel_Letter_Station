@@ -301,13 +301,6 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         ColorButtonA blueButton(lParam, 7, L"");
         blueButton.Draw(blue, NULL);
 
-        /*ColorButton(lParam, 2, black);
-        ColorButton(lParam, 3, white);
-        ColorButton(lParam, 4, red);
-        ColorButton(lParam, 5, yellow);
-        ColorButton(lParam, 6, green);
-        ColorButton(lParam, 7, blue);*/
-
         break;
     }
     case WM_LBUTTONDOWN:
