@@ -16,8 +16,6 @@ LRESULT UserButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void RichTextBoxPaint(HWND Box);
 
-void ServerStatusBar(HDC hdc, int isConnected, int x, int y);
-
 LRESULT StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
