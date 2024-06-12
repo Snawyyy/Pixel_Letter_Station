@@ -1,6 +1,7 @@
 #include "StickerManager.h"
+#include "LetterUi.h"
 
-LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK StickerMenu(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     static HBRUSH hBrush = NULL;
     static RECT rect;
@@ -9,7 +10,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     static bool isPressed;
 
     RECT rcClient;
-    GetClientRect(hwnd, &rcClient);
+    GetClientRect(hWnd, &rcClient);
 
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
@@ -27,14 +28,14 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             "Test",
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             (width / 2) - ((width - BORDER_EFFECT_SIZE * 2) / 2), height - BUTTON_HEIGHT - BORDER_EFFECT_SIZE, width - BORDER_EFFECT_SIZE * 2, BUTTON_HEIGHT,
-            hwnd, (HMENU)6, NULL, NULL);
+            hWnd, (HMENU)6, NULL, NULL);
 
         folderPath = ReadFileIntoWString(L"config.txt");
 
         if (!folderPath.empty())
         {
             bitmapFiles = GetBitmapFiles(folderPath);
-            CreateStickerButtons(hwnd, width, height, bitmapFiles);
+            CreateStickerButtons(hWnd, width, height, bitmapFiles);
         }
 
         break;
@@ -53,16 +54,16 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             bitmapFiles = GetBitmapFiles(folderPath);
             if (bitmapFiles.size() != 0)
             {
-                EnumChildWindows(hwnd, EnumChildProc, 0);
-            CreateStickerButtons(hwnd, width, height, bitmapFiles);
+                EnumChildWindows(hWnd, EnumChildProc, 0);
+            CreateStickerButtons(hWnd, width, height, bitmapFiles);
             }
             else
             {
-                EnumChildWindows(hwnd, EnumChildProc, 0);
+                EnumChildWindows(hWnd, EnumChildProc, 0);
             }
             // update the window
-            UpdateWindow(hwnd);
-            InvalidateRect(hwnd, NULL, TRUE);
+            UpdateWindow(hWnd);
+            InvalidateRect(hWnd, NULL, TRUE);
             break;
         }
         }
@@ -77,7 +78,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
     case WM_PAINT:
     {
-        hdc = BeginPaint(hwnd, &ps);
+        hdc = BeginPaint(hWnd, &ps);
 
         RECT backgroundRect;
         GetWindowRect(hWnd, &backgroundRect);
@@ -85,7 +86,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         LetterUi Letter(hdc, hWnd);
         Letter.Draw(backgroundRect);
 
-        EndPaint(hwnd, &ps);
+        EndPaint(hWnd, &ps);
         break;
     }
 
@@ -96,7 +97,7 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         break;
     }
     default:
-        return DefWindowProc(hwnd, msg, wParam, lParam);
+        return DefWindowProc(hWnd, msg, wParam, lParam);
     }
 
     return 0;
