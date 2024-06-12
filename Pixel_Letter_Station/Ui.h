@@ -1,6 +1,6 @@
 #pragma once
-#include "CustomWindowUI.h"
 #include <Windows.h>
+#include "UiSettings.h"
 
 class Ui
 {

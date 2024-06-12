@@ -11,6 +11,7 @@
 #include <thread>
 #include "UiElements.h"
 
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 BOOL EnumStickerWindowsProc(HWND hwnd, LPARAM lParam);

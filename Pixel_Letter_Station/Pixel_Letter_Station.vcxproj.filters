@@ -89,6 +89,12 @@
     <ClInclude Include="LetterUi.h">
       <Filter>Header Files\UiElemets</Filter>
     </ClInclude>
+    <ClInclude Include="UiSettings.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorButton.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">

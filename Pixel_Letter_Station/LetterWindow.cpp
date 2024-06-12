@@ -282,6 +282,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         Button sendButton(lParam, SEND_ID, L"Send");
         sendButton.Draw(DEFULT_BUTTON_COLOR, RGB(0, 0, 0));
 
+
         ColorButton(lParam, 2, black);
         ColorButton(lParam, 3, white);
         ColorButton(lParam, 4, red);

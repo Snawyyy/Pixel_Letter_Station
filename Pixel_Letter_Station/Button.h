@@ -15,7 +15,7 @@ public:
 		pDIS = (LPDRAWITEMSTRUCT)lParam;
 	}
 
-	void Draw(COLORREF backgroundColor, COLORREF textColor)
+	virtual void Draw(COLORREF backgroundColor, COLORREF textColor)
 	{
 		if (pDIS->CtlID == buttonId)// Matching the HMENU value passed when creating the button
 		{

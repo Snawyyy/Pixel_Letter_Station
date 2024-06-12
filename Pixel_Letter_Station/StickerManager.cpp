@@ -70,7 +70,9 @@ LRESULT CALLBACK StickerMenu(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }
     case WM_DRAWITEM:
     {
-        DefaultButton(lParam, L"Pick Folder", 6);
+        Button button(lParam, 6, L"Pick Folder");
+        button.Draw(DEFULT_BUTTON_COLOR, RGB(0, 0, 0));
+
         break;
     }
     case WM_PAINT:

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "CustomWindowUI.h"
 #include "Sticker.h"
+#include "Button.h"
 
 #pragma comment(lib, "Ole32.lib")
 

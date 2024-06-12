@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="ColorButton.h" />
     <ClInclude Include="CustomWindowUI.h" />
     <ClInclude Include="LetterUi.h" />
     <ClInclude Include="Ui.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sticker.h" />
     <ClInclude Include="StickerManager.h" />
+    <ClInclude Include="UiSettings.h" />
     <ClInclude Include="UserWindow.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowBar.h" />
