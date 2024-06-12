@@ -1,7 +1,7 @@
 #pragma once
 #include "Button.h"
 
-class ColorButtonA : public Button
+class ColorButton : public Button
 {
 public:
 	LPARAM lParam;
@@ -9,7 +9,7 @@ public:
 	int buttonId;
 	const wchar_t* text;
 
-	ColorButtonA(LPARAM lp, int id, const wchar_t* te):Button(lp, id, te), lParam(lp), buttonId(id), text(te)
+	ColorButton(LPARAM lp, int id, const wchar_t* te):Button(lp, id, te), lParam(lp), buttonId(id), text(te)
 	{
 		pDIS = (LPDRAWITEMSTRUCT)lParam;
 	}
