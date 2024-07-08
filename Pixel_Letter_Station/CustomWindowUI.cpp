@@ -161,7 +161,7 @@ void RichTextBoxPaint(HWND box)
 
 }
 
-LRESULT CALLBACK StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK StickerMenuButton(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	static HBITMAP hBitmap = NULL; // Handle to the button's bitmap
 	PAINTSTRUCT ps;
@@ -170,7 +170,7 @@ LRESULT CALLBACK StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 	HGDIOBJ oldBitmap;
 
 	RECT rcClient;
-	GetClientRect(hwnd, &rcClient);
+	GetClientRect(hWnd, &rcClient);
 
 	int width = rcClient.right - rcClient.left;
 	int height = rcClient.bottom - rcClient.top;
@@ -182,42 +182,69 @@ LRESULT CALLBACK StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 		CREATESTRUCT* pCreateStruct = (CREATESTRUCT*)lParam;
 		hBitmap = (HBITMAP)pCreateStruct->lpCreateParams;
 
-		SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)hBitmap);
+		SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)hBitmap);
 
 		break;
 	}
 	case WM_PAINT:
-		hdc = BeginPaint(hwnd, &ps);
+	{
+		hdc = BeginPaint(hWnd, &ps);
 
-		hBitmap = (HBITMAP)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+		hBitmap = (HBITMAP)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 
-		if (hBitmap != NULL) 
+		if (hBitmap != NULL)
 		{
 			hdcMem = CreateCompatibleDC(hdc);
 			oldBitmap = SelectObject(hdcMem, hBitmap);
 
 			// Retrieve the dimensions of the bitmap
 			GetObject(hBitmap, sizeof(bitmap), &bitmap);
-			StretchBlt(hdc, 0, 0, width, height, hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
+
+			// Create a compatible bitmap for manipulating the image
+			HDC hdcTemp = CreateCompatibleDC(hdc);
+			HBITMAP hbmTemp = CreateCompatibleBitmap(hdc, bitmap.bmWidth, bitmap.bmHeight);
+			HGDIOBJ oldTempBitmap = SelectObject(hdcTemp, hbmTemp);
+
+			// Copy the original bitmap to the temporary bitmap
+			BitBlt(hdcTemp, 0, 0, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
+
+			// Replace black pixels with the background color
+			for (int y = 0; y < bitmap.bmHeight; y++)
+			{
+				for (int x = 0; x < bitmap.bmWidth; x++)
+				{
+					COLORREF color = GetPixel(hdcTemp, x, y);
+					if (color == RGB(0, 0, 0))  // If the pixel is black
+					{
+						SetPixel(hdcTemp, x, y, PAPER_COLOR);  // Replace with background color
+					}
+				}
+			}
+
+			// Draw the modified bitmap
+			StretchBlt(hdc, 0, 0, width, height, hdcTemp, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
 
 			// Cleanup
+			SelectObject(hdcTemp, oldTempBitmap);
+			DeleteObject(hbmTemp);
+			DeleteDC(hdcTemp);
 			SelectObject(hdcMem, oldBitmap);
 			DeleteDC(hdcMem);
 		}
 		else
 		{
-			MessageBox(hwnd, L"failed loading", L"", MB_OK);
+			MessageBox(hWnd, L"failed loading", L"", MB_OK);
 		}
 
-		EndPaint(hwnd, &ps);
+		EndPaint(hWnd, &ps);
 		break;
-
+	}
 	case WM_LBUTTONDOWN:
 	{
 		// Action to take when the button is clicked
 		HINSTANCE hInstance = GetModuleHandle(NULL);
-		hBitmap = (HBITMAP)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-		HWND hwndSticker = CreateSticker(GetParent(GetParent(hwnd)), hInstance, 0, 0, 30, hBitmap);
+		hBitmap = (HBITMAP)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+		HWND hwndSticker = CreateSticker(GetParent(GetParent(hWnd)), hInstance, 0, 0, 30, hBitmap);
 		SendMessage(hwndSticker, WM_NCLBUTTONDOWN, HTCAPTION, 0);
 
 		break;
@@ -225,14 +252,19 @@ LRESULT CALLBACK StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lP
 	case WM_DESTROY:
 	{
 		// Remove the bitmap handle from the window's memory
-		SetWindowLongPtr(hwnd, GWLP_USERDATA, 0);
+		SetWindowLongPtr(hWnd, GWLP_USERDATA, 0);
 		DeleteObject(hBitmap);
 
 		break;
 	}
 	default:
-		return DefWindowProc(hwnd, msg, wParam, lParam);
+		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 
 	return 0;
+}
+
+void SetWindowTransparency(HWND hWnd)
+{
+	SetLayeredWindowAttributes(hWnd, RGB(0, 0, 0), 0, LWA_COLORKEY); // Black as transparent color
 }

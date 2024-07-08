@@ -29,7 +29,7 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height, 
 
     // Create the window.
     HWND hwndSticker = CreateWindowEx(
-        0,
+        WS_EX_LAYERED,
         CLASS_NAME,
         L"Sticker",
         WS_VISIBLE | WS_POPUP | WS_CLIPSIBLINGS,
@@ -41,7 +41,7 @@ HWND CreateSticker(HWND hParent, HINSTANCE hInstance, int x, int y, int height, 
     );
 
     SetWindowPos(hwndSticker, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-
+    SetWindowTransparency(hwndSticker);
     return hwndSticker;
 }
 
