@@ -99,6 +99,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				hInstance,                  // instance handle
 				NULL                        // additional creation parameters
 			);
+			SetWindowTransparency(StickerMenu);
 
 			break;
 		}

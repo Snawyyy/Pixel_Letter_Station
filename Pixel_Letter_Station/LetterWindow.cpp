@@ -1,6 +1,7 @@
 #include "LetterWindow.h"
 
 bool pressingPen = false;
+CRITICAL_SECTION cs;
 
 HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int width, int height, HBITMAP bitmapHandle)
 {
@@ -29,6 +30,8 @@ HWND CreateLetterWindow(HWND hParent, HINSTANCE hInstance, int x, int y, int wid
         hInstance,         // Instance handle
         (LPVOID)bitmapHandle   // Additional application data
     );
+
+    InitializeCriticalSection(&cs);
 
     return hwndLetter;
 }
@@ -79,6 +82,10 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     {
     case WM_CREATE: // where you create all the interface
     {
+        CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
+        hbmScreen = reinterpret_cast<HBITMAP>(pCreate->lpCreateParams); // Retrieve and store the bitmap handle
+
+        SetTimer(hWnd, 1, 16, NULL);
 
         memoryDC = CreateCompatibleDC(NULL);
 
@@ -137,10 +144,6 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
             WS_VISIBLE | WS_CHILD | BS_OWNERDRAW,
             (width - BAR_BUTTON_SIZE - BAR_MARGIN), BAR_MARGIN, BAR_BUTTON_SIZE, BAR_BUTTON_SIZE,
             hWnd, (HMENU)QUIT_BUTTON_ID, NULL, NULL);
-
-        CREATESTRUCT* pCreate = reinterpret_cast<CREATESTRUCT*>(lParam);
-        hbmScreen = reinterpret_cast<HBITMAP>(pCreate->lpCreateParams); // Retrieve and store the bitmap handle
-
     }
     case WM_COMMAND: // Button logic
     {
@@ -303,6 +306,14 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
 
         break;
     }
+    case WM_TIMER:
+    {
+        if (wParam == 1)
+        {
+            InvalidateRect(hWnd, &drawingBorder, FALSE);
+        }
+        break;
+    }
     case WM_LBUTTONDOWN:
     {
         // the drawing on letter logic
@@ -311,7 +322,10 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         oldPen = (HPEN)SelectObject(memoryDC, currentPen);
         holdBitmap = (HBITMAP)SelectObject(memoryDC, hbmScreen);
 
-        thread drawing(draw, cursorPos, hWnd, memoryDC, drawingBorder);
+        POINT cursorPos;
+        GetCursorPos(&cursorPos); // Get screen coordinates
+
+        thread drawing(draw, cursorPos, hWnd);
         drawing.detach();
 
         break;
@@ -322,6 +336,25 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         SelectObject(memoryDC, holdBitmap);
         pressingPen = false;
 
+        break;
+    }
+    case WM_DRAW_LINE:
+    {
+        POINT* prevCursorPos = (POINT*)wParam;
+        POINT currentCursorPos;
+        currentCursorPos.x = LOWORD(lParam);
+        currentCursorPos.y = HIWORD(lParam);
+
+        int offsetX = BORDER_EFFECT_SIZE + SMALL_MARGIN;
+        int offsetY = WIN_BAR_SIZE + SMALL_MARGIN;
+
+        if (PtInRect(&drawingBorder, currentCursorPos))
+        {
+            HPEN oldPen = (HPEN)SelectObject(memoryDC, currentPen);
+            MoveToEx(memoryDC, prevCursorPos->x - offsetX, prevCursorPos->y - offsetY, NULL);
+            LineTo(memoryDC, currentCursorPos.x - offsetX, currentCursorPos.y - offsetY);
+            SelectObject(memoryDC, oldPen);
+        }
         break;
     }
     case WM_ERASEBKGND:
@@ -365,6 +398,7 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
         if (currentPen != NULL)
             DeleteObject(currentPen);
 
+        DeleteCriticalSection(&cs);
         SendMessage(GetParent(hWnd), WM_LETTER_WINDOW, (WPARAM)101, 0);
         DestroyWindow(hWnd);
         return 0; 
@@ -373,8 +407,10 @@ LRESULT CALLBACK LetterWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lP
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
-void draw(POINT cursorPos, HWND hWnd, HDC penHdc, RECT border)
+
+void draw(POINT cursorPos, HWND hWnd)
 {
+
     // get Cursor pos to for starting point of line
     GetCursorPos(&cursorPos);
     ScreenToClient(hWnd, &cursorPos);
@@ -382,24 +418,17 @@ void draw(POINT cursorPos, HWND hWnd, HDC penHdc, RECT border)
     // set prevCursorPos to current cursor position so line would start on clicked point
     POINT prevCursorPos = cursorPos;
 
-    int offsetX = BORDER_EFFECT_SIZE + SMALL_MARGIN;
-    int offsetY = WIN_BAR_SIZE + SMALL_MARGIN;
-
     while (pressingPen) // if drawing
     {
-        // get cursor pos
-        GetCursorPos(&cursorPos);
+        EnterCriticalSection(&cs);
 
+        GetCursorPos(&cursorPos);
         ScreenToClient(hWnd, &cursorPos);
 
-        MoveToEx(penHdc, prevCursorPos.x - offsetX, prevCursorPos.y - offsetY, NULL); // move start of line to the previous x,y cords captured
-        LineTo(penHdc, cursorPos.x - offsetX, cursorPos.y - offsetY); // draw line from previous point to current one
-
-        Sleep(16);
+        SendMessage(hWnd, WM_DRAW_LINE, (WPARAM)&prevCursorPos, MAKELPARAM(cursorPos.x, cursorPos.y));
 
         prevCursorPos = cursorPos;
-
-        InvalidateRect(hWnd, &border, FALSE);
+        LeaveCriticalSection(&cs);
     }
 
     return;

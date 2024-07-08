@@ -18,6 +18,7 @@ void RichTextBoxPaint(HWND Box);
 
 LRESULT StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+void SetWindowTransparency(HWND hWnd);
 
 
 
