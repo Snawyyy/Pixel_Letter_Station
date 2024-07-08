@@ -1,265 +1,149 @@
 #include "CustomWindowUI.h"
 
-bool QuitButton(LPARAM lParam, int buttonId) // Bar Quit Button
+LRESULT CALLBACK UserButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
+	static HBRUSH hBrush = NULL;
+	static RECT rect;
+	PAINTSTRUCT ps;
+	HDC hdc;
+	static bool isPressed;
 
-	if (pDIS->CtlID == buttonId) // Matching the HMENU value passed when creating the button
+	switch (msg)
 	{
-		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
+	case WM_CREATE:
+	{
+		// Creates a solid brush for the button background color
+		hBrush = CreateSolidBrush(UI_BORDER); // Change the RGB values to set your desired background color
+		break;
+	}
+	case WM_SIZE:
+	{
+		// Stores the button's client area dimensions
+		GetClientRect(hwnd, &rect);
 
-		// Set the background and text colors
-		SetTextColor(pDIS->hDC, RGB(0, 0, 0));
-		SetBkMode(pDIS->hDC, TRANSPARENT);
-		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(255, 0, 0)));
+		// Create a circular region based on the updated client rect
+		HRGN hRgn = CreateEllipticRgn(0, 0, rect.right, rect.bottom);
+		SetWindowRgn(hwnd, hRgn, TRUE); // Set the window region. TRUE to redraw the window immediately
 
-		// Button shading
-		RECT effectRect;
+		// NOTE: The region is now owned by the system, no need to call DeleteObject on hRgn
+		break;
+	}
+	case WM_PAINT:
+	{
+		hdc = BeginPaint(hwnd, &ps);
 
-		// Shadow
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BORDER_EFFECT_SIZE, pDIS->rcItem.right, pDIS->rcItem.bottom);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(100, 0, 0)));
-		SetRect(&effectRect, pDIS->rcItem.right - BORDER_EFFECT_SIZE, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(100, 0, 0))); 
+		// Create the outer and inner rectangles
+		RECT outerRect = { 0, 0, rect.right, rect.bottom };
+		RECT innerRect = { BORDER_EFFECT_SIZE, BORDER_EFFECT_SIZE, rect.right - BORDER_EFFECT_SIZE, rect.bottom - BORDER_EFFECT_SIZE };
 
-		// Shine
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BORDER_EFFECT_SIZE); 
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 100, 100))); 
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BORDER_EFFECT_SIZE, pDIS->rcItem.bottom); 
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 100, 100))); 
+		// Create the outer and inner regions
+		HRGN outerRgn = CreateEllipticRgnIndirect(&outerRect);
+		HRGN innerRgn = CreateEllipticRgnIndirect(&innerRect);
 
-		// Prepare the rectangle for the text, adjusting if the button is pressed
-		RECT textRect = pDIS->rcItem;
-		if (isPressed) {
-			// Offset the textRect and change color to simulate the text moving when pressed
-			OffsetRect(&textRect, 1, 1);
-			SetTextColor(pDIS->hDC, RGB(255, 255, 255));
-			SetBkColor(pDIS->hDC, RGB(100, 0, 0));
-			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(100, 0, 0)));
+		// Combine the regions to create a ring shape
+		CombineRgn(outerRgn, outerRgn, innerRgn, RGN_DIFF);
+		if (isPressed)
+		{
+			// Set the brush color for the outer ring
+			HBRUSH outerBrush = CreateSolidBrush(RGB(255, 0, 0));
+			SelectObject(hdc, outerBrush);
+
+			// Fill the outer ring
+			FillRgn(hdc, outerRgn, outerBrush);
+
+			// Set the brush color for the inner circle
+			HBRUSH innerBrush = CreateSolidBrush(RGB(255, 0, 0));
+			SelectObject(hdc, innerBrush);
+
+			// Fill the inner circle
+			Ellipse(hdc, innerRect.left, innerRect.top, innerRect.right, innerRect.bottom);
+			FillRgn(hdc, innerRgn, innerBrush);
+			// Clean up the brushes and regions
+			DeleteObject(outerBrush);
+			DeleteObject(innerBrush);
 		}
+		else
+		{
+			// Set the brush color for the outer ring
+			HBRUSH outerBrush = CreateSolidBrush(UI_BORDER);
+			SelectObject(hdc, outerBrush);
 
-		// Draw the button text using the adjusted rectangle
-		DrawText(pDIS->hDC, L"X", -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+			// Fill the outer ring
+			FillRgn(hdc, outerRgn, outerBrush);
 
-		FrameRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(100, 0, 0))); // Draw the border around the button
+			// Set the brush color for the inner circle
+			HBRUSH innerBrush = CreateSolidBrush(UI_BORDER_SHADOW);
+			SelectObject(hdc, innerBrush);
 
-
-		return TRUE; // Indicate we handled the message
-	}
-	else
-	{
-		return FALSE;
-	}
-}
-
-bool MinimizeButton(LPARAM lParam) // Bar Minimize Button
-{
-	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
-	if (pDIS->CtlID == MINIMIZE_BUTTON_ID) // Matching the HMENU value passed when creating the button
-	{ 
-
-		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
-
-		// Set the background and text colors
-		SetTextColor(pDIS->hDC, RGB(0, 0, 0));
-		SetBkMode(pDIS->hDC, TRANSPARENT);
-		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(255, 250, 215)));
-
-		// Button shading
-		RECT effectRect;
-
-		// Shadow
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BORDER_EFFECT_SIZE, pDIS->rcItem.right, pDIS->rcItem.bottom);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
-		SetRect(&effectRect, pDIS->rcItem.right - BORDER_EFFECT_SIZE, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
-
-		// Shine
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BORDER_EFFECT_SIZE);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BORDER_EFFECT_SIZE, pDIS->rcItem.bottom);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
-
-		// Prepare the rectangle for the text, adjusting if the button is pressed
-		RECT textRect = pDIS->rcItem;
-		if (isPressed) {
-			// Offset the textRect and change color to simulate the text moving when pressed
-			OffsetRect(&textRect, 1, 1);
-			SetTextColor(pDIS->hDC, RGB(255, 255, 255));
-			SetBkColor(pDIS->hDC, RGB(200, 200, 255));
-			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(200, 200, 255)));
+			// Fill the inner circle
+			Ellipse(hdc, innerRect.left, innerRect.top, innerRect.right, innerRect.bottom);
+			FillRgn(hdc, innerRgn, innerBrush);
+			// Clean up the brushes and regions
+			DeleteObject(outerBrush);
+			DeleteObject(innerBrush);
 		}
+		DeleteObject(outerRgn);
+		DeleteObject(innerRgn);
 
-		// Draw the button text using the adjusted rectangle
-		DrawText(pDIS->hDC, L"-", -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+		// Draw the button text centered in the circle
+		SetBkMode(hdc, TRANSPARENT);
+		DrawText(hdc, L"Button", -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 
-		FrameRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(100, 0, 0))); // Draw the border around the button
+		EndPaint(hwnd, &ps);
+		break;
 
 
-		return TRUE; // Indicate we handled the message
 	}
-}
-
-bool DefaultButton(LPARAM lParam, const wchar_t* Text, int buttonId) // GUI Default Button
-{
-	LPDRAWITEMSTRUCT pDIS = (LPDRAWITEMSTRUCT)lParam;
-	if (pDIS->CtlID == buttonId)// Matching the HMENU value passed when creating the button
+	case WM_MOUSEMOVE:
 	{
+		TRACKMOUSEEVENT tme;
+		tme.cbSize = sizeof(TRACKMOUSEEVENT);
+		tme.dwFlags = TME_LEAVE; // Specifies that we want a WM_MOUSELEAVE message when the mouse leaves
+		tme.hwndTrack = hwnd;
+		tme.dwHoverTime = HOVER_DEFAULT; // Not needed for WM_MOUSELEAVE but required to be set
 
-		BOOL isPressed = pDIS->itemState & ODS_SELECTED;
+		TrackMouseEvent(&tme); // Call this function to start tracking
 
-		// Set the background and text colors
-		SetTextColor(pDIS->hDC, RGB(0, 0, 0));
-		SetBkMode(pDIS->hDC, TRANSPARENT);
-		FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(255, 255, 255)));
-
-		// Button shading
-		RECT effectRect;
-
-		// Shadow
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.bottom - BORDER_EFFECT_SIZE, pDIS->rcItem.right, pDIS->rcItem.bottom);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
-		SetRect(&effectRect, pDIS->rcItem.right - BORDER_EFFECT_SIZE, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.bottom);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(160, 120, 95)));
-
-		// Shine
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.right, pDIS->rcItem.top + BORDER_EFFECT_SIZE);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
-		SetRect(&effectRect, pDIS->rcItem.left, pDIS->rcItem.top, pDIS->rcItem.left + BORDER_EFFECT_SIZE, pDIS->rcItem.bottom);
-		FillRect(pDIS->hDC, &effectRect, CreateSolidBrush(RGB(255, 240, 200)));
-
-		// Prepare the rectangle for the text, adjusting if the button is pressed
-		RECT textRect = pDIS->rcItem;
-		if (isPressed) {
-			// Offset the textRect and change color to simulate the text moving when pressed
-			OffsetRect(&textRect, 1, 1);
-			SetTextColor(pDIS->hDC, RGB(255, 255, 255));
-			SetBkColor(pDIS->hDC, RGB(200, 200, 255));
-			FillRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(200, 200, 255)));
-		}
-
-		// Draw the button text using the adjusted rectangle
-		DrawText(pDIS->hDC, Text, -1, &textRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-
-		// Draw a border around the button
-		FrameRect(pDIS->hDC, &pDIS->rcItem, CreateSolidBrush(RGB(0, 0, 0))); // Draw the border around the button
-
-		return TRUE; // Indicate we handled the message
+		break;
 	}
-}
-
-bool Title(HDC hdc, HWND hWnd, int centerW) // The title of the application in the GUI
-{
-	HBITMAP hBitmap = (HBITMAP)LoadImage(NULL, L"C:\\Users\\Snawy\\source\\repos\\Snawyyy\\Pixel_Letter_Station\\Images\\LOGO.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-	if (hBitmap == NULL)
+	case WM_MOUSELEAVE:
 	{
-		MessageBox(NULL, L"Load Failed", L"Fail", MB_OK);
+		// The mouse has left the window, you can handle it here
+		isPressed = FALSE; // Reset the isPressed state if needed
+		InvalidateRect(hwnd, NULL, TRUE); // Redraw the window if necessary
+
+		break;
 	}
-	HDC hdcMem = CreateCompatibleDC(hdc);
-	HGDIOBJ oldBitmap = SelectObject(hdcMem, hBitmap);
+	case WM_LBUTTONDOWN:
+	{
+		// Update the button's pressed state
+		isPressed = TRUE;
+		// Invalidate the button to trigger a redraw
+		InvalidateRect(hwnd, NULL, TRUE);
 
-	BITMAP bitmap;
-	GetObject(hBitmap, sizeof(BITMAP), &bitmap);
-	StretchBlt(hdc, SMALL_MARGIN + BORDER_EFFECT_SIZE, (WIN_BAR_SIZE / 2) - ((bitmap.bmHeight / 2) / 2), (bitmap.bmWidth / 2), (bitmap.bmHeight / 2), hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
+		break;
+	}
+	case WM_LBUTTONUP:
+	{
+		// Update the button's pressed state
+		isPressed = FALSE;
+		SendMessage(GetParent(hwnd), WM_COMMAND, (WPARAM)7, (LPARAM)hwnd);
+		// Invalidate the button to trigger a redraw
+		InvalidateRect(hwnd, NULL, TRUE);
 
-	// Custom drawing code goes here
-	HFONT hFont = CreateFont(
-		TITLE_SIZE,               // Height of the font
-		0,                     // Average character width (0 lets the system choose the best value)
-		0,                     // Angle of escapement
-		0,                     // Base-line orientation angle
-		FW_EXTRABOLD,               // Font weight (FW_BOLD for bold)
-		FALSE,                 // Italic attribute option
-		FALSE,                 // Underline attribute option
-		FALSE,                 // Strikeout attribute option
-		ANSI_CHARSET,          // Character set identifier
-		OUT_DEFAULT_PRECIS,    // Output precision
-		CLIP_DEFAULT_PRECIS,   // Clipping precision
-		DEFAULT_QUALITY,       // Output quality
-		DEFAULT_PITCH | FF_SWISS, // Pitch and family
-		L"Arial");              // Font name
-	HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
+		break;
+	}
+	case WM_DESTROY:
+	{
+		// Clean up resources
+		DeleteObject(hBrush);
+		break;
+	}
+	default:
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
 
-	SetTextColor(hdc, RGB(0, 0, 0));// text color
-	SetBkMode(hdc, TRANSPARENT); // To make background transparent
-	TextOut(hdc, MARGIN * 2, ((WIN_BAR_SIZE / 2) - (TITLE_SIZE / 2)), L"Pixel Letter Station", strlen("Pixel Letter Station"));
-	return 0; // Indicate we handled the message
-
-
-}
-
-void WindowBar(HDC hdc, HWND hWnd, int width)
-{
-	// Set the color for the rectangle (optional)
-	HBRUSH brush = CreateSolidBrush(RGB(255, 100, 100)); // orangeish color
-	HPEN nullPen = CreatePen(PS_NULL, 1, RGB(0, 0, 0)); // Null pen, color doesn't matter
-	SelectObject(hdc, brush);
-	SelectObject(hdc, nullPen);
-
-	// Draw the rectangle
-	// Parameters: HDC, left, top, right, bottom
-	Rectangle(hdc, 0, 0, width, WIN_BAR_SIZE);
-
-	// Draw the Border Shadow
-	brush = CreateSolidBrush(RGB(155, 0, 0)); // orangeish color
-	SelectObject(hdc, brush);
-	Rectangle(hdc, 0, WIN_BAR_SIZE, width, WIN_BAR_SIZE - BORDER_EFFECT_SIZE);
-	Rectangle(hdc, width - BORDER_EFFECT_SIZE + 1, 0, width + 1, WIN_BAR_SIZE);
-
-	// Draw the Border shine
-	brush = CreateSolidBrush(RGB(255, 200, 200)); // orangeish color
-	SelectObject(hdc, brush);
-	Rectangle(hdc, 0, 0, width + 1, BORDER_EFFECT_SIZE);
-	Rectangle(hdc, 0, 0, BORDER_EFFECT_SIZE, WIN_BAR_SIZE);
-
-
-
-	// Clean up
-	DeleteObject(brush);
-	DeleteObject(nullPen);
-}
-
-void WindowFrame(HDC hdc, HWND hWnd, int width, int height)
-{
-	// Create a pen of desired thickness and color
-	HPEN hPen = CreatePen(PS_SOLID, BAR_MARGIN * 2, RGB(255, 100, 100)); // Black pen
-
-	// Select the pen and a null brush into the DC
-	HPEN hOldPen = (HPEN)SelectObject(hdc, hPen);
-	HBRUSH hOldBrush = (HBRUSH)SelectObject(hdc, GetStockObject(NULL_BRUSH));
-
-	// Draw the rectangle
-	Rectangle(hdc, 0, 0, width, height);
-
-	// Restore the original pen and brush
-	SelectObject(hdc, hOldPen);
-	SelectObject(hdc, hOldBrush);
-
-	// Clean up
-	DeleteObject(hPen);
-}
-
-void LetterBackground(HDC hdc, HWND hWnd, int width, int height)
-{
-	// First, draw the larger rectangle with a solid color
-	HBRUSH brushMain = CreateSolidBrush(RGB(50, 0, 0)); // Black color for the Border
-	RECT rectMain = { width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN, MARGIN * 2.5, width - (SMALL_MARGIN * 2), height - (MARGIN * 3)}; // Main rectangle coordinates
-	FillRect(hdc, &rectMain, brushMain);
-
-	//Then, the "Paper" by drawing it with the paper color
-	HBRUSH brushShading = CreateSolidBrush(RGB(200, 160, 50)); // Brush for the Shadow, using the shadow color
-	RECT rectShading = { (width - (LETTER_BOX_WIDTH / 2) - MARGIN + BORDER_EFFECT_SIZE) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, (MARGIN * 2.5) + BORDER_EFFECT_SIZE, width - (SMALL_MARGIN * 2) - BORDER_EFFECT_SIZE, height - (MARGIN * 3) - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
-	FillRect(hdc, &rectShading, brushShading);
-
-	//Then, the "Paper" by drawing it with the paper color
-	HBRUSH brushPaper = CreateSolidBrush(RGB(255, 223, 133)); // Brush for the cutout, using the paper background color
-	RECT rectCutout = { (width - (LETTER_BOX_WIDTH / 2) - MARGIN + (BORDER_EFFECT_SIZE * 2)) - (LETTER_BOX_WIDTH / 2) - SMALL_MARGIN, (MARGIN * 2.5) + (BORDER_EFFECT_SIZE * 2), width - (SMALL_MARGIN * 2) - BORDER_EFFECT_SIZE, height - (MARGIN * 3) - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
-	FillRect(hdc, &rectCutout, brushPaper);
-
-	// Clean up
-	DeleteObject(brushMain);
-	DeleteObject(brushShading);
-	DeleteObject(brushPaper);
+	return 0;
 }
 
 void RichTextBoxPaint(HWND box)
@@ -271,72 +155,84 @@ void RichTextBoxPaint(HWND box)
 	pf.bLineSpacingRule = 5;
 	pf.dyLineSpacing = 30;
 
-	SendMessage(box, EM_SETBKGNDCOLOR, 0, (LPARAM)RGB(255, 223, 133)); // BKG color
+	SendMessage(box, EM_SETBKGNDCOLOR, 0, (LPARAM)PAPER_COLOR); // BKG color
 	SendMessage(box, EM_SETPARAFORMAT, 0, (LPARAM)&pf); // Sends format
 	SendMessage(box, EM_SETLIMITTEXT, (WPARAM)1400, 0); // Sends Text char limit
 
 }
 
-void ServerStatusBar(HDC hdc, int isConnected)
+LRESULT CALLBACK StickerMenuButton(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	// First, draw the larger rectangle with a solid color
-	HBRUSH brushMain = CreateSolidBrush(RGB(50, 0, 0)); // Black color for the Border
-	RECT rectMain = { MARGIN * 1.5, MARGIN * 2.5, MARGIN * 10, (MARGIN * 4) + SMALL_MARGIN }; // Main rectangle coordinates
-	FillRect(hdc, &rectMain, brushMain);
+	static HBITMAP hBitmap = NULL; // Handle to the button's bitmap
+	PAINTSTRUCT ps;
+	HDC hdc, hdcMem;
+	BITMAP bitmap;
+	HGDIOBJ oldBitmap;
 
-	//Then, the "Shine" by drawing it with the Shine color
-	HBRUSH brushShading = CreateSolidBrush(RGB(150, 100, 70)); // Brush for the cutout, using the Shine color
-	RECT rectShading = { MARGIN * 1.5 + BORDER_EFFECT_SIZE, MARGIN * 2.5 + BORDER_EFFECT_SIZE, MARGIN * 10 - BORDER_EFFECT_SIZE, (MARGIN * 4) + SMALL_MARGIN - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
-	FillRect(hdc, &rectShading, brushShading);
+	RECT rcClient;
+	GetClientRect(hwnd, &rcClient);
 
-	//Then, the "Paper" by drawing it with the paper color
-	HBRUSH brushPaper = CreateSolidBrush(RGB(100, 50, 50)); // Brush for the cutout, using the window background color
-	RECT rectCutout = { MARGIN * 1.5 + (BORDER_EFFECT_SIZE * 2), MARGIN * 2.5 + (BORDER_EFFECT_SIZE * 2), MARGIN * 10 - BORDER_EFFECT_SIZE, (MARGIN * 4) + SMALL_MARGIN - BORDER_EFFECT_SIZE }; // Smaller rectangle coordinates for the cutout
-	FillRect(hdc, &rectCutout, brushPaper);
+	int width = rcClient.right - rcClient.left;
+	int height = rcClient.bottom - rcClient.top;
 
-
-	// Custom drawing code goes here
-	HFONT hFont = CreateFont(
-		TITLE_SIZE,               // Height of the font
-		0,                     // Average character width (0 lets the system choose the best value)
-		0,                     // Angle of escapement
-		0,                     // Base-line orientation angle
-		FW_BOLD,               // Font weight (FW_BOLD for bold)
-		FALSE,                 // Italic attribute option
-		FALSE,                 // Underline attribute option
-		FALSE,                 // Strikeout attribute option
-		ANSI_CHARSET,          // Character set identifier
-		OUT_DEFAULT_PRECIS,    // Output precision
-		CLIP_DEFAULT_PRECIS,   // Clipping precision
-		DEFAULT_QUALITY,       // Output quality
-		DEFAULT_PITCH | FF_SWISS, // Pitch and family
-		L"Arial");              // Font name
-	HFONT oldFont = (HFONT)SelectObject(hdc, hFont);
-
-	SetTextColor(hdc, RGB(255, 255, 255));// text color
-	SetBkMode(hdc, TRANSPARENT); // To make background transparent
-	TextOut(hdc, MARGIN * 2, MARGIN * 3, L"Status:", strlen("Status:"));
-	if (isConnected == 0)
+	switch (msg)
 	{
-		SetTextColor(hdc, RGB(255, 100, 100));// text color
-		TextOut(hdc, MARGIN * 5, MARGIN * 3, L"Offline", strlen("Offline"));
-	}
-	if (isConnected == 1)
+	case WM_CREATE:
 	{
-		SetTextColor(hdc, RGB(100, 255, 100));// text color
-		TextOut(hdc, MARGIN * 5, MARGIN * 3, L"Connected", strlen("Connected"));
+		CREATESTRUCT* pCreateStruct = (CREATESTRUCT*)lParam;
+		hBitmap = (HBITMAP)pCreateStruct->lpCreateParams;
+
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)hBitmap);
+
+		break;
 	}
-	if (isConnected == 2)
+	case WM_PAINT:
+		hdc = BeginPaint(hwnd, &ps);
+
+		hBitmap = (HBITMAP)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+
+		if (hBitmap != NULL) 
+		{
+			hdcMem = CreateCompatibleDC(hdc);
+			oldBitmap = SelectObject(hdcMem, hBitmap);
+
+			// Retrieve the dimensions of the bitmap
+			GetObject(hBitmap, sizeof(bitmap), &bitmap);
+			StretchBlt(hdc, 0, 0, width, height, hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
+
+			// Cleanup
+			SelectObject(hdcMem, oldBitmap);
+			DeleteDC(hdcMem);
+		}
+		else
+		{
+			MessageBox(hwnd, L"failed loading", L"", MB_OK);
+		}
+
+		EndPaint(hwnd, &ps);
+		break;
+
+	case WM_LBUTTONDOWN:
 	{
-		SetTextColor(hdc, RGB(150, 150, 255));// text color
-		TextOut(hdc, MARGIN * 5, MARGIN * 3, L"server", strlen("server"));
+		// Action to take when the button is clicked
+		HINSTANCE hInstance = GetModuleHandle(NULL);
+		hBitmap = (HBITMAP)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+		HWND hwndSticker = CreateSticker(GetParent(GetParent(hwnd)), hInstance, 0, 0, 30, hBitmap);
+		SendMessage(hwndSticker, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+
+		break;
+	}
+	case WM_DESTROY:
+	{
+		// Remove the bitmap handle from the window's memory
+		SetWindowLongPtr(hwnd, GWLP_USERDATA, 0);
+		DeleteObject(hBitmap);
+
+		break;
+	}
+	default:
+		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 
-	// Clean up
-	DeleteObject(brushMain);
-	DeleteObject(brushShading);
-	DeleteObject(brushPaper);
-
-	return;
-
+	return 0;
 }

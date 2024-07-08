@@ -13,15 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\UiElemets">
+      <UniqueIdentifier>{f095a999-18a5-4a6a-b46f-06e7ee781631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UiElements">
+      <UniqueIdentifier>{995a2375-b450-4ba6-862d-3507a10002d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Pixel_Letter_Station.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CustomWindowUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WinServer.cpp">
@@ -33,12 +36,21 @@
     <ClCompile Include="LetterManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sticker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StickerManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomWindowUI.cpp">
+      <Filter>Source Files\UiElements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomWindowUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WinServer.h">
@@ -50,5 +62,51 @@
     <ClInclude Include="LetterManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sticker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UserWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StickerManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomWindowUI.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
+    <ClInclude Include="Ui.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowBar.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
+    <ClInclude Include="LetterUi.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
+    <ClInclude Include="UiSettings.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorButton.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerStatusBar.h">
+      <Filter>Header Files\UiElemets</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Images\LOGO.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
