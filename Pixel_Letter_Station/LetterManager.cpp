@@ -1,24 +1,35 @@
 #include "LetterManager.h"
 
-HBITMAP GetLetter(HWND hWnd)
+HBITMAP GetLetter(HWND hWnd, RECT letterArea)
 {
-    HDC hdcWindow = GetDC(hWnd);
-    HDC hdcMemDC = CreateCompatibleDC(hdcWindow);
+    HWND hDesktopWnd = GetDesktopWindow();
+    HDC hDesktopDC = GetDC(hDesktopWnd);
+    HDC hdcMemDC = CreateCompatibleDC(hDesktopDC);
+
+    // get Client top left coordinates in relation to screen
+    POINT screenCords = { 0, 0 };
+    ClientToScreen(hWnd, &screenCords);
 
     RECT rcClient;
     GetClientRect(hWnd, &rcClient);
     int width = rcClient.right - rcClient.left;
     int height = rcClient.bottom - rcClient.top;
 
-    HBITMAP hbmScreen = CreateCompatibleBitmap(hdcWindow, width, height);
+    int letterPosX = letterArea.left;
+    int letterPosY = letterArea.top;
+
+    int letterWidth = LETTER_BOX_BORDER_W;
+    int letterHeight = LETTER_BOX_BORDER_H;
+
+    HBITMAP hbmScreen = CreateCompatibleBitmap(hDesktopDC, width, height);
     HGDIOBJ oldBitmap = SelectObject(hdcMemDC, hbmScreen);
 
-    BitBlt(hdcMemDC, 0, 0, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) - 2, height - (MARGIN * 2.5), hdcWindow, width - LETTER_BOX_WIDTH - MARGIN - SMALL_MARGIN, WIN_BAR_SIZE + MARGIN, SRCCOPY);
+    BitBlt(hdcMemDC, 0, 0, letterWidth, letterHeight, hDesktopDC, screenCords.x + letterPosX, screenCords.y + letterPosY, SRCCOPY);
 
     // Cleanup: Only delete the memory DC and release the window DC.
     SelectObject(hdcMemDC, oldBitmap); // Restore the old bitmap
     DeleteDC(hdcMemDC);
-    ReleaseDC(hWnd, hdcWindow);
+    ReleaseDC(hDesktopWnd, hDesktopDC);
 
     // Return the created bitmap
     return hbmScreen;
@@ -82,14 +93,7 @@ void ReceiveLetterFromServer(SOCKET socket, HWND hWnd)
 
     if (letterBitmap != NULL) // Check if the bitmap handle is valid
     {
-
-        HWND hwndLetter = CreateLetterWindow(hWnd, hInstance, 100, 100, LETTER_BOX_WIDTH + (SMALL_MARGIN * 2) + (BAR_MARGIN * 2) - 1 + (SMALL_MARGIN * 2), 600 - (MARGIN * 5.5) + WIN_BAR_SIZE + BAR_MARGIN + (SMALL_MARGIN * 3) + MARGIN + BUTTON_HEIGHT, letterBitmap);
-
-        if (hwndLetter == NULL) // Check if the window creation failed
-        {
-            cout << "oopsi" << endl;
-            DeleteObject(letterBitmap); // Free the bitmap resource
-        }
+        SendMessage(hWnd, WM_LETTER_RECIVED, (WPARAM)letterBitmap, 0);
     }
     return;
 }
